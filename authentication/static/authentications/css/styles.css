@@ -1,0 +1,18 @@
+.auth-center {
+  display: inline-block;
+  padding: 70px 0;
+  text-align: center;
+}
+
+.login {
+    width:320px;
+    flex: 1;
+}
+
+.sing_up {
+    width:620px;
+}
+
+.wrapper {
+    flex: 1;
+}
