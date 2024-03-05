@@ -12,7 +12,7 @@ class DepartmentChoices(models.IntegerChoices):
 
 
 class Employee(models.Model):
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='employee')
+    user = models.ForeignKey(get_user_model(), on_delete=models.PROTECT, related_name='employee')
     department = models.SmallIntegerField(choices=DepartmentChoices.choices)
 
     def __str__(self):
