@@ -43,3 +43,7 @@ a {
   text-align: center;
   width:720px;
 }
+
+.right {
+  text-align: right !important;
+}
