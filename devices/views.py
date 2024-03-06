@@ -1,4 +1,3 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render
@@ -8,9 +7,10 @@ from django.views.generic import UpdateView, CreateView
 
 from .forms import DeviceUpdateForm
 from .models import Device
+from CopyCentral_Hub.mixins import EmployeeRequiredMixin
 
 
-class DevicesList(LoginRequiredMixin, View):
+class DevicesList(EmployeeRequiredMixin, View):
     def get(self, request):
         devices = Device.objects.all()
         search_query = request.GET.get('search', False)
@@ -30,7 +30,7 @@ class DevicesList(LoginRequiredMixin, View):
         return render(request, 'devices/list.html', {'page_obj': page_obj})
 
 
-class DeviceDetails(LoginRequiredMixin, UpdateView):
+class DeviceDetails(EmployeeRequiredMixin, UpdateView):
     model = Device
     template_name = 'devices/details.html'
     form_class = DeviceUpdateForm
@@ -44,7 +44,7 @@ class DeviceDetails(LoginRequiredMixin, UpdateView):
         return form
 
 
-class DeviceUpdate(UpdateView):
+class DeviceUpdate(EmployeeRequiredMixin, UpdateView):
     model = Device
     template_name = 'devices/update.html'
     form_class = DeviceUpdateForm
@@ -53,7 +53,7 @@ class DeviceUpdate(UpdateView):
         return reverse_lazy('devices:details', kwargs={'pk': self.object.pk})
 
 
-class DeviceCreate(CreateView):
+class DeviceCreate(EmployeeRequiredMixin, CreateView):
     model = Device
     template_name = 'devices/update.html'
     form_class = DeviceUpdateForm
