@@ -1,0 +1,12 @@
+<table class="container table table-hover">
+<tbody id="devices-table-body">
+  {% for device in page_obj %}
+  <tr>
+    <td hidden="hidden">{% url "devices:details" device.id %}</td>
+    <td>{{ device.brand|title }} {{ device.model|title }}</td>
+    <td>{{ device.serial_number }}</td>
+    <td>{{ device.get_status_display }}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>

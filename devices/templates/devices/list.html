@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+  <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
+    <br>
+    <br>
+    <form class="col-6 col-lg-auto mb-3 mb-lg-0 me-lg-3" style="width: 30%;">
+      <input type="search" class="form-control form-control-dark sea" placeholder="Search by Serial Number" aria-label="Search">
+    </form>
+    <h1 class="h3 mb-3 font-weight-normal" style="margin: 0; text-align: center; flex-grow: 1;">Devices</h1>    <br>
+    <h1 class="h3 mb-3 font-weight-normal" style="margin: 0; text-align: center; flex-grow: 1;"></h1>
+    <a href="{% url 'devices:create'%}" class="btn btn-lg btn-outline-dark">Add New</a>
+  </div>
+  <table class="container table table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col" width=20%>Device</th>
+        <th scope="col" width=10%>Serial Number</th>
+        <th scope="col" width=10%>Status</th>
+      </tr>
+    </thead>
+    <tbody id="devices-table-body">
+      {% for device in page_obj %}
+      <tr>
+        <td hidden="hidden">{% url "devices:details" device.id %}</td>
+        <td>{{ device.brand|title }} {{ device.model|title }}</td>
+        <td>{{ device.serial_number }}</td>
+        <td>{{ device.get_status_display }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}
+
+{% block additional_scripts %}
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+  <script type="text/javascript" src="{% static 'devices/scripts/scripts.js' %}"></script>
+{% endblock %}
