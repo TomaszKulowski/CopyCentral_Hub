@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import UpdateView, CreateView
 
-from contractors.forms import ContractorForm
+from .forms import ServiceForm
 from .models import Service
 from CopyCentral_Hub.mixins import EmployeeRequiredMixin
 
@@ -19,7 +19,7 @@ class ServicesList(EmployeeRequiredMixin, View):
         if search_query:
             services = services.filter(
                 Q(name__icontains=search_query) |
-                Q(description__first_name__icontains=search_query)
+                Q(description__icontains=search_query)
             )
 
         page = request.GET.get('page')
@@ -34,8 +34,8 @@ class ServicesList(EmployeeRequiredMixin, View):
 
 class ServiceDetails(EmployeeRequiredMixin, UpdateView):
     model = Service
-    template_name = 'contractors/details.html'
-    form_class = ContractorForm
+    template_name = 'services/details.html'
+    form_class = ServiceForm
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -48,16 +48,16 @@ class ServiceDetails(EmployeeRequiredMixin, UpdateView):
 
 class ServiceUpdate(EmployeeRequiredMixin, UpdateView):
     model = Service
-    template_name = 'contractors/update.html'
-    form_class = ContractorForm
+    template_name = 'services/update.html'
+    form_class = ServiceForm
 
     def get_success_url(self):
-        return reverse_lazy('contractors:details', kwargs={'pk': self.object.pk})
+        return reverse_lazy('services:details', kwargs={'pk': self.object.pk})
 
 
 class ServiceCreate(EmployeeRequiredMixin, CreateView):
     model = Service
-    form_class = ContractorForm
+    form_class = ServiceForm
 
     def get_success_url(self):
-        return reverse_lazy('contractors:details', kwargs={'pk': self.object.pk})
+        return reverse_lazy('services:details', kwargs={'pk': self.object.pk})
