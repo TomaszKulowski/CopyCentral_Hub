@@ -1,14 +1,14 @@
 <table class="container table table-hover">
-  <tbody id="contractors-table-body">
-    {% for contractor in page_obj %}
-    <tr>
-      <td hidden="hidden">{% url "contractors:details" contractor.id %}</td>
-      <td>{{ contractor.name|title }}</td>
-      <td>{{ contractor.tax }}</td>
-      <td>{{ contractor.city|title }}</td>
-      <td>{{ contractor.postal_code }}</td>
-      <td>{{ contractor.street|title }} {{ contractor.number }}</td>
-    </tr>
+  <tbody id="services-table-body">
+    {% for service in page_obj %}
+      <tr>
+        <td hidden="hidden">{% url "services:details" service.id %}</td>
+        <td>{{ service.device_brand.name|title }}</td>
+        <td>{{ service.device_model.name|title }}</td>
+        <td>{{ service.name|title }}</td>
+        <td>{{ service.price_net }}</td>
+        <td>{{ service.description }}</td>
+      </tr>
     {% endfor %}
   </tbody>
 </table>
