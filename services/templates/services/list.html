@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+  <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
+    <br>
+    <br>
+    <form class="col-6 col-lg-auto mb-3 mb-lg-0 me-lg-3" style="width: 30%;">
+      <input type="search" class="form-control form-control-dark sea"
+             placeholder="Search by Name / Description" aria-label="Search">
+    </form>
+    <h1 class="h3 mb-3 font-weight-normal" style="margin: 0; text-align: center; flex-grow: 1;">Services</h1>
+    <h1 class="h3 mb-3 font-weight-normal" style="margin: 0; text-align: center; flex-grow: 1;"></h1>
+    <a href="{% url 'services:create'%}" class="btn btn-lg btn-outline-dark">Add New</a>
+  </div>
+  <table class="container table table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col" width=10%>Brand</th>
+        <th scope="col" width=10%>Model</th>
+        <th scope="col" width=10%>Name</th>
+        <th scope="col" width=10%>Net Price</th>
+        <th scope="col" width=10%>Description</th>
+      </tr>
+    </thead>
+    <tbody id="services-table-body">
+      {% for service in page_obj %}
+      <tr>
+        <td hidden="hidden">{% url "services:details" service.id %}</td>
+        <td>{{ contractor.brand.name|title }}</td>
+        <td>{{ contractor.tax }}</td>
+        <td>{{ contractor.city|title }}</td>
+        <td>{{ contractor.postal_code }}</td>
+        <td>{{ contractor.street|title }} {{ contractor.number }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block additional_scripts %}
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script type="text/javascript" src="{% static 'contractors/scripts/scripts.js' %}"></script>
+{% endblock %}

@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8">
     <title>CopyCentral Hub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
   </head>
   <body>
     <header class="p-3 bg-dark text-white">
@@ -12,6 +14,7 @@
             <li><a href="{% url 'home' %}" class="btn btn-outline-light me-2">CopyCentral Hub</a></li>
             <li><a href="{% url 'devices:list' %}" class="nav-link px-2 text-white">Devices</a></li>
             <li><a href="{% url 'contractors:list' %}" class="nav-link px-2 text-white">Contractors</a></li>
+            <li><a href="{% url 'services:list' %}" class="nav-link px-2 text-white">Services</a></li>
             {% block header %}
             {% endblock %}
           </ul>
