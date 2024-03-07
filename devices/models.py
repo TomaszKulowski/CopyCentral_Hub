@@ -31,6 +31,6 @@ class Device(models.Model):
     total_counter = models.IntegerField(blank=True, null=True)
     mono_counter = models.IntegerField(blank=True, null=True)
     color_counter = models.IntegerField(blank=True, null=True)
-    description = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(max_length=255, blank=True, null=True)
     status = models.SmallIntegerField(choices=Status.choices, blank=True, null=True)
     price_net = models.FloatField(blank=True, null=True)

@@ -18,7 +18,7 @@ class ContractorsList(EmployeeRequiredMixin, View):
 
         if search_query:
             contractors = contractors.filter(
-                Q(company__icontains=search_query) |
+                Q(name__icontains=search_query) |
                 Q(user__first_name__icontains=search_query) |
                 Q(user__last_name__icontains=search_query) |
                 Q(tax__icontains=search_query) |

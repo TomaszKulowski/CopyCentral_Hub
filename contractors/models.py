@@ -2,6 +2,11 @@ from django.contrib.auth import get_user_model
 from django.db import models
 
 
+class Payment(models.IntegerChoices):
+    CASH = 0, 'Cash'
+    BANK = 1, 'Bank'
+
+
 class Contractor(models.Model):
     user = models.ForeignKey(
         get_user_model(),
@@ -10,7 +15,7 @@ class Contractor(models.Model):
         blank=True,
         null=True,
     )
-    name = models.CharField(max_length=255, blank=True, null=True, help_text='Full Name or Company Name')
+    name = models.TextField(max_length=255, blank=True, null=True, help_text='Full Name or Company Name')
     tax = models.CharField(max_length=15, blank=True, null=True)
     country = models.CharField(max_length=24, blank=True, null=True)
     city = models.CharField(max_length=24, blank=True, null=True)
@@ -21,7 +26,7 @@ class Contractor(models.Model):
     telephone = models.IntegerField(blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     description = models.TextField(max_length=300, blank=True, null=True)
-    transfer_payment = models.BooleanField(default=False)
+    transfer_payment = models.SmallIntegerField(choices=Payment.choices, default=Payment.CASH)
 
     def __str__(self):
         return str(self.country)
