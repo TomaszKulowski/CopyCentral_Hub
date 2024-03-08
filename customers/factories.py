@@ -4,19 +4,19 @@ import factory
 
 from faker import Faker
 
-from .models import Contractor
+from .models import Customer
 from authentication.factories import UserFactory
 
 
 faker = Faker()
 
 
-class ContractorFactory(factory.django.DjangoModelFactory):
+class CustomerFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = Contractor
+        model = Customer
 
     user = factory.SubFactory(UserFactory)
-    company = factory.LazyAttribute(lambda x: faker.company())
+    name = factory.LazyAttribute(lambda x: faker.company())
     tax = factory.LazyAttribute(lambda x: random.randrange(10**9, 10**10-1))
     country = factory.LazyAttribute(lambda x: faker.country())
     city = factory.LazyAttribute(lambda x: faker.city())

@@ -7,7 +7,7 @@ class Payment(models.IntegerChoices):
     BANK = 1, 'Bank'
 
 
-class Contractor(models.Model):
+class Customer(models.Model):
     user = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE,

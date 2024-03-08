@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    var tableBody = document.getElementById("devices-table-body");
+    var tableBody = document.getElementById("customers-table-body");
     if (tableBody) {
         tableBody.addEventListener("click", function(event) {
             var target = event.target.closest("tr");
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Check if the searchQuery is different from the previous search
         if (searchQuery !== previousSearchQuery) {
-            var url = "/devices/?search=";
+            var url = "/customers/?search=";
 
             // Append the search parameter only if the searchQuery is not empty
             if (searchQuery !== "") {
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
             fetch(url)
                 .then(response => response.text())
                 .then(data => {
-                    document.getElementById("devices-table-body").innerHTML = data;
+                    document.getElementById("customers-table-body").innerHTML = data;
                     document.getElementById("paginator").innerHTML = '';
 
                     // Update the previous searchQuery

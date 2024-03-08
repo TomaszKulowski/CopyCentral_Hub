@@ -2,52 +2,51 @@
 {% load static %}
 
 {% block content %}
-<div class="form-center">
-  <body class="text-center">
-    <form method="post">
-      {% csrf_token %}
-      <div class="container text-center">
-      <h1 class="h3 mb-3 font-weight-normal">Service Details</h1>
-      </div>
-      <div class="container text-center">
-        <div class="row justify-content-md-center">
-          <div class="col-md-4">
-            {{ form.name.label }}
-            {{ form.name }}
-          </div>
-          <div class="col-md-4">
-            {{ form.price_net.label }}
-            {{ form.price_net }}
-          </div>
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Service Update</h1>
+  </div>
+  <form method="post">
+    {% csrf_token %}
+    <div class="container text-center">
+      <div class="row justify-content-md-center">
+        <div class="col-md-4">
+          <h5>{{ form.name.label }}</h5>
+          {{ form.name }}
+        </div>
+        <div class="col-md-4">
+          <h5>{{ form.price_net.label }}</h5>
+          {{ form.price_net }}
+        </div>
         </div>
         <div class="row justify-content-md-center">
           <div class="col-md-2">
-            {{ form.device_brand.help_text }}
+            <h5>{{ form.device_brand.help_text }}</h5>
             {{ form.device_brand }}
           </div>
           <div class="col-md-3">
-            {{ form.device_model.help_text }}
+            <h5>{{ form.device_model.help_text }}</h5>
             {{ form.device_model }}
           </div>
           <div class="col-md-3">
-            {{ form.device_type.help_text }}
+            <h5>{{ form.device_type.help_text }}</h5>
             {{ form.device_type }}
           </div>
         </div>
         <div class="row justify-content-md-center">
           <div class="col-md-8">
-            {{ form.description.label }}
+            <h5>{{ form.description.label }}</h5>
             {{ form.description }}
           </div>
         </div>
       </div>
-    <button class="btn btn-lg btn-warning btn-block btn-outline-dark" type="submit">Save</button>
-    </form>
-  </body>
-</div>
-{% endblock %}
-
-
-{% block additional_scripts %}
-  <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+      <br>
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-top">
+        <h1 class="h2"></h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group me-2">
+            <button class="btn btn-sm btn-outline-secondary" type="submit">Save</button>
+          </div>
+        </div>
+      </div>
+  </form>
 {% endblock %}

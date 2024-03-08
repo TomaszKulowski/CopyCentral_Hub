@@ -6,18 +6,18 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import UpdateView, CreateView
 
-from .forms import ContractorForm
-from .models import Contractor
+from .forms import CustomerForm
+from .models import Customer
 from CopyCentral_Hub.mixins import EmployeeRequiredMixin
 
 
-class ContractorsList(EmployeeRequiredMixin, View):
+class CustomerList(EmployeeRequiredMixin, View):
     def get(self, request):
-        contractors = Contractor.objects.all()
+        customers = Customer.objects.all()
         search_query = request.GET.get('search', False)
 
         if search_query:
-            contractors = contractors.filter(
+            customers = customers.filter(
                 Q(name__icontains=search_query) |
                 Q(user__first_name__icontains=search_query) |
                 Q(user__last_name__icontains=search_query) |
@@ -27,19 +27,19 @@ class ContractorsList(EmployeeRequiredMixin, View):
             )
 
         page = request.GET.get('page')
-        paginator = Paginator(contractors, 10)
+        paginator = Paginator(customers, 10)
         page_obj = paginator.get_page(page)
 
         if search_query or search_query == '':
-            return render(request, 'contractors/list_table.html', {'page_obj': page_obj})
+            return render(request, 'customers/list_table.html', {'page_obj': page_obj})
 
-        return render(request, 'contractors/list.html', {'page_obj': page_obj})
+        return render(request, 'customers/list.html', {'page_obj': page_obj})
 
 
-class ContractorDetails(EmployeeRequiredMixin, UpdateView):
-    model = Contractor
-    template_name = 'contractors/details.html'
-    form_class = ContractorForm
+class CustomerDetails(EmployeeRequiredMixin, UpdateView):
+    model = Customer
+    template_name = 'customers/details.html'
+    form_class = CustomerForm
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -50,19 +50,19 @@ class ContractorDetails(EmployeeRequiredMixin, UpdateView):
         return form
 
 
-class ContractorUpdate(EmployeeRequiredMixin, UpdateView):
-    model = Contractor
-    template_name = 'contractors/update.html'
-    form_class = ContractorForm
+class CustomerUpdate(EmployeeRequiredMixin, UpdateView):
+    model = Customer
+    template_name = 'customers/update.html'
+    form_class = CustomerForm
 
     def get_success_url(self):
-        return reverse_lazy('contractors:details', kwargs={'pk': self.object.pk})
+        return reverse_lazy('customers:details', kwargs={'pk': self.object.pk})
 
 
-class ContractorCreate(EmployeeRequiredMixin, CreateView):
-    model = Contractor
-    template_name = 'contractors/update.html'
-    form_class = ContractorForm
+class CustomerCreate(EmployeeRequiredMixin, CreateView):
+    model = Customer
+    template_name = 'customers/update.html'
+    form_class = CustomerForm
 
     def get_success_url(self):
-        return reverse_lazy('contractors:details', kwargs={'pk': self.object.pk})
+        return reverse_lazy('customers:details', kwargs={'pk': self.object.pk})

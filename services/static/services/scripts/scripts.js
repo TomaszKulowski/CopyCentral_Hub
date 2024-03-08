@@ -9,46 +9,49 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-});
 
+    var searchInput = document.querySelector(".sea");
+    var previousSearchQuery = "";
 
+    searchInput.addEventListener("input", function () {
+        clearTimeout(this.typingTimer);
+        this.typingTimer = setTimeout(function () {
+            sendSearchRequest();
+        }, 300); // Adjust this interval as needed
+    });
 
-document.addEventListener("DOMContentLoaded", function () {
-  var searchInput = document.querySelector(".sea");
-  var previousSearchQuery = "";
+    // Add keydown event listener to the search input
+    searchInput.addEventListener("keydown", function (event) {
+        // Prevent the default action if Enter key is pressed
+        if (event.key === 'Enter') {
+            event.preventDefault();
+        }
+    });
 
-  searchInput.addEventListener("input", function () {
-    clearTimeout(this.typingTimer);
-    this.typingTimer = setTimeout(function () {
-      sendSearchRequest();
-    }, 300); // Adjust this interval as needed
-  });
+    function sendSearchRequest() {
+        var searchQuery = searchInput.value.trim();
 
-  function sendSearchRequest() {
-    var searchQuery = searchInput.value.trim();
+        // Check if the searchQuery is different from the previous search
+        if (searchQuery !== previousSearchQuery) {
+            var url = "/services/?search=";
 
-    // Check if the searchQuery is different from the previous search
-    if (searchQuery !== previousSearchQuery) {
-      var url = "/services/?search=";
+            // Append the search parameter only if the searchQuery is not empty
+            if (searchQuery !== "") {
+                url += `${encodeURIComponent(searchQuery)}`;
+            }
 
-      // Append the search parameter only if the searchQuery is not empty
-      if (searchQuery !== "") {
-        url += `${encodeURIComponent(searchQuery)}`;
-      }
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("services-table-body").innerHTML = data;
+                    document.getElementById("paginator").innerHTML = '';
 
-      fetch(url)
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById("services-table-body").innerHTML = data;
-          document.getElementById("paginator").innerHTML = '';
-
-          // Update the previous searchQuery
-          previousSearchQuery = searchQuery;
-        })
-        .catch(error => {
-          console.error("Error:", error);
-        });
+                    // Update the previous searchQuery
+                    previousSearchQuery = searchQuery;
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        }
     }
-  }
 });
-
