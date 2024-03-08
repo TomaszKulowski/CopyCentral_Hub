@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse, redirect
@@ -20,13 +21,17 @@ class LoginView(View):
         if user is not None:
             login(request, user)
             return redirect(reverse('home'))
+        else:
+            messages.error(request, 'Invalid username or password.')
+
+        return HttpResponseRedirect(reverse('authentication:login'))  # Redirect back to login page
 
     def get(self, request):
         form = SingInForm()
-        return render(request, 'authentications/login.html', {'form': form})
+        return render(request, 'authentication/login.html', {'form': form})
 
 
 class LogoutView(View):
     def post(self, request):
         logout(request)
-        return redirect(reverse('home'))
+        return redirect(reverse('authentication:login'))

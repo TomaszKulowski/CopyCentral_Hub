@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Customer Details</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group me-2">
+        <a href="{% url 'customers:update' customer.id %}"  class="btn btn-sm btn-outline-secondary">Update</a>
+      </div>
+    </div>
+  </div>
+  <div class="container text-center">
+    <div class="row justify-content-md-center">
+      <div class="col-md-8">
+        <h5>{{ form.name.help_text }}</h5>
+        {{ form.name }}
+      </div>
+    </div>
+    <div class="row justify-content-md-center">
+      <div class="col-md-2">
+        <h5>{{ form.tax.label }}</h5>
+        {{ form.tax }}
+      </div>
+      <div class="col-md-2">
+        <h5>{{ form.country.label }}</h5>
+        {{ form.country }}
+      </div>
+      <div class="col-md-2">
+        <h5>{{ form.postal_code.label }}</h5>
+        {{ form.postal_code }}
+      </div>
+      <div class="col-md-2">
+        <h5>{{ form.city.label }}</h5>
+        {{ form.city }}
+      </div>
+    </div>
+    <div class="row justify-content-md-center">
+      <div class="col-md-2">
+        <h5>{{ form.street.label }}</h5>
+        {{ form.street }}
+      </div>
+      <div class="col-md-2">
+        <h5>{{ form.number.label }}</h5>
+        {{ form.number }}
+      </div>
+      <div class="col-md-2">
+        <h5>{{ form.country_calling_code.help_text }}</h5>
+        {{ form.country_calling_code }}
+      </div>
+      <div class="col-md-2">
+        <h5>{{ form.telephone.label }}
+        {{ form.telephone }}</h5>
+      </div>
+    </div>
+    <div class="row justify-content-md-center">
+      <div class="col-md-4">
+        <h5>{{ form.email.label }}</h5>
+        {{ form.email }}
+      </div>
+      <div class="col-md-4">
+        <h5>{{ form.transfer_payment.label }}</h5>
+        {{ form.transfer_payment }}
+      </div>
+    </div>
+    <div class="row justify-content-md-center">
+      <div class="col-md-8">
+        <h5>{{ form.description.label }}</h5>
+        {{ form.description }}
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom border-top">
+    <h1 class="h2">Customer History</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+    </div>
+  </div>
+{% endblock %}

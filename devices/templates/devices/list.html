@@ -2,18 +2,20 @@
 {% load static %}
 
 {% block content %}
-  <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
-    <br>
-    <br>
-    <form class="col-6 col-lg-auto mb-3 mb-lg-0 me-lg-3" style="width: 30%;">
-      <input type="search" class="form-control form-control-dark sea" placeholder="Search by Serial Number" aria-label="Search">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Devices</h1>
+        <form class="" style="width: 40%;">
+      <input type="search" class="form-control form-control-dark sea"
+             placeholder="Search by Serial Number" aria-label="Search">
     </form>
-    <h1 class="h3 mb-3 font-weight-normal" style="margin: 0; text-align: center; flex-grow: 1;">Devices</h1>    <br>
-    <h1 class="h3 mb-3 font-weight-normal" style="margin: 0; text-align: center; flex-grow: 1;"></h1>
-    <a href="{% url 'devices:create'%}" class="btn btn-lg btn-outline-dark">Add New</a>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group me-2">
+        <a href="{% url 'devices:create' %}"  class="btn btn-sm btn-outline-secondary">Add New</a>
+      </div>
+    </div>
   </div>
-  <div class="table-responsive">
-    <table class="container table table-hover table-auto">
+  <div class="table-responsive small">
+    <table class="table table-striped table-sm">
       <thead class="table-dark">
         <tr>
           <th scope="col" width=20%>Device</th>
@@ -33,11 +35,9 @@
       </tbody>
     </table>
   </div>
-
 {% endblock %}
 
 {% block additional_scripts %}
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
   <script type="text/javascript" src="{% static 'devices/scripts/scripts.js' %}"></script>
 {% endblock %}

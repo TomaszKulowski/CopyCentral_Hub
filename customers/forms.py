@@ -1,11 +1,11 @@
 from django import forms
 
-from .models import Contractor
+from .models import Customer
 
 
-class ContractorForm(forms.ModelForm):
+class CustomerForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(ContractorForm, self).__init__(*args, **kwargs)
+        super(CustomerForm, self).__init__(*args, **kwargs)
         for field in self.fields:
             if field == 'name':
                 self.fields[field].widget.attrs.update({'rows': 2})
@@ -17,4 +17,4 @@ class ContractorForm(forms.ModelForm):
     class Meta:
         fields = '__all__'
         exclude = ('user', )
-        model = Contractor
+        model = Customer

@@ -13,4 +13,4 @@ class EmployeeRequiredMixin(AccessMixin):
         return super().dispatch(request, *args, **kwargs)
 
     def handle_no_permission(self):
-        return HttpResponseRedirect(reverse('home'))
+        return HttpResponseRedirect(reverse('authentication:login'))
