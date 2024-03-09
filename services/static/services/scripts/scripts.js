@@ -1,57 +1,28 @@
 document.addEventListener("DOMContentLoaded", function () {
-    var tableBody = document.getElementById("services-table-body");
-    if (tableBody) {
-        tableBody.addEventListener("click", function(event) {
+    var tables = document.querySelectorAll(".table-striped");
+    tables.forEach(function(table) {
+        table.addEventListener("click", function(event) {
             var target = event.target.closest("tr");
             if (target) {
-                var url = target.querySelector("td:first-child").textContent;
-                window.location.href = url;
+                var urlCell = target.querySelector("td:first-child");
+                if (urlCell) {
+                    var url = urlCell.textContent;
+                    window.location.href = url;
+                }
             }
         });
-    }
-
-    var searchInput = document.querySelector(".sea");
-    var previousSearchQuery = "";
-
-    searchInput.addEventListener("input", function () {
-        clearTimeout(this.typingTimer);
-        this.typingTimer = setTimeout(function () {
-            sendSearchRequest();
-        }, 300); // Adjust this interval as needed
     });
+});
 
-    // Add keydown event listener to the search input
-    searchInput.addEventListener("keydown", function (event) {
-        // Prevent the default action if Enter key is pressed
-        if (event.key === 'Enter') {
-            event.preventDefault();
+
+$(document).ready(function() {
+    $('#selectModel').on('change', function() {
+        var selectedModel = $(this).val();
+        if(selectedModel === 'All') {
+            $('.model-services').show(); // Show all sections
+        } else {
+            $('.model-services').hide(); // Hide all sections initially
+            $('.' + selectedModel).show(); // Show the section corresponding to the selected model
         }
     });
-
-    function sendSearchRequest() {
-        var searchQuery = searchInput.value.trim();
-
-        // Check if the searchQuery is different from the previous search
-        if (searchQuery !== previousSearchQuery) {
-            var url = "/services/?search=";
-
-            // Append the search parameter only if the searchQuery is not empty
-            if (searchQuery !== "") {
-                url += `${encodeURIComponent(searchQuery)}`;
-            }
-
-            fetch(url)
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("services-table-body").innerHTML = data;
-                    document.getElementById("paginator").innerHTML = '';
-
-                    // Update the previous searchQuery
-                    previousSearchQuery = searchQuery;
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                });
-        }
-    }
 });
