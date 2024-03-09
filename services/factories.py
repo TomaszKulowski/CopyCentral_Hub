@@ -4,7 +4,7 @@ import factory
 
 from faker import Faker
 
-from .models import Brand, Model, Type, Service
+from .models import Brand, Model, Service
 
 
 faker = Faker()
@@ -24,13 +24,6 @@ class ModelFactory(factory.django.DjangoModelFactory):
     name = factory.Sequence(lambda n: f'Model-{n}')
 
 
-class TypeFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = Type
-
-    name = factory.Sequence(lambda n: f'Type-{n}')
-
-
 class ServiceFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Service
@@ -40,4 +33,3 @@ class ServiceFactory(factory.django.DjangoModelFactory):
     description = factory.LazyAttribute(lambda x: faker.sentence(20))
     device_brand = factory.SubFactory(BrandFactory)
     device_model = factory.SubFactory(ModelFactory)
-    device_type = factory.SubFactory(TypeFactory)

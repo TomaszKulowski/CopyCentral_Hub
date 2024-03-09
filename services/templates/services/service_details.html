@@ -1,12 +1,11 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "services/service_base.html" %}
 
 {% block content %}
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Service Details</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
-        <a href="{% url 'services:update' service.id %}"  class="btn btn-sm btn-outline-secondary">Update</a>
+        <a href="{% url 'services:service_update' service.id %}"  class="btn btn-sm btn-outline-secondary">Update</a>
       </div>
     </div>
   </div>
@@ -22,17 +21,13 @@
         </div>
       </div>
       <div class="row justify-content-md-center">
-        <div class="col-md-2">
+        <div class="col-md-4">
           <h5>{{ form.device_brand.help_text }}</h5>
           {{ form.device_brand }}
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
           <h5>{{ form.device_model.help_text }}</h5>
           {{ form.device_model }}
-        </div>
-        <div class="col-md-3">
-          <h5>{{ form.device_type.help_text }}</h5>
-          {{ form.device_type }}
         </div>
       </div>
       <div class="row justify-content-md-center">

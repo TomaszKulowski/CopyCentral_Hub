@@ -1,63 +1,129 @@
-from django.core.paginator import Paginator
-from django.db.models import Q
 from django.shortcuts import render
 from django.urls import reverse_lazy
 
 from django.views import View
-from django.views.generic import UpdateView, CreateView
+from django.views.generic import UpdateView, CreateView, ListView
 
-from .forms import ServiceForm
-from .models import Service
+from .forms import ServiceForm, BrandForm, ModelForm
+from .models import Service, Brand, Model
 from CopyCentral_Hub.mixins import EmployeeRequiredMixin
 
 
 class ServicesList(EmployeeRequiredMixin, View):
     def get(self, request):
-        services = Service.objects.all()
-        search_query = request.GET.get('search', False)
+        grouped_data = {}
 
-        if search_query:
-            services = services.filter(
-                Q(name__icontains=search_query) |
-                Q(description__icontains=search_query)
-            )
+        for service in Service.objects.select_related('device_brand', 'device_model').all():
+            brand= service.device_brand
+            model = service.device_model if service.device_model else "All"
 
-        page = request.GET.get('page')
-        paginator = Paginator(services, 10)
-        page_obj = paginator.get_page(page)
+            grouped_data.setdefault(brand, {})
+            grouped_data[brand].setdefault(model, [])
+            grouped_data[brand][model].append(service)
 
-        if search_query or search_query == '':
-            return render(request, 'services/list_table.html', {'page_obj': page_obj})
+        for brand, models in grouped_data.items():
+            all_services = models.pop('All', [])
+            for services in models.values():
+                services.extend(all_services)
 
-        return render(request, 'services/list.html', {'page_obj': page_obj})
+        return render(request, 'services/services_list.html', {'grouped_data': grouped_data})
 
 
 class ServiceDetails(EmployeeRequiredMixin, UpdateView):
     model = Service
-    template_name = 'services/details.html'
+    template_name = 'services/service_details.html'
     form_class = ServiceForm
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        forms = {}
         for key, value in form.fields.items():
             value.disabled = True
-            forms[key] = value
         return form
 
 
 class ServiceUpdate(EmployeeRequiredMixin, UpdateView):
     model = Service
-    template_name = 'services/update.html'
+    template_name = 'services/service_update.html'
     form_class = ServiceForm
 
     def get_success_url(self):
-        return reverse_lazy('services:details', kwargs={'pk': self.object.pk})
+        return reverse_lazy('services:service_details', kwargs={'pk': self.object.pk})
 
 
 class ServiceCreate(EmployeeRequiredMixin, CreateView):
     model = Service
+    template_name = 'services/service_update.html'
     form_class = ServiceForm
 
     def get_success_url(self):
-        return reverse_lazy('services:details', kwargs={'pk': self.object.pk})
+        return reverse_lazy('services:service_details', kwargs={'pk': self.object.pk})
+
+
+class BrandsList(EmployeeRequiredMixin, ListView):
+    model = Brand
+    template_name = 'services/brands_list.html'
+
+
+class BrandDetails(EmployeeRequiredMixin, UpdateView):
+    model = Brand
+    template_name = 'services/brand_details.html'
+    form_class = BrandForm
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        for key, value in form.fields.items():
+            value.disabled = True
+        return form
+
+
+class BrandUpdate(EmployeeRequiredMixin, UpdateView):
+    model = Brand
+    template_name = 'services/brand_update.html'
+    form_class = BrandForm
+
+    def get_success_url(self):
+        return reverse_lazy('services:brand_details', kwargs={'pk': self.object.pk})
+
+
+class BrandCreate(EmployeeRequiredMixin, CreateView):
+    model = Brand
+    template_name = 'services/brand_update.html'
+    form_class = BrandForm
+
+    def get_success_url(self):
+        return reverse_lazy('services:brand_details', kwargs={'pk': self.object.pk})
+
+
+class ModelsList(EmployeeRequiredMixin, ListView):
+    model = Model
+    template_name = 'services/models_list.html'
+
+
+class ModelDetails(EmployeeRequiredMixin, UpdateView):
+    model = Model
+    template_name = 'services/model_details.html'
+    form_class = ModelForm
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        for key, value in form.fields.items():
+            value.disabled = True
+        return form
+
+
+class ModelUpdate(EmployeeRequiredMixin, UpdateView):
+    model = Model
+    template_name = 'services/model_update.html'
+    form_class = ModelForm
+
+    def get_success_url(self):
+        return reverse_lazy('services:model_details', kwargs={'pk': self.object.pk})
+
+
+class ModelCreate(EmployeeRequiredMixin, CreateView):
+    model = Model
+    template_name = 'services/model_update.html'
+    form_class = ModelForm
+
+    def get_success_url(self):
+        return reverse_lazy('services:model_details', kwargs={'pk': self.object.pk})
