@@ -40,4 +40,4 @@ class AdditionalAddressFactory(factory.django.DjangoModelFactory):
     street = factory.LazyAttribute(lambda x: faker.street_name())
     number = factory.LazyAttribute(lambda x: faker.building_number())
     description = factory.LazyAttribute(lambda x: faker.sentence(20))
-    is_active = factory.LazyAttribute(lambda x: random.choice([True, False]))
+    is_active = factory.LazyAttribute(lambda x: random.randrange(0,2))

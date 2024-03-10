@@ -77,7 +77,9 @@ class AdditionalAddressesList(AddressContextMixin, EmployeeRequiredMixin, ListVi
 
     def get_queryset(self):
         customer_pk = self.kwargs.get('customer_pk')
+        print(customer_pk)
         queryset = AdditionalAddress.objects.filter(customer_id=customer_pk, is_active=True)
+        print(queryset)
         return queryset
 
 

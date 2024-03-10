@@ -49,11 +49,11 @@ class DeviceFactory(factory.django.DjangoModelFactory):
     model = factory.LazyAttribute(lambda x: random.choice(MODELS))
     type = factory.LazyAttribute(lambda x: random.randrange(0, 2))
     format = factory.LazyAttribute(lambda x: random.randrange(0, 2))
-    serial_number = factory.Sequence(lambda x: f's/n:{random.choice(CHARS)}_{x}')
+    serial_number = factory.Sequence(lambda x: f'serial_number_{faker.unique.uuid4()}_{x}')
     total_counter = factory.LazyAttribute(lambda x: random.randrange(0, 10**6))
     mono_counter = None
     color_counter = None
-    desc = factory.LazyAttribute(lambda x: faker.sentence(10))
+    description = factory.LazyAttribute(lambda x: faker.sentence(10))
     status = factory.LazyAttribute(lambda x: random.choices(Status.choices)[0][0])
     price_net = factory.LazyAttribute(lambda x: round(random.uniform(500.1, 6000.0), 2))
 

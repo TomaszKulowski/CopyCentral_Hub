@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 
 from customers.models import Customer
 from devices.models import Device
+from employees.models import Employee
 from services.models import Service
 
 
@@ -33,15 +34,15 @@ class ShortDescription(models.Model):
 
 
 class Order(models.Model):
-    user_intake = models.ForeignKey(get_user_model(), on_delete=models.PROTECT, related_name='user_intake')
-    employee = models.ForeignKey(
-        get_user_model(),
+    user_intake = models.ForeignKey(Employee, on_delete=models.PROTECT, related_name='user_intake')
+    executor = models.ForeignKey(
+        Employee,
         on_delete=models.PROTECT,
         blank=True,
         null=True,
-        related_name='order_employee',
+        related_name='executor_employee',
     )
-    approver = models.ForeignKey(get_user_model(), on_delete=models.PROTECT, blank=True, null=True)
+    approver = models.ForeignKey(Employee, on_delete=models.PROTECT, blank=True, null=True)
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT, blank=True, null=True)
     region = models.ForeignKey(Region, on_delete=models.PROTECT, blank=True, null=True)
     invoice_number = models.CharField(max_length=20, blank=True, null=True)

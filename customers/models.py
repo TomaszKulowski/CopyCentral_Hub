@@ -28,9 +28,6 @@ class Customer(models.Model):
     description = models.TextField(max_length=300, blank=True, null=True)
     transfer_payment = models.SmallIntegerField(choices=Payment.choices, default=Payment.CASH)
 
-    def __str__(self):
-        return str(self.country)
-
 
 class AdditionalAddress(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)

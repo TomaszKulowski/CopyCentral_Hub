@@ -143,9 +143,9 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link d-flex align-items-center gap-2" href="#">
+                  <a class="nav-link d-flex align-items-center gap-2" href="{% url 'service_orders:list' %}">
                     <svg class="bi"><use xlink:href="#file-earmark"/></svg>
-                    Orders
+                    Service Orders
                   </a>
                 </li>
                 <li class="nav-item">
@@ -234,7 +234,7 @@
           {% if page_obj.paginator.num_pages > 1 %}
             <div class="container h5 mb-3 font-weight-normal" id="paginator">
               {% if page_obj.has_previous %}
-                <a class="arrows" href="?page=1}">&laquo;</a>
+                <a class="arrows" href="?page=1">&laquo;</a>
                 <a class="arrows" href="?page={{ page_obj.previous_page_number }}">&lsaquo;</a>
               {% endif %}
                 Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}

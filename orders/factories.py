@@ -4,6 +4,8 @@ from datetime import timedelta
 
 import factory
 
+from factory import post_generation
+
 from faker import Faker
 
 from .models import OrderServices, Region, ShortDescription, Order
@@ -44,7 +46,7 @@ class OrderFactory(factory.django.DjangoModelFactory):
         model = Order
 
     user_intake = factory.SubFactory(EmployeeFactory)
-    employee = factory.SubFactory(EmployeeFactory)
+    executor = factory.SubFactory(EmployeeFactory)
     approver = factory.SubFactory(EmployeeFactory)
     customer = factory.SubFactory(CustomerFactory)
     region = factory.SubFactory(RegionFactory)
@@ -53,7 +55,6 @@ class OrderFactory(factory.django.DjangoModelFactory):
     additional_info = factory.LazyAttribute(lambda x: faker.sentence(20))
     priority = factory.LazyAttribute(lambda x: random.randrange(0, 3))
     device = factory.SubFactory(DeviceFactory)
-    services = factory.SubFactory(OrderServicesFactory)
     payment_method = factory.LazyAttribute(lambda x: random.randrange(0, 3))
     created_at = factory.LazyFunction(faker.date_time_this_month)
     updated_at = factory.LazyAttribute(lambda obj: obj.created_at + timedelta(seconds=faker.pyint()))
