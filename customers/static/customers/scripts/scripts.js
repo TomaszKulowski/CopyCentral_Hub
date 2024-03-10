@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    var tableBody = document.getElementById("customers-table-body");
+    var tableBody = document.getElementById("table-body");
     if (tableBody) {
         tableBody.addEventListener("click", function(event) {
             var target = event.target.closest("tr");
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
             fetch(url)
                 .then(response => response.text())
                 .then(data => {
-                    document.getElementById("customers-table-body").innerHTML = data;
+                    document.getElementById("table-body").innerHTML = data;
                     document.getElementById("paginator").innerHTML = '';
 
                     // Update the previous searchQuery

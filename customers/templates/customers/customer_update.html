@@ -1,5 +1,4 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "customers/customers_base.html" %}
 
 {% block content %}
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -20,26 +19,26 @@
           {{ form.tax }}
         </div>
         <div class="col-md-2">
-          <h5>{{ form.country.label }}</h5>
-          {{ form.country }}
+          <h5>{{ form.billing_country.label }}</h5>
+          {{ form.billing_country }}
         </div>
         <div class="col-md-2">
-          <h5>{{ form.postal_code.label }}</h5>
-          {{ form.postal_code }}
+          <h5>{{ form.billing_postal_code.label }}</h5>
+          {{ form.billing_postal_code }}
         </div>
         <div class="col-md-2">
-          <h5>{{ form.city.label }}</h5>
-          {{ form.city }}
+          <h5>{{ form.billing_city.label }}</h5>
+          {{ form.billing_city }}
         </div>
       </div>
       <div class="row justify-content-md-center">
         <div class="col-md-2">
-          <h5>{{ form.street.label }}</h5>
-          {{ form.street }}
+          <h5>{{ form.billing_street.label }}</h5>
+          {{ form.billing_street }}
         </div>
         <div class="col-md-2">
-          <h5>{{ form.number.label }}</h5>
-          {{ form.number }}
+          <h5>{{ form.billing_number.label }}</h5>
+          {{ form.billing_number }}
         </div>
         <div class="col-md-2">
           <h5>{{ form.country_calling_code.help_text }}</h5>
