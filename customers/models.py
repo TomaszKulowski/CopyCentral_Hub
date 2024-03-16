@@ -28,6 +28,9 @@ class Customer(models.Model):
     description = models.TextField(max_length=300, blank=True, null=True)
     transfer_payment = models.SmallIntegerField(choices=Payment.choices, default=Payment.CASH)
 
+    def __str__(self):
+        return f'{self.name}; Tax: {self.tax}'
+
 
 class AdditionalAddress(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
@@ -38,3 +41,6 @@ class AdditionalAddress(models.Model):
     number = models.CharField(max_length=24, blank=True, null=True)
     description = models.TextField(max_length=200, blank=True, null=True)
     is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f'{self.city}, {self.street} {self.number}'

@@ -1,0 +1,11 @@
+<div id="address-details">
+  <span>Postal Code:</span>
+  <input class="form-control" disabled value="{{ additionaladdress.postal_code }}">
+  <span>City:</span>
+  <input class="form-control" disabled value="{{ additionaladdress.city }}">
+  <span>Street:</span>
+  <input class="form-control" disabled
+    value="{{ additionaladdress.street }} {{ additionaladdress.number }}">
+  <span>Description:</span>
+  <textarea class="form-control" rows="2" disabled>{{ additionaladdress.description }}</textarea>
+</div>

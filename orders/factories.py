@@ -5,11 +5,10 @@ from datetime import timedelta
 import factory
 
 from factory import post_generation
-
 from faker import Faker
 
 from .models import OrderServices, Region, ShortDescription, Order
-from customers.factories import CustomerFactory
+from customers.factories import CustomerFactory, AdditionalAddressFactory
 from devices.factories import DeviceFactory
 from employees.factories import EmployeeFactory
 from services.factories import ServiceFactory
@@ -49,6 +48,8 @@ class OrderFactory(factory.django.DjangoModelFactory):
     executor = factory.SubFactory(EmployeeFactory)
     approver = factory.SubFactory(EmployeeFactory)
     customer = factory.SubFactory(CustomerFactory)
+    additional_address = factory.SubFactory(AdditionalAddressFactory)
+    payer = None
     region = factory.SubFactory(RegionFactory)
     invoice_number = factory.Sequence(lambda n: f'Invoice-{n}')
     short_description = factory.SubFactory(ShortDescriptionFactory)
@@ -58,3 +59,7 @@ class OrderFactory(factory.django.DjangoModelFactory):
     payment_method = factory.LazyAttribute(lambda x: random.randrange(0, 3))
     created_at = factory.LazyFunction(faker.date_time_this_month)
     updated_at = factory.LazyAttribute(lambda obj: obj.created_at + timedelta(seconds=faker.pyint()))
+
+    @post_generation
+    def post(self, create, *args, **kwargs):
+        self.payer = self.customer

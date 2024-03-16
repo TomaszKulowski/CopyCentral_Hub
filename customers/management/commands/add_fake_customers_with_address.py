@@ -2,7 +2,7 @@ from sys import stdout
 
 from django.core.management import BaseCommand
 
-from customers.factories import AdditionalAddressFactory
+from customers.factories import AdditionalAddressFactory, CustomerFactory
 
 
 class Command(BaseCommand):
@@ -19,5 +19,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         n = options.get('number')
-        AdditionalAddressFactory.create_batch(n)
+        for _ in range(int(n)):
+            customer = CustomerFactory()
+            AdditionalAddressFactory(customer=customer)
         stdout.write(f'Successfully created {n} objects.')

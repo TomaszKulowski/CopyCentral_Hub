@@ -1,6 +1,5 @@
 from django.db import models
 
-from customers.models import Customer, AdditionalAddress
 from orders.models import Order
 
 
@@ -31,17 +30,15 @@ class Status(models.IntegerChoices):
 
 class ServiceOrder(models.Model):
     order = models.ForeignKey(Order, on_delete=models.PROTECT)
-    payer = models.ForeignKey(Customer, on_delete=models.PROTECT, blank=True, null=True)
-    additional_address = models.ForeignKey(AdditionalAddress, on_delete=models.PROTECT, null=True, blank=True)
     description = models.TextField(max_length=2000, blank=True, null=True)
     order_type = models.SmallIntegerField(choices=OrderType.choices, default=OrderType.PAID)
     status = models.SmallIntegerField(choices=Status.choices, default=Status.NEW)
     total_counter = models.PositiveIntegerField(blank=True, null=True)
     mono_counter = models.PositiveIntegerField(blank=True, null=True)
     color_counter = models.PositiveIntegerField(blank=True, null=True)
-    customer_approver_name = models.CharField(max_length=20, blank=True, null=True)
-
-    def save(self, *args, **kwargs):
-        if not self.payer:
-            self.payer = self.order.customer
-        super().save(*args, **kwargs)
+    customer_approver_name = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True,
+        verbose_name='Customer Approver Name',
+    )

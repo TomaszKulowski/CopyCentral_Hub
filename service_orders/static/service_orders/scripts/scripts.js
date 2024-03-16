@@ -56,3 +56,66 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 });
+
+
+$(document).ready(function() {
+    $('#id_customer').on('select2:select', function (e) {
+        var customerId = e.params.data.id;
+
+        $.ajax({
+            url: '/service_orders/customer_details/' + customerId + '/',
+            dataType: 'html',
+            success: function(response) {
+                $('#customer-details').html(response);
+            }
+        });
+
+        $.ajax({
+            url: '/service_orders/address_details/',
+            dataType: 'html',
+            success: function(response) {
+                $('#address-details').html(response);
+            }
+        });
+    });
+});
+
+
+$(document).ready(function() {
+    $('#id_address').on('select2:select', function (e) {
+        var addressId = e.params.data.id;
+
+        $.ajax({
+            url: '/service_orders/address_details/' + addressId + '/',
+            dataType: 'html',
+            success: function(response) {
+                $('#address-details').html(response);
+            }
+        });
+    }).on('select2:unselect', function (e) {
+        var addressId = null;
+
+        $.ajax({
+            url: '/service_orders/address_details/' + addressId + '/',
+            dataType: 'html',
+            success: function(response) {
+                $('#address-details').html(response);
+            }
+        });
+    });
+});
+
+
+$(document).ready(function() {
+    $('#id_payer').on('select2:select', function (e) {
+        var customerId = e.params.data.id;
+
+        $.ajax({
+            url: '/service_orders/customer_details/' + customerId + '/',
+            dataType: 'html',
+            success: function(response) {
+                $('#payer-details').html(response);
+            }
+        });
+    });
+});

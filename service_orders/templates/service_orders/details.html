@@ -3,146 +3,102 @@
 
 {% block content %}
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">{{ service_order.id }} - Service Order Details</h1>
+    <h1 class="h2">{{ object.id }} - Service Order Details</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
-        <a href="{% url 'service_orders:update' service_order.id %}"  class="btn btn-sm btn-outline-secondary">Update</a>
+        <a href="{% url 'service_orders:update' object.id %}"  class="btn btn-sm btn-outline-secondary">Update</a>
       </div>
     </div>
   </div>
-  <div class="container">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-      <h3 class="h3">Order Details</h3>
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="order_details-tab" data-bs-toggle="tab" data-bs-target="#order_details" type="button" role="tab" aria-controls="order_details" aria-selected="true">Order Details</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="customer_details-tab" data-bs-toggle="tab" data-bs-target="#customer_details" type="button" role="tab" aria-controls="customer_details" aria-selected="false">Customer Details</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="service_details-tab" data-bs-toggle="tab" data-bs-target="#service_details" type="button" role="tab" aria-controls="service_details" aria-selected="false">Service Details</button>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="order_details" role="tabpanel" aria-labelledby="order_details-tab">
+      <div class="row justify-content-md-center">
+          <div class="col-md-6">
+            <label>Created At:</label>
+            <input class="form-control" disabled value="{{ object.order.created_at }}">
+          </div>
+          <div class="col-md-6">
+            <label>Updated At:</label>
+            <input class="form-control" disabled value="{{ object.order.updated_at }}">
+          </div>
+      </div>
+      <div class="row justify-content-md-center">
+        <div class="col-md-4">
+
+          <label>Priorityy:</label>
+            {% if object.order.priority != 1 %}
+              <input class="form-control" disabled value="{{ object.order.get_priority_display }}">
+            {% else %}
+              <input class="form-control" disabled value="{{ object.order.get_priority_display }}" style="background: red !important;">
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+          <label>Payment:</label>
+          {% if object.order.payment_method != 2 %}
+            <input class="form-control" disabled value="{{ object.order.get_payment_method_display }}">
+          {% else %}
+            <input class="form-control" disabled value="{{ object.order.get_payment_method_display }}" style="background: red !important;">
+          {% endif %}
+        </div>
+        <div class="col-md-4">
+          <label>Order Type:</label>
+          <input class="form-control" disabled value="{{ object.get_order_type_display }}">
+        </div>
+      </div>
+      {{ order_form.user_intake.label }}:
+      {{ order_form.user_intake }}
+      {{ order_form.approver.label }}:
+      {{ order_form.approver }}
+      {{ order_form.executor.label }}:
+      {{ order_form.executor }}
+      {{ order_form.region.label }}:
+      {{ order_form.region }}
+      {{ order_form.short_description.label }}:
+      {{ order_form.short_description }}
+      {{ order_form.additional_info.label }}:
+      {{ order_form.additional_info }}
+      {{ form.status.label }}:
+      {{ form.status }}
+      {{ form.customer_approver_name.label }}:
+      {{ form.customer_approver_name }}
     </div>
-    <div class="container text-center">
-      <div class="row justify-content-md-center">
-        <div class="col-md-3">
-          <h5>Created at</h5>
-          <input class="form-control" disabled value="{{ service_order.order.created_at }}">
+    <div class="tab-pane fade" id="customer_details" role="tabpanel" aria-labelledby="customer_details-tab">
+      <ul class="nav nav-tabs" id="payer-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="customer_details1-tab" data-bs-toggle="tab" data-bs-target="#customer_details1" type="button" role="tab" aria-controls="customer_details1" aria-selected="true">Customer Details</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="payer_details-tab" data-bs-toggle="tab" data-bs-target="#payer_details" type="button" role="tab" aria-controls="payer_details" aria-selected="false">Payer Details</button>
+        </li>
+      </ul>
+      <div class="tab-content" id="payer-tab-content">
+        <div class="tab-pane fade show active" id="customer_details1" role="tabpanel" aria-labelledby="customer_details-tab">
+          <label>Name:</label>
+          <input class="form-control" disabled value="{{ object.order.customer.name }}">
         </div>
-        <div class="col-md-3">
-          <h5>Updated at</h5>
-          <input class="form-control" disabled value="{{ service_order.order.updated_at }}">
-        </div>
-      </div>
-      <div class="row justify-content-md-center">
-        <div class="col-md-2">
-          <h5>Order Intake</h5>
-            <input class="form-control" disabled
-              value="{{ service_order.order.user_intake.user.first_name }} {{ service_order.order.user_intake.user.last_name }}">
-        </div>
-        <div class="col-md-2">
-          <h5>Order Approver</h5>
-          {% if service_order.order.approver %}
-            <input class="form-control" disabled
-              value="{{ service_order.order.approver.user.first_name }} {{ service_order.order.approver.user.last_name }}">
-          {% else %}
-            <input class="form-control" disabled value="---">
-          {% endif %}
-        </div>
-        <div class="col-md-2">
-          <h5>Order Executor</h5>
-          {% if service_order.order.executor %}
-            <input class="form-control" disabled
-              value="{{ service_order.order.executor.user.first_name }} {{ service_order.order.executor.user.last_name }}">
-          {% else %}
-            <input class="form-control" disabled value="---">
-          {% endif %}
+        <div class="tab-pane fade show active" id="payer_details" role="tabpanel" aria-labelledby="payer_details-tab">
+        ......
         </div>
       </div>
-      <div class="row justify-content-md-center">
-        <div class="col-md-2">
-          <h5>Order Type</h5>
-          <input class="form-control" disabled value="{{ service_order.get_order_type_display }}">
-        </div>
-        <div class="col-md-2">
-          <h5>Payment Method</h5>
-          {% if service_order.order.payment_method != 2 %}
-            <input class="form-control" disabled value="{{ service_order.order.get_payment_method_display }}">
-          {% else %}
-            <input class="form-control" disabled value="{{ service_order.order.get_payment_method_display }}" style="background: red !important;">
-          {% endif %}
-        </div>
-        <div class="col-md-2">
-          <h5>Status</h5>
-            <input class="form-control" disabled value="{{ service_order.get_status_display }}">
-        </div>
-      </div>
-      <div class="row justify-content-md-center">
-        <div class="col-md-3">
-          <h5>Invoice Number</h5>
-          {% if service_order.order.invoice_number %}
-            <input class="form-control" disabled value="{{ service_order.order.invoice_number }}">
-          {% else %}
-            <input class="form-control" disabled value="---">
-          {% endif %}
-        </div>
-        <div class="col-md-3">
-          <h5>Customer Approver Name</h5>
-          {% if service_order.customer_approver_name %}
-            <input class="form-control" disabled value="{{ service_order.customer_approver_name }}">
-          {% else %}
-            <input class="form-control" disabled value="---">
-          {% endif %}
-        </div>
-      </div>
-    </div>
-    <br>
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-      <h3 class="h3">Customer Details</h3>
-      <div class="btn-toolbar mb-2 mb-md-0">
-        <div class="btn-group me-2">
-          <a href="{% url 'customers:customer_details' service_order.order.customer.id %}" class="btn btn-sm btn-outline-secondary">Customer Details</a>
-        </div>
-      </div>
-    </div>
-    <div class="container text-center">
-      <div class="row justify-content-md-center">
-        <div class="col-md-8">
-          <h5>Name</h5>
-          <input class="form-control" disabled value="{{ service_order.order.customer.name }}">
-        </div>
-      </div>
-      <div class="row justify-content-md-center">
-        <div class="col-md-2">
-          <h5>City</h5>
-          <input class="form-control" disabled value="{{ address.city }}">
-        </div>
-        <div class="col-md-3">
-          <h5>Street</h5>
-          <input class="form-control" disabled value="{{ address.street }}">
-        </div>
-        <div class="col-md-3">
-          <h5>Number</h5>
-          <input class="form-control" disabled value="{{ address.number }}">
-        </div>
-      </div>
-      <div class="row justify-content-md-center">
-        <div class="col-md-2">
-          <h5>Tax</h5>
-          <input class="form-control" disabled value="{{ customer_info.tax }}">
-        </div>
-        <div class="col-md-3">
-          <h5>Email</h5>
-          {% if service_order.order.customer.email %}
-            <input class="form-control" disabled value="{{ customer_info.email }}">
-          {% else %}
-            <input class="form-control" disabled value="---">
-          {% endif %}
-        </div>
-        <div class="col-md-3">
-          <h5>Telephone</h5>
-          <a href="tel:{{ customer_info.telephone }}" style="text-decoration: none;">
-              <input class="form-control" disabled type="tel" value="{{ customer_info.telephone }}">
-          </a>
-        </div>
-      </div>
-      <div class="row justify-content-md-center">
-        <div class="col-md-8">
-          <h5>Customer Description</h5>
-          <textarea class="form-control" rows="4" disabled>{{ customer_info.description }}</textarea>
-        </div>
-      </div>
+
+
+
+
+
+
+
+
       {% if service_order.payer %}
         <br>
         <div class="container">
@@ -188,83 +144,24 @@
           </div>
         </div>
       {% endif %}
-    </div>
-    <br>
-    <div class="container text-center">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h3 class="h3">Service Details</h3>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group me-2">
-            <a href="#" class="btn btn-sm btn-outline-secondary">Service History</a>
-          </div>
-        </div>
-      </div>
-      <div class="row justify-content-md-center">
-        <div class="col-md-4">
-          <h5>Device</h5>
-            {% if service_order.order.device.brand and service_order.order.device.model %}
-              <input class="form-control" disabled
-                value="{{ service_order.order.device.brand }} {{ service_order.order.device.model }}">
-            {% elif service_order.order.device.brand and not service_order.order.device.model %}
-              <input class="form-control" disabled
-                value="{{ service_order.order.device.brand }}">
-            {% else %}
-              <input class="form-control" disabled value="---">
-            {% endif %}
-        </div>
-        <div class="col-md-4">
-          <h5>Serial Number</h5>
-            {% if service_order.order.device.serial_number %}
-              <input class="form-control" disabled value="{{ service_order.order.device.serial_number }}">
-            {% else %}
-              <input class="form-control" disabled value="---">
-            {% endif %}
-        </div>
-      </div>
-      <div class="row justify-content-md-center">
-        <div class="col-md-2">
-          <h5>Total Counter</h5>
-            {% if service_order.order.device.total_counter %}
-              <input class="form-control" disabled value="{{ service_order.order.device.total_counter }}">
-            {% else %}
-              <input class="form-control" disabled value="---">
-            {% endif %}
-        </div>
-        <div class="col-md-2">
-          <h5>Mono Counter</h5>
-            {% if service_order.order.device.mono_counter %}
-              <input class="form-control" disabled value="{{ service_order.order.device.mono_counter }}">
-            {% else %}
-              <input class="form-control" disabled value="---">
-            {% endif %}
-        </div>
-        <div class="col-md-2">
-          <h5>Color Counter</h5>
-            {% if service_order.order.device.color_counter %}
-              <input class="form-control" disabled value="{{ service_order.order.device.color_counter }}">
-            {% else %}
-              <input class="form-control" disabled value="---">
-            {% endif %}
-        </div>
-      </div>
-      <div class="row justify-content-md-center">
-        <div class="col-md-8">
-          <h5>Short Description</h5>
-          <textarea class="form-control" rows="1" disabled>{{ service_order.order.short_description.name }}</textarea>
-        </div>
-      </div>
-      <div class="row justify-content-md-center">
-        <div class="col-md-8">
-          <h5>Service Description</h5>
-          <textarea class="form-control" rows="4" disabled>{{ service_order.description }}</textarea>
-        </div>
-      </div>
 
 
 
 
 
-      uslugi????
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -273,6 +170,9 @@
 
 
     </div>
-    <br>
+    <div class="tab-pane fade" id="service_details" role="tabpanel" aria-labelledby="service_details-tab">
+      ...
+    </div>
   </div>
+
 {% endblock %}

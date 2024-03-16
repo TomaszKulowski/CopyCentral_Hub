@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import HttpResponseRedirect, HttpResponseBadRequest
+from django.http import HttpResponseRedirect, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 
@@ -25,7 +25,8 @@ class CustomerList(EmployeeRequiredMixin, View):
                 Q(user__last_name__icontains=search_query) |
                 Q(tax__icontains=search_query) |
                 Q(billing_city__icontains=search_query) |
-                Q(billing_street__icontains=search_query)
+                Q(billing_street__icontains=search_query) |
+                Q(telephone__icontains=search_query)
             )
 
         page = request.GET.get('page')
@@ -77,9 +78,7 @@ class AdditionalAddressesList(AddressContextMixin, EmployeeRequiredMixin, ListVi
 
     def get_queryset(self):
         customer_pk = self.kwargs.get('customer_pk')
-        print(customer_pk)
         queryset = AdditionalAddress.objects.filter(customer_id=customer_pk, is_active=True)
-        print(queryset)
         return queryset
 
 

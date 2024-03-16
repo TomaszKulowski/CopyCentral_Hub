@@ -19,8 +19,6 @@ class ServiceOrderFactory(factory.django.DjangoModelFactory):
         model = ServiceOrder
 
     order = factory.SubFactory(OrderFactory)
-    payer = None
-    additional_address = factory.SubFactory(AdditionalAddressFactory)
     description = factory.LazyAttribute(lambda x: faker.sentence(10))
     order_type = factory.LazyAttribute(lambda x: random.randrange(0, 10))
     status = factory.LazyAttribute(lambda x: random.randrange(0, 9))
@@ -31,6 +29,5 @@ class ServiceOrderFactory(factory.django.DjangoModelFactory):
 
     @post_generation
     def post(self, create, *args, **kwargs):
-        self.payer = self.additional_address.customer
         self.mono_counter = self.total_counter - random.randint(0, self.total_counter)
         self.color_counter = self.total_counter - self.mono_counter
