@@ -24,6 +24,8 @@ class AdditionalAddressForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AdditionalAddressForm, self).__init__(*args, **kwargs)
         for field in self.fields:
+            if field == 'customer':
+                self.fields[field].widget = forms.HiddenInput()
             if field == 'description':
                 self.fields[field].widget.attrs.update({'rows': 4})
 

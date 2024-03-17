@@ -61,53 +61,92 @@ document.addEventListener("DOMContentLoaded", function () {
 $(document).ready(function() {
     $('#id_customer').on('select2:select', function (e) {
         var customerId = e.params.data.id;
+        var orderId = $('#orderId').val();
+        var payerId = $('#payerId').val();
+        var addressId = $('#addressId').val();
 
-        $.ajax({
-            url: '/service_orders/customer_details/' + customerId + '/',
-            dataType: 'html',
-            success: function(response) {
-                $('#customer-details').html(response);
-            }
-        });
+        window.location.href = '/service_orders/' + orderId + '/update/?customer_id=' + customerId + '&payer_id=' + payerId + '&address_id=' + addressId;
     });
 });
 
+$(document).ready(function() {
+    $('#id_payer').on('select2:select', function (e) {
+        var payerId = e.params.data.id;
+        var orderId = $('#orderId').val();
+        var customerId = $('#customerId').val();
+        var addressId = $('#addressId').val();
+
+        window.location.href = '/service_orders/' + orderId + '/update/?customer_id=' + customerId + '&payer_id=' + payerId + '&address_id=' + addressId;
+    });
+});
 
 $(document).ready(function() {
     $('#id_address').on('select2:select', function (e) {
         var addressId = e.params.data.id;
+        var orderId = $('#orderId').val();
+        var customerId = $('#customerId').val();
+        var payerId = $('#payerId').val();
 
-        $.ajax({
-            url: '/service_orders/address_details/' + addressId + '/',
-            dataType: 'html',
-            success: function(response) {
-                $('#address-details').html(response);
-            }
-        });
+        window.location.href = '/service_orders/' + orderId + '/update/?customer_id=' + customerId + '&payer_id=' + payerId + '&address_id=' + addressId;
     }).on('select2:unselect', function (e) {
         var addressId = null;
+        var orderId = $('#orderId').val();
+        var customerId = $('#customerId').val();
+        var payerId = $('#payerId').val();
 
-        $.ajax({
-            url: '/service_orders/address_details/' + addressId + '/',
-            dataType: 'html',
-            success: function(response) {
-                $('#address-details').html(response);
-            }
-        });
+        window.location.href = '/service_orders/' + orderId + '/update/?customer_id=' + customerId + '&payer_id=' + payerId + '&address_id=' + addressId;
     });
 });
 
 
-$(document).ready(function() {
-    $('#id_payer').on('select2:select', function (e) {
-        var customerId = e.params.data.id;
+function handleSubmitForm(formId, submit_type) {
+    $(formId).submit(function(event) {
+        event.preventDefault();
+        var customerId = $('#customerId').val();
+        var payerId = $('#payerId').val();
+        var addressId = $('#addressId').val();
+        var orderId = $('#orderId').val();
+        var base_redirect_url = '/service_orders/' + orderId + '/update/'
+        var formData = $(this).serialize();
+        formData += '&order_id=' + orderId;
+        formData += '&customer=' + customerId;
+
+        var url;
+        if (submit_type === 'customer' || submit_type === 'payer') {
+            url = '/service_orders/customer_create/';
+        } else if (submit_type === 'address') {
+            url = '/service_orders/address_create/';
+        }
 
         $.ajax({
-            url: '/service_orders/customer_details/' + customerId + '/',
-            dataType: 'html',
+            type: 'POST',
+            url: url,
+            data: formData,
             success: function(response) {
-                $('#payer-details').html(response);
+                if (response.success) {
+
+                var redirect_url;
+                if (submit_type === 'customer') {
+                    redirect_url = base_redirect_url + '?customer_id=' + response.customer_id + '&payer_id=' + payerId + '&address_id=' + addressId;
+                } else if (submit_type === 'payer') {
+                    redirect_url = base_redirect_url + '?customer_id=' + customerId + '&payer_id=' + response.customer_id + '&address_id=' + addressId;
+                } else if (submit_type === 'address') {
+                    redirect_url = base_redirect_url + '?customer_id=' + customerId + '&payer_id=' + payerId + '&address_id=' + response.address_id;
+                }
+
+                    $(formId + 'Modal').modal('hide');
+                    alert('Successfully Created!');
+                    window.location.href = redirect_url;
+                } else {
+                    alert('An error occurred while adding.');
+                }
             }
         });
     });
-});
+}
+
+handleSubmitForm('#customerForm', 'customer');
+
+handleSubmitForm('#payerForm', 'payer');
+
+handleSubmitForm('#addressForm', 'address');

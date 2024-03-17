@@ -1,5 +1,5 @@
 from django.db.models import Q
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, UpdateView, View
@@ -10,18 +10,17 @@ from CopyCentral_Hub.mixins import EmployeeRequiredMixin
 from customers.forms import Customer, CustomerForm, AdditionalAddressForm
 from customers.models import AdditionalAddress
 from orders.forms import OrderForm
-from services.forms import ServiceForm
 
 
 class ServiceOrderList(EmployeeRequiredMixin, ListView):
     model = ServiceOrder
-    template_name = 'service_orders/list.html'
+    template_name = 'service_orders/service_orders_list.html'
     paginate_by = 10
 
     def get_template_names(self):
         search_query = self.request.GET.get('search', False)
         if search_query or search_query == '':
-            return ['service_orders/list_table.html']
+            return ['service_orders/service_orders_list_table.html']
         return super().get_template_names()
 
     def get_queryset(self):
@@ -40,7 +39,7 @@ class ServiceOrderList(EmployeeRequiredMixin, ListView):
 
 class ServiceOrderDetails(EmployeeRequiredMixin, UpdateView):
     model = ServiceOrder
-    template_name = 'service_orders/details.html'
+    template_name = 'service_orders/service_order_details.html'
     form_class = ServiceOrderForm
     order_form_class = OrderForm
 
@@ -65,14 +64,29 @@ class ServiceOrderDetails(EmployeeRequiredMixin, UpdateView):
 
 class ServiceOrderUpdate(EmployeeRequiredMixin, View):
     model = ServiceOrder
-    template_name = 'service_orders/update.html'
+    template_name = 'service_orders/service_order_update.html'
     service_order_form_class = ServiceOrderForm
     order_form_class = OrderForm
     customer_form_class = CustomerForm
     address_form_class = AdditionalAddressForm
 
     def get_context_data(self, **kwargs):
+        customer_id = kwargs.get('customer_id')
+        payer_id = kwargs.get('payer_id')
+        address_id = kwargs.get('address_id')
+
         service_order_instance = get_object_or_404(self.model.objects.select_related(), pk=kwargs.get('pk'))
+        if customer_id:
+            customer_instance = get_object_or_404(Customer, pk=customer_id)
+            service_order_instance.order.customer = customer_instance
+        if payer_id:
+            payer_instance = get_object_or_404(Customer, pk=payer_id)
+            service_order_instance.order.payer = payer_instance
+        if address_id == 'null':
+            service_order_instance.order.additional_address = None
+        elif address_id:
+            address_instance = get_object_or_404(AdditionalAddress, pk=address_id)
+            service_order_instance.order.additional_address = address_instance
 
         service_order_form = self.service_order_form_class(instance=service_order_instance)
         order_form = self.order_form_class(instance=service_order_instance.order)
@@ -81,16 +95,19 @@ class ServiceOrderUpdate(EmployeeRequiredMixin, View):
             'service_order_instance': service_order_instance,
             'service_order_form': service_order_form,
             'order_form': order_form,
+            'customer_form': self.customer_form_class(),
+            'address_form': self.address_form_class(),
         }
         return context
 
     def post(self, request, *args, **kwargs):
         service_order_instance = get_object_or_404(self.model.objects.select_related(), pk=kwargs.get('pk'))
-
         service_order_form = self.service_order_form_class(request.POST, instance=service_order_instance)
 
         request_data = request.POST.copy()
-        address_id = request_data.pop('additional_address').pop()
+        address_id = request_data.pop('additional_address', None)
+        if address_id:
+            address_id = address_id.pop()
 
         order_form = self.order_form_class(request_data, instance=service_order_instance.order)
 
@@ -120,16 +137,25 @@ class ServiceOrderUpdate(EmployeeRequiredMixin, View):
             return render(request, self.template_name, context)
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, context=self.get_context_data(pk=kwargs.get('pk')))
+        return render(
+            request,
+            self.template_name,
+            context=self.get_context_data(
+                pk=kwargs.get('pk'),
+                customer_id=request.GET.get('customer_id'),
+                payer_id=request.GET.get('payer_id'),
+                address_id=request.GET.get('address_id'),
+            )
+        )
 
 
 class ServiceOrderCreate(EmployeeRequiredMixin, CreateView):
     model = ServiceOrder
-    template_name = 'service_orders/update.html'
+    template_name = 'service_orders/service_order_update.html'
     form_class = ServiceOrderForm
 
     def get_success_url(self):
-        return reverse_lazy('service_orders:details', kwargs={'pk': self.object.pk})
+        return reverse_lazy('service_orders:service_order_details', kwargs={'pk': self.object.pk})
 
 
 class CustomerDetails(EmployeeRequiredMixin, DetailView):
@@ -137,6 +163,26 @@ class CustomerDetails(EmployeeRequiredMixin, DetailView):
     template_name = 'service_orders/customer_details.html'
 
 
+class CustomerCreateModal(EmployeeRequiredMixin, CreateView):
+    model = Customer
+    form_class = CustomerForm
+
+    def form_valid(self, form):
+        customer_instance = form.save()
+        customer_id = customer_instance.id
+        return JsonResponse({'success': True, 'customer_id': customer_id})
+
+
 class AddressDetails(EmployeeRequiredMixin, DetailView):
     model = AdditionalAddress
     template_name = 'service_orders/address_details.html'
+
+
+class AddressCreateModal(EmployeeRequiredMixin, CreateView):
+    model = AdditionalAddress
+    form_class = AdditionalAddressForm
+
+    def form_valid(self, form):
+        address_instance = form.save()
+        address_id = address_instance.id
+        return JsonResponse({'success': True, 'address_id': address_id})
