@@ -85,7 +85,10 @@
           <div class="tab-pane fade show active" id="customer_details1" role="tabpanel" aria-labelledby="customer_details-tab">
             {{ order_form.media }}
             <h5>{{ order_form.customer.label }}:</h5>
-            <div id="id_customer">{{ order_form.customer }}</div>
+            <div id="id_customer" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
+              {{ order_form.customer }}
+              <a href="{% url 'customers:customer_create' %}"  class="btn btn-sm btn-outline-secondary">Add New</a>
+            </div>
             <div id="customer-details">
               <span>Name:</span>
               <textarea class="form-control" rows="2" disabled>{{ service_order_instance.order.customer.name }}</textarea>
@@ -104,23 +107,28 @@
               <input class="form-control" disabled value="{{ service_order_instance.order.customer.telephone }}">
             </div>
             <h5>Service Address:</h5>
-            {{ order_form.media }}
-            <div id="id_address">{{ order_form.additional_address }}</div>
-              <div id="address-details">
-                <span>Postal Code:</span>
-                <input class="form-control" disabled value="{{ service_order_instance.order.additional_address.postal_code }}">
-                <span>City:</span>
-                <input class="form-control" disabled value="{{ service_order_instance.order.additional_address.city }}">
-                <span>Street:</span>
-                <input class="form-control" disabled
-                  value="{{ service_order_instance.order.additional_address.street }} {{ service_order_instance.order.additional_address.number }}">
-                <span>Description:</span>
-                <textarea class="form-control" rows="2" disabled>{{ service_order_instance.order.additional_address.description }}</textarea>
-              </div>
+            <div id="id_address" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
+              {{ order_form.additional_address }}
+              <a href="{% url 'customers:customer_create' %}"  class="btn btn-sm btn-outline-secondary">Add New</a>
             </div>
+            <div id="address-details">
+              <span>Postal Code:</span>
+              <input class="form-control" disabled value="{{ service_order_instance.order.additional_address.postal_code }}">
+              <span>City:</span>
+              <input class="form-control" disabled value="{{ service_order_instance.order.additional_address.city }}">
+              <span>Street:</span>
+              <input class="form-control" disabled
+                value="{{ service_order_instance.order.additional_address.street }} {{ service_order_instance.order.additional_address.number }}">
+              <span>Description:</span>
+              <textarea class="form-control" rows="2" disabled>{{ service_order_instance.order.additional_address.description }}</textarea>
+            </div>
+          </div>
           <div class="tab-pane fade" id="payer_details" role="tabpanel" aria-labelledby="payer_details-tab">
             <h5>{{ order_form.payer.label }}:</h5>
-            <div id="id_payer">{{ order_form.payer }}</div>
+            <div id="id_payer" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
+              {{ order_form.payer }}
+              <a href="{% url 'service_orders:create' %}"  class="btn btn-sm btn-outline-secondary">Add New</a>
+            </div>
             <div id="payer-details">
               <span>Name:</span>
               <textarea class="form-control" rows="2" disabled>{{ service_order_instance.order.payer.name }}</textarea>

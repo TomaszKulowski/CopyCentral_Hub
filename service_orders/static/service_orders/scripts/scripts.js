@@ -69,14 +69,6 @@ $(document).ready(function() {
                 $('#customer-details').html(response);
             }
         });
-
-        $.ajax({
-            url: '/service_orders/address_details/',
-            dataType: 'html',
-            success: function(response) {
-                $('#address-details').html(response);
-            }
-        });
     });
 });
 

@@ -23,66 +23,7 @@
       </div>
     </div>
   </div>
-  <div class="container text-center">
-    <div class="row justify-content-md-center">
-      <div class="col-md-8">
-        <h5>{{ form.name.help_text }}</h5>
-        {{ form.name }}
-      </div>
-    </div>
-    <div class="row justify-content-md-center">
-      <div class="col-md-2">
-        <h5>{{ form.tax.label }}</h5>
-        {{ form.tax }}
-      </div>
-      <div class="col-md-2">
-        <h5>{{ form.billing_country.label }}</h5>
-        {{ form.billing_country }}
-      </div>
-      <div class="col-md-2">
-        <h5>{{ form.billing_postal_code.label }}</h5>
-        {{ form.billing_postal_code }}
-      </div>
-      <div class="col-md-2">
-        <h5>{{ form.billing_city.label }}</h5>
-        {{ form.billing_city }}
-      </div>
-    </div>
-    <div class="row justify-content-md-center">
-      <div class="col-md-2">
-        <h5>{{ form.billing_street.label }}</h5>
-        {{ form.billing_street }}
-      </div>
-      <div class="col-md-2">
-        <h5>{{ form.billing_number.label }}</h5>
-        {{ form.billing_number }}
-      </div>
-      <div class="col-md-2">
-        <h5>{{ form.country_calling_code.help_text }}</h5>
-        {{ form.country_calling_code }}
-      </div>
-      <div class="col-md-2">
-        <h5>{{ form.telephone.label }}
-        {{ form.telephone }}</h5>
-      </div>
-    </div>
-    <div class="row justify-content-md-center">
-      <div class="col-md-4">
-        <h5>{{ form.email.label }}</h5>
-        {{ form.email }}
-      </div>
-      <div class="col-md-4">
-        <h5>{{ form.transfer_payment.label }}</h5>
-        {{ form.transfer_payment }}
-      </div>
-    </div>
-    <div class="row justify-content-md-center">
-      <div class="col-md-8">
-        <h5>{{ form.description.label }}</h5>
-        {{ form.description }}
-      </div>
-    </div>
-  </div>
+  {{ form.as_div }}
   <br>
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom border-top">
     <h1 class="h2">Customer History</h1>

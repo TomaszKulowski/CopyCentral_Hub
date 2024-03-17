@@ -15,14 +15,14 @@ class Customer(models.Model):
         blank=True,
         null=True,
     )
-    name = models.TextField(max_length=255, help_text='Full Name or Company Name')
+    name = models.TextField('Full Name or Company Name', max_length=255)
     tax = models.CharField(max_length=15, blank=True, null=True)
     billing_country = models.CharField(max_length=24, blank=True, null=True)
     billing_city = models.CharField(max_length=24, blank=True, null=True)
     billing_postal_code = models.CharField(max_length=24, blank=True, null=True)
     billing_street = models.CharField(max_length=24, blank=True, null=True)
     billing_number = models.CharField(max_length=24, blank=True, null=True)
-    country_calling_code = models.CharField(max_length=8, blank=True, null=True, help_text='Calling Code')
+    country_calling_code = models.CharField('Calling Code', max_length=8, blank=True, null=True)
     telephone = models.IntegerField(blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     description = models.TextField(max_length=300, blank=True, null=True)

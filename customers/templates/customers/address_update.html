@@ -11,42 +11,7 @@
   </div>
   <form method="post">
     {% csrf_token %}
-    <div class="container text-center">
-      <div class="row justify-content-md-center">
-        <div class="col-md-2">
-          <h5>{{ form.country.label }}</h5>
-          {{ form.country }}
-        </div>
-        <div class="col-md-2">
-          <h5>{{ form.postal_code.label }}</h5>
-          {{ form.postal_code }}
-        </div>
-        <div class="col-md-2">
-          <h5>{{ form.city.label }}</h5>
-          {{ form.city }}
-        </div>
-      </div>
-      <div class="row justify-content-md-center">
-        <div class="col-md-3">
-          <h5>{{ form.street.label }}</h5>
-          {{ form.street }}
-        </div>
-        <div class="col-md-2">
-          <h5>{{ form.number.label }}</h5>
-          {{ form.number }}
-        </div>
-          <div class="col-md-1">
-            <h5>{{ form.is_active.label }}</h5>
-            {{ form.is_active }}
-        </div>
-      </div>
-      <div class="row justify-content-md-center">
-        <div class="col-md-6">
-          <h5>{{ form.description.label }}</h5>
-          {{ form.description }}
-        </div>
-      </div>
-    </div>
+    {{ form.as_div }}
     <br>
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-top">
       <h1 class="h2"></h1>

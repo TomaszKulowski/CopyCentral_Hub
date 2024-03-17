@@ -33,5 +33,5 @@ class ServiceFactory(factory.django.DjangoModelFactory):
     description = factory.LazyAttribute(lambda x: faker.sentence(20))
     device_brand = factory.Maybe(factory.SubFactory(BrandFactory))
     device_model = factory.Maybe(factory.SubFactory(ModelFactory))
-    # device_brand = factory.SubFactory(BrandFactory, name=factory.Sequence(lambda n: f'Device Brand-{n}'))
-    # device_model = factory.SubFactory(ModelFactory, name=factory.Sequence(lambda n: f'Device Model-{n}'))
+    device_brand = factory.SubFactory(BrandFactory, name=factory.Sequence(lambda n: f'Device Brand-{n}'))
+    device_model = factory.SubFactory(ModelFactory, name=factory.Sequence(lambda n: f'Device Model-{n}'))

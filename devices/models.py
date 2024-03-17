@@ -25,7 +25,7 @@ class Status(models.IntegerChoices):
 class Device(models.Model):
     brand = models.CharField(max_length=30)
     model = models.CharField(max_length=50)
-    serial_number = models.CharField(max_length=40, unique=True, blank=True, null=True)
+    serial_number = models.CharField('Serial Number', max_length=40, unique=True, blank=True, null=True)
     type = models.SmallIntegerField(choices=Type.choices, blank=True, null=True)
     format = models.SmallIntegerField(choices=Format.choices, blank=True, null=True)
     total_counter = models.IntegerField(blank=True, null=True)

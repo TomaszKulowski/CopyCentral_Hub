@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import HttpResponseRedirect, HttpResponseBadRequest, JsonResponse
+from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 
@@ -46,10 +46,8 @@ class CustomerDetails(EmployeeRequiredMixin, UpdateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        forms = {}
-        for key, value in form.fields.items():
-            value.disabled = True
-            forms[key] = value
+        for field in form.fields.values():
+            field.disabled = True
         return form
 
 
@@ -89,8 +87,8 @@ class AdditionalAddressDetails(AddressContextMixin, EmployeeRequiredMixin, Updat
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        for key, value in form.fields.items():
-            value.disabled = True
+        for field in form.fields.values():
+            field.disabled = True
         return form
 
 
@@ -101,6 +99,13 @@ class AdditionalAddressUpdate(AddressContextMixin, EmployeeRequiredMixin, Update
 
     def get_success_url(self):
         return reverse_lazy('customers:addresses_list', kwargs={'customer_pk': self.kwargs.get('customer_pk')})
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        for field_name, field in form.fields.items():
+            if field_name == 'customer':
+                field.disabled = True
+        return form
 
     def post(self, request, *args, **kwargs):
         customer = get_object_or_404(Customer, pk=self.kwargs.get('customer_pk'))
