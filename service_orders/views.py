@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.forms import ModelForm
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
@@ -41,31 +42,6 @@ class ServiceOrderList(EmployeeRequiredMixin, ListView):
         service_orders = service_orders.order_by('-id')
 
         return service_orders
-
-
-class ServiceOrderDetails(EmployeeRequiredMixin, UpdateView):
-    model = ServiceOrder
-    template_name = 'service_orders/service_order_details.html'
-    form_class = ServiceOrderForm
-    order_form_class = OrderForm
-
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-        for field in form.fields.values():
-            field.disabled = True
-        return form
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        order_form = self.order_form_class(instance=self.object.order)
-        for field_name, field in order_form.fields.items():
-            field.disabled = True
-            if field_name == 'additional_info':
-                field.widget.attrs.update({'rows': 4})
-
-        context['order_form'] = order_form
-        context['object'] = self.object
-        return context
 
 
 class ServiceOrderUpdate(EmployeeRequiredMixin, View):
@@ -191,6 +167,18 @@ class ServiceOrderUpdate(EmployeeRequiredMixin, View):
                 device_id=request.GET.get('device_id'),
             )
         )
+
+
+class ServiceOrderDetails(ServiceOrderUpdate):
+    template_name = 'service_orders/service_order_details.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        for form in context.values():
+            if issubclass(type(form), ModelForm):
+                for field in form.fields.values():
+                    field.disabled = True
+        return context
 
 
 class ServiceOrderCreate(EmployeeRequiredMixin, CreateView):

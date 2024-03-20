@@ -77,19 +77,6 @@ class OrderForm(forms.ModelForm):
             }
         )
     )
-    services = forms.ModelChoiceField(
-        required=False,
-        queryset=OrderServices.objects.all(),
-        label='Services',
-        widget=autocomplete.ModelSelect2Multiple(
-            url='orders:services_autocomplete',
-            attrs={
-                'data-placeholder': 'Service ...',
-                'data-ajax--delay': '500',
-                'style': 'width:100%',
-            }
-        )
-    )
 
     def __init__(self, *args, **kwargs):
         customer = kwargs.pop('customer', None)
@@ -116,10 +103,6 @@ class OrderForm(forms.ModelForm):
         exclude = ['user_intake', 'approver']
 
 
-from orders.models import OrderServices
-from services.models import Service
-
-
 class OrderServicesForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(OrderServicesForm, self).__init__(*args, **kwargs)
@@ -139,15 +122,3 @@ class OrderServicesForm(forms.ModelForm):
     class Meta:
         model = OrderServices
         fields = '__all__'
-
-
-
-
-
-
-
-
-
-
-
-

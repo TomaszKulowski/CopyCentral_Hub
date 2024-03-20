@@ -1,6 +1,7 @@
 from django.urls import path
 
 from .views import CustomerAutocomplete, ExecutorAutocomplete, AddressAutocomplete, DeviceAutocomplete
+
 app_name = 'orders'
 
 urlpatterns = [

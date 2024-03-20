@@ -7,6 +7,7 @@ from CopyCentral_Hub.mixins import EmployeeRequiredMixin
 from customers.models import Customer, AdditionalAddress
 from devices.models import Device
 from employees.models import Employee
+from services.models import Service
 
 
 class CustomerAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView):

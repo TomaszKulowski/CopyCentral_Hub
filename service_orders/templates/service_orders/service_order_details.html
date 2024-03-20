@@ -2,78 +2,35 @@
 {% load static %}
 
 {% block content %}
+  <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">{{ object.id }} - Service Order Details</h1>
+    <h1 class="h2">Service Order Details</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
-        <a href="{% url 'service_orders:update' object.id %}"  class="btn btn-sm btn-outline-secondary">Update</a>
+        <h1 class="h2">Service ID: {{ service_order_instance.id }}</h1>
       </div>
     </div>
   </div>
-  <ul class="nav nav-tabs" id="myTab" role="tablist">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="order_details-tab" data-bs-toggle="tab" data-bs-target="#order_details" type="button" role="tab" aria-controls="order_details" aria-selected="true">Order Details</button>
+      <button class="nav-link active" id="customer_details-tab" data-bs-toggle="tab" data-bs-target="#customer_details" type="button" role="tab" aria-controls="customer_details" aria-selected="true">Customer Details</button>
     </li>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" id="customer_details-tab" data-bs-toggle="tab" data-bs-target="#customer_details" type="button" role="tab" aria-controls="customer_details" aria-selected="false">Customer Details</button>
+      <button class="nav-link" id="order_details-tab" data-bs-toggle="tab" data-bs-target="#order_details" type="button" role="tab" aria-controls="order_details" aria-selected="false">Order Details</button>
     </li>
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="service_details-tab" data-bs-toggle="tab" data-bs-target="#service_details" type="button" role="tab" aria-controls="service_details" aria-selected="false">Service Details</button>
     </li>
   </ul>
-  <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="order_details" role="tabpanel" aria-labelledby="order_details-tab">
-      <div class="row justify-content-md-center">
-          <div class="col-md-6">
-            <label>Created At:</label>
-            <input class="form-control" disabled value="{{ object.order.created_at }}">
-          </div>
-          <div class="col-md-6">
-            <label>Updated At:</label>
-            <input class="form-control" disabled value="{{ object.order.updated_at }}">
-          </div>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group me-2">
+        <a href="{% url 'service_orders:update' service_order_instance.id %}"  class="btn btn-sm btn-outline-secondary">Update</a>
       </div>
-      <div class="row justify-content-md-center">
-        <div class="col-md-4">
-
-          <label>Priorityy:</label>
-            {% if object.order.priority != 1 %}
-              <input class="form-control" disabled value="{{ object.order.get_priority_display }}">
-            {% else %}
-              <input class="form-control" disabled value="{{ object.order.get_priority_display }}" style="background: red !important;">
-            {% endif %}
-        </div>
-        <div class="col-md-4">
-          <label>Payment:</label>
-          {% if object.order.payment_method != 2 %}
-            <input class="form-control" disabled value="{{ object.order.get_payment_method_display }}">
-          {% else %}
-            <input class="form-control" disabled value="{{ object.order.get_payment_method_display }}" style="background: red !important;">
-          {% endif %}
-        </div>
-        <div class="col-md-4">
-          <label>Order Type:</label>
-          <input class="form-control" disabled value="{{ object.get_order_type_display }}">
-        </div>
-      </div>
-      {{ order_form.user_intake.label }}:
-      {{ order_form.user_intake }}
-      {{ order_form.approver.label }}:
-      {{ order_form.approver }}
-      {{ order_form.executor.label }}:
-      {{ order_form.executor }}
-      {{ order_form.region.label }}:
-      {{ order_form.region }}
-      {{ order_form.short_description.label }}:
-      {{ order_form.short_description }}
-      {{ order_form.additional_info.label }}:
-      {{ order_form.additional_info }}
-      {{ form.status.label }}:
-      {{ form.status }}
-      {{ form.customer_approver_name.label }}:
-      {{ form.customer_approver_name }}
     </div>
-    <div class="tab-pane fade" id="customer_details" role="tabpanel" aria-labelledby="customer_details-tab">
+  </div>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="customer_details" role="tabpanel" aria-labelledby="customer_details-tab">
       <ul class="nav nav-tabs" id="payer-tab" role="tablist">
         <li class="nav-item" role="presentation">
           <button class="nav-link active" id="customer_details1-tab" data-bs-toggle="tab" data-bs-target="#customer_details1" type="button" role="tab" aria-controls="customer_details1" aria-selected="true">Customer Details</button>
@@ -82,97 +39,199 @@
           <button class="nav-link" id="payer_details-tab" data-bs-toggle="tab" data-bs-target="#payer_details" type="button" role="tab" aria-controls="payer_details" aria-selected="false">Payer Details</button>
         </li>
       </ul>
-      <div class="tab-content" id="payer-tab-content">
+      <div class="tab-content" id="customer-tab-content">
         <div class="tab-pane fade show active" id="customer_details1" role="tabpanel" aria-labelledby="customer_details-tab">
-          <label>Name:</label>
-          <input class="form-control" disabled value="{{ object.order.customer.name }}">
+          {{ order_form.media }}
+          <h5>{{ order_form.customer.label }}:</h5>
+          <div id="id_customer" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
+            {{ order_form.customer }}
+          </div>
+          <div id="customer-details">
+            <span>Name:</span>
+            <textarea class="form-control" rows="2" disabled>{{ service_order_instance.order.customer.name }}</textarea>
+            <span>Tax:</span>
+            <input class="form-control" disabled value="{{ service_order_instance.order.customer.tax }}">
+            <span>Billing Country:</span>
+            <input class="form-control" disabled value="{{ service_order_instance.order.customer.billing_country }}">
+            <span>Billing Postal Code:</span>
+            <input class="form-control" disabled value="{{ service_order_instance.order.customer.billing_postal_code }}">
+            <span>Billing City:</span>
+            <input class="form-control" disabled value="{{ service_order_instance.order.customer.billing_city }}">
+            <span>Billing Street:</span>
+            <input class="form-control" disabled
+              value="{{ service_order_instance.order.customer.billing_street }} {{ service_order_instance.order.customer.billing_number }}">
+            <span>Telephone:</span>
+            <input class="form-control" disabled value="{{ service_order_instance.order.customer.telephone }}">
+          </div>
+          <h5>Service Address:</h5>
+          <div id="id_address" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
+            {{ order_form.additional_address }}
+          </div>
+          <div id="address-details">
+            <span>Postal Code:</span>
+            <input class="form-control" disabled value="{{ service_order_instance.order.additional_address.postal_code }}">
+            <span>City:</span>
+            <input class="form-control" disabled value="{{ service_order_instance.order.additional_address.city }}">
+            <span>Street:</span>
+            <input class="form-control" disabled
+              value="{{ service_order_instance.order.additional_address.street }} {{ service_order_instance.order.additional_address.number }}">
+            <span>Description:</span>
+            <textarea class="form-control" rows="2" disabled>{{ service_order_instance.order.additional_address.description }}</textarea>
+          </div>
         </div>
-        <div class="tab-pane fade show active" id="payer_details" role="tabpanel" aria-labelledby="payer_details-tab">
-        ......
+        <div class="tab-pane fade" id="payer_details" role="tabpanel" aria-labelledby="payer_details-tab">
+          <h5>{{ order_form.payer.label }}:</h5>
+          <div id="id_payer" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
+            {{ order_form.payer }}
+            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addPayerModal">
+              Add New
+            </button>
+          </div>
+          <div id="payer-details">
+            <span>Name:</span>
+            <textarea class="form-control" rows="2" disabled>{{ service_order_instance.order.payer.name }}</textarea>
+            <span>Tax:</span>
+            <input class="form-control" disabled value="{{ service_order_instance.order.payer.tax }}">
+            <span>Billing Country:</span>
+            <input class="form-control" disabled value="{{ service_order_instance.order.payer.billing_country }}">
+            <span>Billing Postal Code:</span>
+            <input class="form-control" disabled value="{{ service_order_instance.order.payer.billing_postal_code }}">
+            <span>Billing City:</span>
+            <input class="form-control" disabled value="{{ service_order_instance.order.payer.billing_city }}">
+            <span>Billing Street:</span>
+            <input class="form-control" disabled
+              value="{{ service_order_instance.order.payer.billing_street }} {{ service_order_instance.order.payer.billing_number }}">
+            <span>Telephone:</span>
+            <input class="form-control" disabled value="{{ service_order_instance.order.payer.telephone }}">
+          </div>
         </div>
       </div>
-
-
-
-
-
-
-
-
-      {% if service_order.payer %}
-        <br>
-        <div class="container">
-          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h3 class="h3">Payer Details</h3>
-            <div class="btn-toolbar mb-2 mb-md-0">
-              <div class="btn-group me-2">
-                <a href="{% url 'customers:customer_details' service_order.payer.id %}"  class="btn btn-sm btn-outline-secondary">Payer Details</a>
-              </div>
-            </div>
-          </div>
-          <div class="row justify-content-md-center">
-            <div class="col-md-8">
-              <h5>Payer Name</h5>
-              <input class="form-control" disabled value="{{ service_order.payer.name }}">
-            </div>
-          </div>
-          <div class="row justify-content-md-center">
-            <div class="col-md-2">
-              <h5>Payer Tax</h5>
-              <input class="form-control" disabled value="{{ service_order.payer.tax }}">
-            </div>
-            <div class="col-md-3">
-              <h5>Payer Email</h5>
-              {% if service_order.order.customer.email %}
-                <input class="form-control" disabled value="{{ service_order.payer.email }}">
-              {% else %}
-                <input class="form-control" disabled value="---">
-              {% endif %}
-            </div>
-            <div class="col-md-3">
-              <h5>Payer Telephone</h5>
-              <a href="tel:{{ customer_info.telephone }}" style="text-decoration: none;">
-                  <input class="form-control" disabled type="tel" value="{{ customer_info.telephone }}">
-              </a>
-            </div>
-          </div>
-          <div class="row justify-content-md-center">
-            <div class="col-md-8">
-              <h5>Payer Description</h5>
-              <textarea class="form-control" rows="4" disabled>{{ service_order.payer.description }}</textarea>
-            </div>
-          </div>
+    </div>
+    <div class="tab-pane fade" id="order_details" role="tabpanel" aria-labelledby="order_details-tab">
+      <div class="row justify-content-md-center">
+        <div class="col-md-6">
+          <span>Created At:</span>
+          <input class="form-control" disabled value="{{ service_order_instance.order.created_at }}">
         </div>
-      {% endif %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        <div class="col-md-6">
+          <span>Updated At:</span>
+          <input class="form-control" disabled value="{{ service_order_instance.order.updated_at }}">
+        </div>
+      </div>
+      <div class="row justify-content-md-center">
+        <div class="col-md-4">
+          <label>Priority:</label>
+            {% if service_order_instance.order.priority != 1 %}
+              <input class="form-control" disabled value="{{ service_order_instance.order.get_priority_display }}">
+            {% else %}
+              <input class="form-control" disabled value="{{ service_order_instance.order.get_priority_display }}" style="background: red !important;">
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+          {{ service_order_form.order_type.label }}:
+          {{ service_order_form.order_type }}
+        </div>
+        <div class="col-md-4">
+          <label>Payment:</label>
+          {% if service_order_instance.order.payment_method != 2 %}
+            <input class="form-control" disabled value="{{ service_order_instance.order.get_payment_method_display }}">
+          {% else %}
+            <input class="form-control" disabled value="{{ service_order_instance.order.get_payment_method_display }}" style="background: red !important;">
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-md-12">
+        <span>Order Intake:</span>
+        <input class="form-control" disabled value="{{ service_order_instance.order.user_intake.user.first_name }} {{ service_order_instance.order.user_intake.userZ.last_name }}">
+      </div>
+      <div class="col-md-12">
+        <span>Approver:</span>
+        <input class="form-control" disabled value="{{ service_order_instance.order.approver.user.first_name }} {{ service_order_instance.order.approver.user.last_name }}">
+      </div>
+      {{ order_form.executor.label }}:
+      {{ order_form.executor }}
+      {{ order_form.region.label }}:
+      {{ order_form.region }}
+      {{ order_form.short_description.label }}:
+      {{ order_form.short_description }}
+      {{ order_form.additional_info.label }}:
+      {{ order_form.additional_info }}
+      {{ order_form.invoice_number.label }}:
+      {{ order_form.invoice_number }}
+      {{ service_order_form.status.label }}:
+      {{ service_order_form.status }}
+      {{ service_order_form.customer_approver_name.label }}:
+      {{ service_order_form.customer_approver_name }}
     </div>
     <div class="tab-pane fade" id="service_details" role="tabpanel" aria-labelledby="service_details-tab">
-      ...
+      <ul class="nav nav-tabs" id="service-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="service_details1-tab" data-bs-toggle="tab" data-bs-target="#service_details1" type="button" role="tab" aria-controls="service_details1" aria-selected="true">Service Details</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="services_details-tab" data-bs-toggle="tab" data-bs-target="#services_details" type="button" role="tab" aria-controls="services_details" aria-selected="false">Services Details</button>
+        </li>
+      </ul>
+      <div class="tab-content" id="service-tab-content">
+        <div class="tab-pane fade show active" id="service_details1" role="tabpanel" aria-labelledby="service_details1-tab">
+          {{ order_form.device_name.label }}:
+          {{ order_form.device_name }}
+          {{ order_form.device.label }}:
+          <div id="id_device" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
+            {{ order_form.device }}
+          </div>
+          {{ service_order_form.description.label }}:
+          {{ service_order_form.description }}
+          {{ service_order_form.total_counter.label }}:
+          {{ service_order_form.total_counter }}
+          {{ service_order_form.mono_counter.label }}:
+          {{ service_order_form.mono_counter }}
+          {{ service_order_form.color_counter.label }}:
+          {{ service_order_form.color_counter }}
+        </div>
+        <div class="tab-pane fade" id="services_details" role="tabpanel" aria-labelledby="services_details-tab">
+          <div id="id_service" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
+            <h5>Services:</h5>
+          </div>
+            <div class="table-responsive small">
+              <table class="table table-striped table-sm">
+                <thead class="table-dark">
+                  <tr>
+                    <th scope="col" width=75%>Name</th>
+                    <th scope="col" width=5%>Quantity</th>
+                    <th scope="col" width=10%>Price_net</th>
+                    <th scope="col" width=10%></th>
+                  </tr>
+                </thead>
+                <tbody id="service-table-body">
+                  {% for service in service_order_instance.order.services.all %}
+                  <tr>
+                    <td hidden="hidden">{{ service.id }}</td>
+                    <td>{{ service.name|title }}</td>
+                    <td>{{ service.quantity }}</td>
+                    <td>{{ service.price_net }}</td>
+                    <td></td>
+                  </tr>
+                  {% endfor %}
+                  <tr id="summary-row">
+                    <td colspan="2"><b>Summary:</b></td>
+                    <td id="total_summary" style="font-weight: bold;">{{ total_summary }}</td>
+                    <td><b>NET PLN</b></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+        </div>
+      </div>
     </div>
-  </div>
+ </div>
+{% endblock %}
 
+{% block additional_scripts %}
+  <link href="{% static 'admin/css/vendor/select2/select2.css' %}" rel="stylesheet">
+  <script src="{% static 'admin/js/vendor/select2/select2.full.js' %}"></script>
+  <link href="{% static 'admin/css/autocomplete.css' %}" rel="stylesheet">
+  <script src="{% static 'admin/js/autocomplete.js' %}"></script>
+  <script src="{% static 'service_orders/scripts/scripts.js' %}"></script>
 {% endblock %}
