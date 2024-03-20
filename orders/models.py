@@ -20,8 +20,12 @@ class PaymentMethodChoices(models.IntegerChoices):
 
 class OrderServices(models.Model):
     service = models.ForeignKey(Service, on_delete=models.PROTECT)
+    name = models.CharField(max_length=50)
     price_net = models.FloatField()
     quantity = models.PositiveSmallIntegerField()
+
+    def __str__(self):
+        return f'{self.name} - {self.price_net} - {self.quantity}'
 
 
 class Region(models.Model):
@@ -72,6 +76,7 @@ class Order(models.Model):
     short_description = models.ForeignKey(ShortDescription, on_delete=models.PROTECT, blank=True, null=True)
     additional_info = models.TextField(max_length=2000, blank=True, null=True)
     priority = models.SmallIntegerField(choices=PriorityChoices.choices, default=PriorityChoices.STANDARD)
+    device_name = models.CharField(max_length=40, blank=True, null=True)
     device = models.ForeignKey(Device, on_delete=models.PROTECT, blank=True, null=True)
     services = models.ManyToManyField(OrderServices, blank=True)
     payment_method = models.SmallIntegerField(

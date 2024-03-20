@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import UpdateView, CreateView
 
-from .forms import DeviceUpdateForm
+from .forms import DeviceForm
 from .models import Device
 from CopyCentral_Hub.mixins import EmployeeRequiredMixin
 
@@ -33,7 +33,7 @@ class DevicesList(EmployeeRequiredMixin, View):
 class DeviceDetails(EmployeeRequiredMixin, UpdateView):
     model = Device
     template_name = 'devices/details.html'
-    form_class = DeviceUpdateForm
+    form_class = DeviceForm
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -47,7 +47,7 @@ class DeviceDetails(EmployeeRequiredMixin, UpdateView):
 class DeviceUpdate(EmployeeRequiredMixin, UpdateView):
     model = Device
     template_name = 'devices/update.html'
-    form_class = DeviceUpdateForm
+    form_class = DeviceForm
 
     def get_success_url(self):
         return reverse_lazy('devices:details', kwargs={'pk': self.object.pk})
@@ -56,7 +56,7 @@ class DeviceUpdate(EmployeeRequiredMixin, UpdateView):
 class DeviceCreate(EmployeeRequiredMixin, CreateView):
     model = Device
     template_name = 'devices/update.html'
-    form_class = DeviceUpdateForm
+    form_class = DeviceForm
 
     def get_success_url(self):
         return reverse_lazy('devices:details', kwargs={'pk': self.object.pk})

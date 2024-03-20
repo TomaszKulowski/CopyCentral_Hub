@@ -20,6 +20,7 @@ class Status(models.IntegerChoices):
     REPLACEMENT = 5, 'Replacement'
     IN_DELIVERY_INVISIBLE = 6, 'In delivery INVISIBLE'
     IN_DELIVERY = 7, 'In delivery'
+    SERVICED = 8, 'Serviced'
 
 
 class Device(models.Model):
@@ -34,3 +35,6 @@ class Device(models.Model):
     description = models.TextField(max_length=255, blank=True, null=True)
     status = models.SmallIntegerField(choices=Status.choices, blank=True, null=True)
     price_net = models.FloatField(blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.brand} {self.model}; {self.serial_number}'

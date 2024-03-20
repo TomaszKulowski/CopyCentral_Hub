@@ -3,7 +3,9 @@ from django import forms
 
 from .models import Order, AdditionalAddress
 from customers.models import Customer
+from devices.models import Device
 from employees.models import Employee
+from orders.models import OrderServices
 
 
 class OrderForm(forms.ModelForm):
@@ -62,6 +64,32 @@ class OrderForm(forms.ModelForm):
             }
         )
     )
+    device = forms.ModelChoiceField(
+        required=False,
+        queryset=Device.objects.all(),
+        label='Device',
+        widget=autocomplete.ModelSelect2(
+            url='orders:device_autocomplete',
+            attrs={
+                'data-placeholder': 'Device ...',
+                'data-ajax--delay': '500',
+                'style': 'width:90%',
+            }
+        )
+    )
+    services = forms.ModelChoiceField(
+        required=False,
+        queryset=OrderServices.objects.all(),
+        label='Services',
+        widget=autocomplete.ModelSelect2Multiple(
+            url='orders:services_autocomplete',
+            attrs={
+                'data-placeholder': 'Service ...',
+                'data-ajax--delay': '500',
+                'style': 'width:100%',
+            }
+        )
+    )
 
     def __init__(self, *args, **kwargs):
         customer = kwargs.pop('customer', None)
@@ -86,3 +114,40 @@ class OrderForm(forms.ModelForm):
         model = Order
         fields = '__all__'
         exclude = ['user_intake', 'approver']
+
+
+from orders.models import OrderServices
+from services.models import Service
+
+
+class OrderServicesForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(OrderServicesForm, self).__init__(*args, **kwargs)
+
+        for field in self.fields:
+            if field == 'service':
+                self.fields[field].widget.attrs.update({'id': "id_service_services"})
+            if field == 'name':
+                self.fields[field].widget.attrs.update({'id': "id_service_name"})
+            if field == 'price_net':
+                self.fields[field].widget.attrs.update({'id': "id_service_price_net"})
+            if field == 'quantity':
+                self.fields[field].widget.attrs.update({'id': "id_service_quantity"})
+
+            self.fields[field].widget.attrs.update({'class': 'form-control'})
+
+    class Meta:
+        model = OrderServices
+        fields = '__all__'
+
+
+
+
+
+
+
+
+
+
+
+

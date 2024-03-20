@@ -5,6 +5,7 @@ from django.db.models import Q
 
 from CopyCentral_Hub.mixins import EmployeeRequiredMixin
 from customers.models import Customer, AdditionalAddress
+from devices.models import Device
 from employees.models import Employee
 
 
@@ -61,5 +62,16 @@ class AddressAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetVie
         return qs
 
 
+class DeviceAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Device.objects.none()
 
-# do wylaczenia caly customer forms a wlaczony tylko wybor
+        qs = Device.objects.all()
+
+        if self.q:
+            qs = qs.filter(
+                Q(serial_number__icontains=self.q)
+            )
+
+        return qs
