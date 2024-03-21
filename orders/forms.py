@@ -77,6 +77,11 @@ class OrderForm(forms.ModelForm):
             }
         )
     )
+    from jsignature.forms import JSignatureField
+    from jsignature.widgets import JSignatureWidget
+
+    # signature = JSignatureField(widget=JSignatureWidget(jsignature_attrs={'color': '#e0b642', 'width': '100%'}))
+
 
     def __init__(self, *args, **kwargs):
         customer = kwargs.pop('customer', None)
@@ -122,3 +127,4 @@ class OrderServicesForm(forms.ModelForm):
     class Meta:
         model = OrderServices
         fields = '__all__'
+

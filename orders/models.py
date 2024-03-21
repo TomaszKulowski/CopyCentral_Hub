@@ -1,4 +1,5 @@
 from django.db import models
+from jsignature.fields import JSignatureField
 
 from customers.models import Customer, AdditionalAddress
 from devices.models import Device
@@ -85,6 +86,8 @@ class Order(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    signer_name = models.CharField('Signer Name', max_length=20, blank=True, null=True)
+    signature = JSignatureField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if not self.payer:

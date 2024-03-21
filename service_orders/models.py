@@ -36,9 +36,3 @@ class ServiceOrder(models.Model):
     total_counter = models.PositiveIntegerField(blank=True, null=True)
     mono_counter = models.PositiveIntegerField(blank=True, null=True)
     color_counter = models.PositiveIntegerField(blank=True, null=True)
-    customer_approver_name = models.CharField(
-        max_length=20,
-        blank=True,
-        null=True,
-        verbose_name='Customer Approver Name',
-    )

@@ -166,6 +166,10 @@
         {{ service_order_form.status }}
         {{ service_order_form.customer_approver_name.label }}:
         {{ service_order_form.customer_approver_name }}
+        {{ order_form.signature.label }}:
+        <div class="form-control">
+          {{ order_form.signature }}
+        </div>
       </div>
       <div class="tab-pane fade" id="service_details" role="tabpanel" aria-labelledby="service_details-tab">
         <ul class="nav nav-tabs" id="service-tab" role="tablist">

@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 
     'django_extensions',
     "debug_toolbar",
+    'jsignature',
 
     'authentication.apps.AuthenticationConfig',
     'employees.apps.EmployeesConfig',
@@ -153,3 +154,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+JSIGNATURE_WIDTH = 350
+JSIGNATURE_HEIGHT = 400

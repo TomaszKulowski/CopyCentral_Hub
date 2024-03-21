@@ -151,11 +151,8 @@ function handleSubmitForm(formId, modalId, submit_type) {
 }
 
 handleSubmitForm('#customerForm', '#addCustomerModal', 'customer');
-
 handleSubmitForm('#payerForm', '#addPayerModal',  'payer');
-
 handleSubmitForm('#addressForm', '#addAddressModal',  'address');
-
 handleSubmitForm('#deviceForm', '#addDeviceModal',  'device');
 
 
@@ -233,9 +230,6 @@ $(document).ready(function() {
                 $('#id_service_price_net').val(data.price_net);
                 $('#id_service_quantity').val(data.quantity);
             },
-            error: function(xhr, status, error) {
-                console.error('Błąd podczas pobierania szczegółów usługi:', error);
-            }
         });
     });
 });
@@ -255,9 +249,6 @@ $(document).ready(function() {
 
                 $('#addServiceModal').modal('show');
             },
-            error: function(xhr, status, error) {
-                console.error('Błąd podczas zapisywania formularza:', error);
-            }
         });
     });
 });
@@ -338,9 +329,6 @@ function updateServiceTable(orderId) {
                     success: function(response) {
                         updateServiceTable(orderId);
                     },
-                    error: function(xhr, status, error) {
-                        console.error('Błąd podczas usuwania usługi:', error);
-                    }
                 });
             });
         },
@@ -372,9 +360,6 @@ $(document).ready(function() {
                 $('#addServiceModal').modal('show');
 
             },
-            error: function(xhr, status, error) {
-                console.error('Błąd podczas pobierania danych do edycji usługi:', error);
-            }
         });
     });
 });
@@ -384,7 +369,7 @@ updateSummary()
 
 $(document).ready(function() {
     $('.service-delete-btn').click(function() {
-        var serviceIdToDelete = $(this).closest('tr').find('td:first-child').text();  // Unikaj konfliktów nazw zmiennej
+        var serviceIdToDelete = $(this).closest('tr').find('td:first-child').text();
         var orderId = $('#orderId').val();
 
         $.ajax({
@@ -398,9 +383,6 @@ $(document).ready(function() {
             success: function(response) {
                 updateServiceTable(orderId);
             },
-            error: function(xhr, status, error) {
-                console.error('Błąd podczas usuwania usługi:', error);
-            }
         });
     });
 });

@@ -59,6 +59,7 @@ class OrderFactory(factory.django.DjangoModelFactory):
     payment_method = factory.LazyAttribute(lambda x: random.randrange(0, 3))
     created_at = factory.LazyFunction(faker.date_time_this_month)
     updated_at = factory.LazyAttribute(lambda obj: obj.created_at + timedelta(seconds=faker.pyint()))
+    signer_name = factory.LazyAttribute(lambda x: faker.name())
 
     @post_generation
     def post(self, create, *args, **kwargs):

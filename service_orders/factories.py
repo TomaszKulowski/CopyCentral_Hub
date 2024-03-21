@@ -25,7 +25,6 @@ class ServiceOrderFactory(factory.django.DjangoModelFactory):
     total_counter = factory.LazyAttribute(lambda x: random.randrange(0, 10**6))
     mono_counter = None
     color_counter = None
-    customer_approver_name = factory.LazyAttribute(lambda x: faker.name())
 
     @post_generation
     def post(self, create, *args, **kwargs):
