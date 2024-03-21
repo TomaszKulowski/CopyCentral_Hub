@@ -146,7 +146,7 @@
         </div>
         <div class="col-md-12">
           <span>Order Intake:</span>
-          <input class="form-control" disabled value="{{ service_order_instance.order.user_intake.user.first_name }} {{ service_order_instance.order.user_intake.userZ.last_name }}">
+          <input class="form-control" disabled value="{{ service_order_instance.order.user_intake.user.first_name }} {{ service_order_instance.order.user_intake.user.last_name }}">
         </div>
         <div class="col-md-12">
           <span>Approver:</span>
@@ -181,7 +181,6 @@
             {{ order_form.device_name.label }}:
             {{ order_form.device_name }}
             {{ order_form.device.label }}:
-
             <div id="id_device" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
               {{ order_form.device }}
               <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addDeviceModal">

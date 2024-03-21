@@ -55,12 +55,18 @@ class ServiceOrderUpdate(EmployeeRequiredMixin, View):
     service_form_class = OrderServicesForm
 
     def get_context_data(self, **kwargs):
+        service_order_id = kwargs.get('pk')
         customer_id = kwargs.get('customer_id')
         payer_id = kwargs.get('payer_id')
         address_id = kwargs.get('address_id')
         device_id = kwargs.get('device_id')
 
-        service_order_instance = get_object_or_404(self.model.objects.select_related(), pk=kwargs.get('pk'))
+        if service_order_id:
+            service_order_instance = get_object_or_404(self.model.objects.select_related(), pk=service_order_id)
+        else:
+            order_instance = Order.objects.create(user_intake=self.request.user.employee.first())
+            service_order_instance = self.model.objects.create(order=order_instance)
+
         if customer_id:
             customer_instance = get_object_or_404(Customer, pk=customer_id)
             service_order_instance.order.customer = customer_instance
@@ -179,15 +185,6 @@ class ServiceOrderDetails(ServiceOrderUpdate):
                 for field in form.fields.values():
                     field.disabled = True
         return context
-
-
-class ServiceOrderCreate(EmployeeRequiredMixin, CreateView):
-    model = ServiceOrder
-    template_name = 'service_orders/service_order_update.html'
-    form_class = ServiceOrderForm
-
-    def get_success_url(self):
-        return reverse_lazy('service_orders:service_order_details', kwargs={'pk': self.object.pk})
 
 
 class CustomerDetails(EmployeeRequiredMixin, DetailView):

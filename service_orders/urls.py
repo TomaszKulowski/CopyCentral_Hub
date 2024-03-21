@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import ServiceOrderList, ServiceOrderDetails, ServiceOrderUpdate, ServiceOrderCreate,\
+from .views import ServiceOrderList, ServiceOrderDetails, ServiceOrderUpdate,\
     CustomerDetails, AddressDetails, CustomerCreateModal, AddressCreateModal, DeviceCreateModal,\
     ServicesFiler, ServiceDetails, ServicesList, ServiceUpdate, ServiceDelete
 
@@ -11,7 +11,7 @@ urlpatterns = [
     path('', ServiceOrderList.as_view(), name='list'),
     path('<int:pk>/', ServiceOrderDetails.as_view(), name='details'),
     path('<int:pk>/update/', ServiceOrderUpdate.as_view(), name='update'),
-    path('create/', ServiceOrderCreate.as_view(), name='create'),
+    path('create/', ServiceOrderUpdate.as_view(), name='create'),
 
     path('customer_create/', CustomerCreateModal.as_view(), name='customer_create'),
     path('customer_details/<int:pk>/', CustomerDetails.as_view(), name='customer_details'),
