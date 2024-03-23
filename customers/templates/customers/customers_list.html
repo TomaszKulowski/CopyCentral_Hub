@@ -1,5 +1,4 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "customers/customers_base.html" %}
 
 {% block content %}
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -10,7 +9,7 @@
     </form>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
-        <a href="{% url 'customers:create' %}"  class="btn btn-sm btn-outline-secondary">Add New</a>
+        <a href="{% url 'customers:customer_create' %}"  class="btn btn-sm btn-outline-secondary">Add New</a>
       </div>
     </div>
   </div>
@@ -25,23 +24,18 @@
           <th scope="col" width=20%>Street</th>
         </tr>
       </thead>
-      <tbody id="customers-table-body">
+      <tbody id="table-body">
         {% for customer in page_obj %}
         <tr>
-          <td hidden="hidden">{% url "customers:details" customer.id %}</td>
+          <td hidden="hidden">{% url "customers:customer_details" customer.id %}</td>
           <td>{{ customer.name|title }}</td>
           <td>{{ customer.tax }}</td>
-          <td>{{ customer.city|title }}</td>
-          <td>{{ customer.postal_code }}</td>
-          <td>{{ customer.street|title }} {{ customer.number }}</td>
+          <td>{{ customer.billing_city|title }}</td>
+          <td>{{ customer.billing_postal_code }}</td>
+          <td>{{ customer.billing_street|title }} {{ customer.billing_number }}</td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
-{% endblock %}
-
-{% block additional_scripts %}
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  <script type="text/javascript" src="{% static 'customers/scripts/scripts.js' %}"></script>
 {% endblock %}

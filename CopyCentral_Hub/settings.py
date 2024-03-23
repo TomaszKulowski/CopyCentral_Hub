@@ -39,6 +39,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'dal',
+    'dal_select2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,12 +49,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_extensions',
+    "debug_toolbar",
+    'jsignature',
+    'sorl.thumbnail',
 
     'authentication.apps.AuthenticationConfig',
     'employees.apps.EmployeesConfig',
     'devices.apps.DevicesConfig',
     'customers.apps.CustomersConfig',
     'services.apps.ServicesConfig',
+    'orders.apps.OrdersConfig',
+    'service_orders.apps.ServiceOrdersConfig',
 ]
 
 MIDDLEWARE = [
@@ -63,6 +70,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+
 ]
 
 ROOT_URLCONF = 'CopyCentral_Hub.urls'
@@ -137,7 +147,18 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+JSIGNATURE_WIDTH = 350
+JSIGNATURE_HEIGHT = 400

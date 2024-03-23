@@ -2,3 +2,5 @@ Django
 python-dotenv
 factory_boy
 django-extensions
+django-debug-toolbar
+django-jsignature

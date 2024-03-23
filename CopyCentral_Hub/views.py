@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.views.generic import TemplateView
+
+from .mixins import EmployeeRequiredMixin
 
 
-def home(request):
-    return render(request, 'templates/base.html')
+class Home(EmployeeRequiredMixin, TemplateView):
+    template_name = 'templates/base.html'

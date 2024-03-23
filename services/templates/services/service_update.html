@@ -6,42 +6,15 @@
   </div>
   <form method="post">
     {% csrf_token %}
-    <div class="container text-center">
-      <div class="row justify-content-md-center">
-        <div class="col-md-4">
-          <h5>{{ form.name.label }}</h5>
-          {{ form.name }}
-        </div>
-        <div class="col-md-4">
-          <h5>{{ form.price_net.label }}</h5>
-          {{ form.price_net }}
-        </div>
-        </div>
-        <div class="row justify-content-md-center">
-          <div class="col-md-4">
-            <h5>{{ form.device_brand.help_text }}</h5>
-            {{ form.device_brand }}
-          </div>
-          <div class="col-md-4">
-            <h5>{{ form.device_model.help_text }}</h5>
-            {{ form.device_model }}
-          </div>
-        </div>
-        <div class="row justify-content-md-center">
-          <div class="col-md-8">
-            <h5>{{ form.description.label }}</h5>
-            {{ form.description }}
-          </div>
+    {{ form.as_div }}
+    <br>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-top">
+      <h1 class="h2"></h1>
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+          <button class="btn btn-sm btn-outline-secondary" type="submit">Save</button>
         </div>
       </div>
-      <br>
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-top">
-        <h1 class="h2"></h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group me-2">
-            <button class="btn btn-sm btn-outline-secondary" type="submit">Save</button>
-          </div>
-        </div>
-      </div>
+    </div>
   </form>
 {% endblock %}

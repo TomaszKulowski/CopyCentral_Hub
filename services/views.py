@@ -14,7 +14,7 @@ class ServicesList(EmployeeRequiredMixin, View):
         grouped_data = {}
 
         for service in Service.objects.select_related('device_brand', 'device_model').all():
-            brand= service.device_brand
+            brand = service.device_brand
             model = service.device_model if service.device_model else "All"
 
             grouped_data.setdefault(brand, {})
@@ -36,8 +36,8 @@ class ServiceDetails(EmployeeRequiredMixin, UpdateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        for key, value in form.fields.items():
-            value.disabled = True
+        for field in form.fields.values():
+            field.disabled = True
         return form
 
 
@@ -47,7 +47,7 @@ class ServiceUpdate(EmployeeRequiredMixin, UpdateView):
     form_class = ServiceForm
 
     def get_success_url(self):
-        return reverse_lazy('services:service_details', kwargs={'pk': self.object.pk})
+        return reverse_lazy('services:services_list')
 
 
 class ServiceCreate(EmployeeRequiredMixin, CreateView):
@@ -56,7 +56,7 @@ class ServiceCreate(EmployeeRequiredMixin, CreateView):
     form_class = ServiceForm
 
     def get_success_url(self):
-        return reverse_lazy('services:service_details', kwargs={'pk': self.object.pk})
+        return reverse_lazy('services:services_list')
 
 
 class BrandsList(EmployeeRequiredMixin, ListView):
@@ -71,8 +71,8 @@ class BrandDetails(EmployeeRequiredMixin, UpdateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        for key, value in form.fields.items():
-            value.disabled = True
+        for field in form.fields.values():
+            field.disabled = True
         return form
 
 
@@ -82,7 +82,7 @@ class BrandUpdate(EmployeeRequiredMixin, UpdateView):
     form_class = BrandForm
 
     def get_success_url(self):
-        return reverse_lazy('services:brand_details', kwargs={'pk': self.object.pk})
+        return reverse_lazy('services:brands_list')
 
 
 class BrandCreate(EmployeeRequiredMixin, CreateView):
@@ -91,7 +91,7 @@ class BrandCreate(EmployeeRequiredMixin, CreateView):
     form_class = BrandForm
 
     def get_success_url(self):
-        return reverse_lazy('services:brand_details', kwargs={'pk': self.object.pk})
+        return reverse_lazy('services:brands_list')
 
 
 class ModelsList(EmployeeRequiredMixin, ListView):
@@ -106,8 +106,8 @@ class ModelDetails(EmployeeRequiredMixin, UpdateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        for key, value in form.fields.items():
-            value.disabled = True
+        for field in form.fields.values():
+            field.disabled = True
         return form
 
 
@@ -117,7 +117,7 @@ class ModelUpdate(EmployeeRequiredMixin, UpdateView):
     form_class = ModelForm
 
     def get_success_url(self):
-        return reverse_lazy('services:model_details', kwargs={'pk': self.object.pk})
+        return reverse_lazy('services:models_list')
 
 
 class ModelCreate(EmployeeRequiredMixin, CreateView):
@@ -126,4 +126,4 @@ class ModelCreate(EmployeeRequiredMixin, CreateView):
     form_class = ModelForm
 
     def get_success_url(self):
-        return reverse_lazy('services:model_details', kwargs={'pk': self.object.pk})
+        return reverse_lazy('services:models_list')

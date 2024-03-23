@@ -20,12 +20,13 @@ class Status(models.IntegerChoices):
     REPLACEMENT = 5, 'Replacement'
     IN_DELIVERY_INVISIBLE = 6, 'In delivery INVISIBLE'
     IN_DELIVERY = 7, 'In delivery'
+    SERVICED = 8, 'Serviced'
 
 
 class Device(models.Model):
     brand = models.CharField(max_length=30)
     model = models.CharField(max_length=50)
-    serial_number = models.CharField(max_length=40, unique=True, blank=True, null=True)
+    serial_number = models.CharField('Serial Number', max_length=40, unique=True, blank=True, null=True)
     type = models.SmallIntegerField(choices=Type.choices, blank=True, null=True)
     format = models.SmallIntegerField(choices=Format.choices, blank=True, null=True)
     total_counter = models.IntegerField(blank=True, null=True)
@@ -34,3 +35,6 @@ class Device(models.Model):
     description = models.TextField(max_length=255, blank=True, null=True)
     status = models.SmallIntegerField(choices=Status.choices, blank=True, null=True)
     price_net = models.FloatField(blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.brand} {self.model}; {self.serial_number}'

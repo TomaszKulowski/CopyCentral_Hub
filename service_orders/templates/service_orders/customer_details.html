@@ -1,0 +1,17 @@
+<div id="customer-details">
+  <span>Name:</span>
+  <textarea class="form-control" rows="2" disabled>{{ customer.name }}</textarea>
+  <span>Tax:</span>
+  <input class="form-control" disabled value="{{ customer.tax }}">
+  <span>Billing Country:</span>
+  <input class="form-control" disabled value="{{ customer.billing_country }}">
+  <span>Billing Postal Code:</span>
+  <input class="form-control" disabled value="{{ customer.billing_postal_code }}">
+  <span>Billing City:</span>
+  <input class="form-control" disabled value="{{ customer.billing_city }}">
+  <span>Billing Street:</span>
+  <input class="form-control" disabled
+    value="{{ customer.billing_street }} {{ customer.billing_number }}">
+  <span>Telephone:</span>
+  <input class="form-control" disabled value="{{ customer.telephone }}">
+</div>
