@@ -428,3 +428,17 @@ $(document).ready(function() {
       });
   });
 });
+
+
+function checkFileSize(input) {
+    const maxSize = 40 * 1024 * 1024;
+    if (input.files && input.files[0]) {
+        const fileSize = input.files[0].size;
+        if (fileSize > maxSize) {
+            document.getElementById("fileSizeError").style.display = "block";
+            input.value = "";
+        } else {
+            document.getElementById("fileSizeError").style.display = "none";
+        }
+    }
+}

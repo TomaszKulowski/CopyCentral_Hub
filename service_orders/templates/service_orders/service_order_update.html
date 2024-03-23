@@ -264,6 +264,7 @@
           <br>
           {% endfor %}
         </div>
+        <h5 id="fileSizeError" style="display: none; color: red;">File size is too large. Maximum allowed size is 40 MB.</h5>
         <div id="attachment_form">
           {{ attachment_formset.management_form }}
           {% for form in attachment_formset.forms %}

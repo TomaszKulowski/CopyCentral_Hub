@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from jsignature.fields import JSignatureField
 from pathlib import Path
@@ -7,6 +8,13 @@ from customers.models import Customer, AdditionalAddress
 from devices.models import Device
 from employees.models import Employee
 from services.models import Service
+
+
+def validate_file_size(value):
+    filesize = value.size
+
+    if filesize > (40 * 1024 * 1024):
+        raise ValidationError("The maximum file size that can be uploaded is 40MB")
 
 
 def upload_to(instance, filename):
@@ -103,5 +111,5 @@ class Order(models.Model):
 
 class Attachment(models.Model):
     order = models.ForeignKey(Order, on_delete=models.PROTECT)
-    image = ImageField(upload_to=upload_to, max_length=150, blank=True, null=True)
-    file = models.FileField(upload_to=upload_to, max_length=150, blank=True, null=True)
+    image = ImageField(upload_to=upload_to, max_length=150, blank=True, null=True, validators=[validate_file_size])
+    file = models.FileField(upload_to=upload_to, max_length=150, blank=True, null=True, validators=[validate_file_size])

@@ -125,8 +125,14 @@ class OrderServicesForm(forms.ModelForm):
 
 
 class AttachmentForm(forms.ModelForm):
-    image = forms.FileField(required=False, widget=forms.FileInput(attrs={'accept': 'image/png, image/jpeg'}))
-    file = forms.FileField(required=False, widget=forms.FileInput(attrs={'accept': 'application/pdf'}))
+    image = forms.FileField(
+        required=False,
+        widget=forms.FileInput(attrs={'accept': 'image/png, image/jpeg', 'onchange': 'checkFileSize(this)'})
+    )
+    file = forms.FileField(
+        required=False,
+        widget=forms.FileInput(attrs={'accept': 'application/pdf', 'onchange': 'checkFileSize(this)'})
+    )
 
     class Meta:
         model = Attachment
