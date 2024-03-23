@@ -1,10 +1,16 @@
 from django.db import models
 from jsignature.fields import JSignatureField
+from pathlib import Path
+from sorl.thumbnail import ImageField
 
 from customers.models import Customer, AdditionalAddress
 from devices.models import Device
 from employees.models import Employee
 from services.models import Service
+
+
+def upload_to(instance, filename):
+    return Path().joinpath('attachments', str(instance.order.id), filename)
 
 
 class PriorityChoices(models.IntegerChoices):
@@ -93,3 +99,8 @@ class Order(models.Model):
         if not self.payer:
             self.payer = self.customer
         super().save(*args, **kwargs)
+
+
+class Attachment(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.PROTECT)
+    image = ImageField(upload_to=upload_to, max_length=150)

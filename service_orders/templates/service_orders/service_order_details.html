@@ -22,6 +22,9 @@
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="service_details-tab" data-bs-toggle="tab" data-bs-target="#service_details" type="button" role="tab" aria-controls="service_details" aria-selected="false">Service Details</button>
     </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="attachments-tab" data-bs-toggle="tab" data-bs-target="#attachments" type="button" role="tab" aria-controls="attachments" aria-selected="false">Attachments</button>
+    </li>
   </ul>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
@@ -165,8 +168,7 @@
       {{ order_form.signature.label }}:
       <div class="form-control">
         {% load jsignature_filters %}
-        <img src="{{ service_order_instance.order.signature|signature_base64 }}" alt="{{ obj }}" />
-      </input>
+        <img src="{{ service_order_instance.order.signature|signature_base64 }}" alt="{{ obj }}"/>
       </div>
     </div>
     <div class="tab-pane fade" id="service_details" role="tabpanel" aria-labelledby="service_details-tab">
@@ -230,6 +232,16 @@
             </div>
         </div>
       </div>
+    </div>
+    <div class="tab-pane fade" id="attachments" role="tabpanel" aria-labelledby="attachments-tab">
+      {% for id, image in images.items %}
+        <div class="form-control">
+          <img src="{{ image.url }}" alt="image">
+          <br>
+          <a class="btn btn-sm btn-outline-secondary" href="{% url 'orders:attachment_details' id %}">View</a>
+          <br>
+        </div>
+      {% endfor %}
     </div>
  </div>
 {% endblock %}

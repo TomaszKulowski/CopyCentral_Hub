@@ -2,12 +2,15 @@ from json import loads
 
 from dal import autocomplete
 from django.db.models import Q
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect
+from django.views import View
 
+from .models import Attachment
 from CopyCentral_Hub.mixins import EmployeeRequiredMixin
 from customers.models import Customer, AdditionalAddress
 from devices.models import Device
 from employees.models import Employee
-from services.models import Service
 
 
 class CustomerAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView):
@@ -60,6 +63,7 @@ class AddressAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetVie
                 Q(city__icontains=self.q) |
                 Q(street__icontains=self.q)
             )
+
         return qs
 
 
@@ -76,3 +80,17 @@ class DeviceAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView
             )
 
         return qs
+
+
+class AttachmentDetails(EmployeeRequiredMixin, View):
+    def get(self, request, pk):
+        attachment = get_object_or_404(Attachment, pk=pk)
+        return HttpResponse(attachment.image, content_type="image/png")
+
+
+class AttachmentDelete(EmployeeRequiredMixin, View):
+    def get(self, request, pk):
+        attachment = get_object_or_404(Attachment, pk=pk)
+        attachment.delete()
+        next_url = request.GET.get('next', '/')
+        return redirect(next_url)

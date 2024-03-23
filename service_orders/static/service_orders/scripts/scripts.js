@@ -386,3 +386,26 @@ $(document).ready(function() {
         });
     });
 });
+
+
+$(document).ready(function() {
+    var container = document.querySelector("#attachment_form")
+    var addButton = document.querySelector("#add_more")
+    var totalForms = document.querySelector("#id_form-TOTAL_FORMS")
+    var formNum = 0;
+
+    addButton.addEventListener('click', addForm)
+
+    function addForm(e) {
+        e.preventDefault()
+        let form = document.querySelector(".attachment_form");
+        let newForm = form.cloneNode(true)
+        let formRegex = RegExp(`form-(\\d){1}-`, 'g')
+        formNum++
+
+        newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`)
+        container.insertBefore(newForm, addButton)
+
+        totalForms.setAttribute('value', `${formNum + 1}`)
+    }
+});

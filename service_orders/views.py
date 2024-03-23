@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, UpdateView, View
+from sorl.thumbnail import get_thumbnail
 
 from .forms import ServiceOrderForm
 from .models import ServiceOrder
@@ -12,8 +13,8 @@ from customers.forms import Customer, CustomerForm, AdditionalAddressForm
 from customers.models import AdditionalAddress
 from devices.forms import DeviceForm
 from devices.models import Device
-from orders.forms import OrderForm, OrderServicesForm
-from orders.models import Order, OrderServices
+from orders.forms import OrderForm, OrderServicesForm, AttachmentForm, AttachmentFormSet
+from orders.models import Order, OrderServices, Attachment
 from services.models import Brand, Model, Service
 
 
@@ -53,6 +54,7 @@ class ServiceOrderUpdate(EmployeeRequiredMixin, View):
     address_form_class = AdditionalAddressForm
     device_form_class = DeviceForm
     service_form_class = OrderServicesForm
+    attachment_formset = AttachmentFormSet
 
     def get_context_data(self, **kwargs):
         service_order_id = kwargs.get('pk')
@@ -82,6 +84,11 @@ class ServiceOrderUpdate(EmployeeRequiredMixin, View):
             device_instance = get_object_or_404(Device, pk=device_id)
             service_order_instance.order.device = device_instance
 
+        attachments = service_order_instance.order.attachment_set.all()
+        images = {}
+        if attachments:
+            images = {att.id: get_thumbnail(att.image.name, '300x300', crop='center', quality=20) for att in attachments}
+
         service_order_form = self.service_order_form_class(instance=service_order_instance)
         order_form = self.order_form_class(instance=service_order_instance.order)
 
@@ -96,6 +103,8 @@ class ServiceOrderUpdate(EmployeeRequiredMixin, View):
             'address_form': self.address_form_class(),
             'device_form': self.device_form_class(),
             'service_form': self.service_form_class(),
+            'attachment_formset': self.attachment_formset(queryset=Attachment.objects.none()),
+            'images': images,
             'total_summary': total_summary,
             'brands': Brand.objects.all(),
             'models': Model.objects.all(),
@@ -134,6 +143,14 @@ class ServiceOrderUpdate(EmployeeRequiredMixin, View):
             address_id = address_id.pop()
 
         order_form = self.order_form_class(request_data, instance=service_order_instance.order)
+
+        for file in request.FILES:
+            att = AttachmentForm(files={'image': request.FILES[file]})
+            if att.is_valid():
+                inst = att.save(commit=False)
+                inst.order = service_order_instance.order
+                inst.save()
+
         if service_order_form.is_valid() and order_form.is_valid():
             service_order_instance = service_order_form.save(commit=False)
             service_order_form.save()
