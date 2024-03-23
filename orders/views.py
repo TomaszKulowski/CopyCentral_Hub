@@ -3,8 +3,10 @@ from json import loads
 from dal import autocomplete
 from django.db.models import Q
 from django.http import HttpResponse, FileResponse
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, render
 from django.views import View
+from sorl.thumbnail import get_thumbnail
+
 
 from .models import Attachment
 from CopyCentral_Hub.mixins import EmployeeRequiredMixin
@@ -95,5 +97,15 @@ class AttachmentDelete(EmployeeRequiredMixin, View):
     def get(self, request, pk):
         attachment = get_object_or_404(Attachment, pk=pk)
         attachment.delete()
-        next_url = request.GET.get('next', '/')
-        return redirect(next_url)
+
+        order_id = request.GET.get('order_id')
+        atts = Attachment.objects.filter(order__id=order_id)
+        attachments = {}
+        for att in atts:
+            if att.image:
+                attachments[att.id] = {'image': get_thumbnail(att.image.name, '300x300', crop='center', quality=20)}
+            else:
+                import os
+                attachments[att.id] = {'filename': os.path.basename(att.file.name)}
+
+        return render(request, 'service_orders/attachments_list.html', {'attachments': attachments})

@@ -409,3 +409,22 @@ $(document).ready(function() {
         totalForms.setAttribute('value', `${formNum + 1}`)
     }
 });
+
+
+$(document).ready(function() {
+  $(document).on('click', '.delete-button', function(event) {
+    event.preventDefault();
+    var attachmentId = $(this).data('attachment-id');
+    var orderId = $('#orderId').val();
+    var url = "/orders/attachment/" + attachmentId + "/delete/?order_id=" + orderId;
+
+    fetch(url)
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("attachment_list").innerHTML = data;
+      })
+      .catch(error => {
+        console.error("Error:", error);
+      });
+  });
+});

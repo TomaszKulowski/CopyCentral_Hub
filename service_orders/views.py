@@ -149,14 +149,11 @@ class ServiceOrderUpdate(EmployeeRequiredMixin, View):
         order_form = self.order_form_class(request_data, instance=service_order_instance.order)
 
         for file in request.FILES:
-            print(file.split('-'))
-            print(type(file))
             att = AttachmentForm(files={file.split('-')[2]: request.FILES[file]})
             if att.is_valid():
                 inst = att.save(commit=False)
                 inst.order = service_order_instance.order
                 inst.save()
-            print(att.errors)
 
         if service_order_form.is_valid() and order_form.is_valid():
             service_order_instance = service_order_form.save(commit=False)
