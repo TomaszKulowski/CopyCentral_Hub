@@ -109,13 +109,13 @@ class OrderServicesForm(forms.ModelForm):
 
         for field in self.fields:
             if field == 'service':
-                self.fields[field].widget.attrs.update({'id': "id_service_services"})
+                self.fields[field].widget.attrs.update({'id': 'id_service_services'})
             if field == 'name':
-                self.fields[field].widget.attrs.update({'id': "id_service_name"})
+                self.fields[field].widget.attrs.update({'id': 'id_service_name'})
             if field == 'price_net':
-                self.fields[field].widget.attrs.update({'id': "id_service_price_net"})
+                self.fields[field].widget.attrs.update({'id': 'id_service_price_net'})
             if field == 'quantity':
-                self.fields[field].widget.attrs.update({'id': "id_service_quantity"})
+                self.fields[field].widget.attrs.update({'id': 'id_service_quantity'})
 
             self.fields[field].widget.attrs.update({'class': 'form-control'})
 
@@ -125,9 +125,12 @@ class OrderServicesForm(forms.ModelForm):
 
 
 class AttachmentForm(forms.ModelForm):
+    image = forms.FileField(required=False, widget=forms.FileInput(attrs={'accept': 'image/png, image/jpeg'}))
+    file = forms.FileField(required=False, widget=forms.FileInput(attrs={'accept': 'application/pdf'}))
+
     class Meta:
         model = Attachment
-        fields = ['image', ]
+        fields = ['image', 'file']
 
 
 AttachmentFormSet = forms.modelformset_factory(Attachment, form=AttachmentForm)

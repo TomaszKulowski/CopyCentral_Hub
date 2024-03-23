@@ -84,10 +84,14 @@ class ServiceOrderUpdate(EmployeeRequiredMixin, View):
             device_instance = get_object_or_404(Device, pk=device_id)
             service_order_instance.order.device = device_instance
 
-        attachments = service_order_instance.order.attachment_set.all()
-        images = {}
-        if attachments:
-            images = {att.id: get_thumbnail(att.image.name, '300x300', crop='center', quality=20) for att in attachments}
+        atts = service_order_instance.order.attachment_set.all()
+        attachments = {}
+        for att in atts:
+            if att.image:
+                attachments[att.id] = {'image': get_thumbnail(att.image.name, '300x300', crop='center', quality=20)}
+            else:
+                import os
+                attachments[att.id] = {'filename': os.path.basename(att.file.name)}
 
         service_order_form = self.service_order_form_class(instance=service_order_instance)
         order_form = self.order_form_class(instance=service_order_instance.order)
@@ -104,7 +108,7 @@ class ServiceOrderUpdate(EmployeeRequiredMixin, View):
             'device_form': self.device_form_class(),
             'service_form': self.service_form_class(),
             'attachment_formset': self.attachment_formset(queryset=Attachment.objects.none()),
-            'images': images,
+            'attachments': attachments,
             'total_summary': total_summary,
             'brands': Brand.objects.all(),
             'models': Model.objects.all(),
@@ -145,11 +149,14 @@ class ServiceOrderUpdate(EmployeeRequiredMixin, View):
         order_form = self.order_form_class(request_data, instance=service_order_instance.order)
 
         for file in request.FILES:
-            att = AttachmentForm(files={'image': request.FILES[file]})
+            print(file.split('-'))
+            print(type(file))
+            att = AttachmentForm(files={file.split('-')[2]: request.FILES[file]})
             if att.is_valid():
                 inst = att.save(commit=False)
                 inst.order = service_order_instance.order
                 inst.save()
+            print(att.errors)
 
         if service_order_form.is_valid() and order_form.is_valid():
             service_order_instance = service_order_form.save(commit=False)

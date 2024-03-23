@@ -103,4 +103,5 @@ class Order(models.Model):
 
 class Attachment(models.Model):
     order = models.ForeignKey(Order, on_delete=models.PROTECT)
-    image = ImageField(upload_to=upload_to, max_length=150)
+    image = ImageField(upload_to=upload_to, max_length=150, blank=True, null=True)
+    file = models.FileField(upload_to=upload_to, max_length=150, blank=True, null=True)

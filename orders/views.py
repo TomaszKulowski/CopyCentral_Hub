@@ -2,7 +2,7 @@ from json import loads
 
 from dal import autocomplete
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
@@ -85,7 +85,10 @@ class DeviceAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView
 class AttachmentDetails(EmployeeRequiredMixin, View):
     def get(self, request, pk):
         attachment = get_object_or_404(Attachment, pk=pk)
-        return HttpResponse(attachment.image, content_type="image/png")
+        if attachment.image:
+            return HttpResponse(attachment.image, content_type="image/png")
+        else:
+            return FileResponse(open(attachment.file.path, 'rb'), content_type='application/pdf')
 
 
 class AttachmentDelete(EmployeeRequiredMixin, View):

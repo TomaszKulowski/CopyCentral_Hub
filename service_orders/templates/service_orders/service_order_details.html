@@ -234,13 +234,18 @@
       </div>
     </div>
     <div class="tab-pane fade" id="attachments" role="tabpanel" aria-labelledby="attachments-tab">
-      {% for id, image in images.items %}
+      {% for id, attachment in attachments.items %}
         <div class="form-control">
-          <img src="{{ image.url }}" alt="image">
+          {% if attachment.image %}
+            <img src="{{ attachment.image.url }}" alt="image">
+          {% else %}
+            {{ attachment.filename }}
+          {% endif %}
           <br>
           <a class="btn btn-sm btn-outline-secondary" href="{% url 'orders:attachment_details' id %}">View</a>
           <br>
         </div>
+      <br>
       {% endfor %}
     </div>
  </div>
