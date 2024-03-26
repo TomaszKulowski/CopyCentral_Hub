@@ -16,4 +16,4 @@ class Employee(models.Model):
     department = models.SmallIntegerField(choices=DepartmentChoices.choices)
 
     def __str__(self):
-        return self.user.username
+        return f'{self.user.first_name} {self.user.last_name}'

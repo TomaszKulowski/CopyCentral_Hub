@@ -2,17 +2,18 @@ from json import loads
 
 from dal import autocomplete
 from django.db.models import Q
-from django.http import HttpResponse, FileResponse
+from django.http import HttpResponse, FileResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse_lazy
 from django.views import View
 from sorl.thumbnail import get_thumbnail
-
 
 from .models import Attachment
 from CopyCentral_Hub.mixins import EmployeeRequiredMixin
 from customers.models import Customer, AdditionalAddress
 from devices.models import Device
 from employees.models import Employee
+from orders.models import Order, Region, PriorityChoices
 
 
 class CustomerAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView):
@@ -109,3 +110,31 @@ class AttachmentDelete(EmployeeRequiredMixin, View):
                 attachments[att.id] = {'filename': os.path.basename(att.file.name)}
 
         return render(request, 'service_orders/attachments_list.html', {'attachments': attachments})
+
+
+class OrderUpdate(EmployeeRequiredMixin, View):
+    def post(self, request, order_id):
+        order = get_object_or_404(Order, pk=order_id)
+        selected_type = request.POST.get('selected_type')
+        selected_value = request.POST.get('selected_value')
+        if selected_type == 'region':
+            if selected_value and selected_value != '-1':
+                region = get_object_or_404(Region, pk=selected_value)
+            if selected_value == '-1':
+                region = None
+            order.region = region
+
+        elif selected_type == 'priority':
+            if selected_value in [str(choice.value) for choice in PriorityChoices]:
+                order.priority = selected_value
+
+        else:
+            if selected_value and selected_value != '-1':
+                employee = get_object_or_404(Employee, pk=selected_value)
+            if selected_value == '-1':
+                employee = None
+            order.executor = employee
+
+        order.save()
+
+        return JsonResponse({'success': 'true'})

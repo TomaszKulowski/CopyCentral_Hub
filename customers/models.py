@@ -31,6 +31,9 @@ class Customer(models.Model):
     def __str__(self):
         return f'{self.name}; Tax: {self.tax}'
 
+    def get_address(self):
+        return f'{self.billing_city}, {self.billing_street} {self.billing_number}'
+
 
 class AdditionalAddress(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)

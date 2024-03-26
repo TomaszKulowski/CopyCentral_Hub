@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import CustomerAutocomplete, ExecutorAutocomplete, AddressAutocomplete, DeviceAutocomplete,\
-    AttachmentDetails, AttachmentDelete
+    AttachmentDetails, AttachmentDelete, OrderUpdate
 
 app_name = 'orders'
 
@@ -13,4 +13,7 @@ urlpatterns = [
 
     path('attachment/<int:pk>/', AttachmentDetails.as_view(), name='attachment_details'),
     path('attachment/<int:pk>/delete/', AttachmentDelete.as_view(), name='attachment_delete'),
+
+    path('<int:order_id>/update/', OrderUpdate.as_view(), name='order_update'),
+
 ]

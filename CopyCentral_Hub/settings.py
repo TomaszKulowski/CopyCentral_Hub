@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'services.apps.ServicesConfig',
     'orders.apps.OrdersConfig',
     'service_orders.apps.ServiceOrdersConfig',
+    'order_management.apps.OrderManagementConfig',
 ]
 
 MIDDLEWARE = [
