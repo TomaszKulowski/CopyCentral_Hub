@@ -138,3 +138,7 @@ class OrderUpdate(EmployeeRequiredMixin, View):
         order.save()
 
         return JsonResponse({'success': 'true'})
+
+
+class SortOrder(EmployeeRequiredMixin, View):
+    pass

@@ -129,3 +129,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+
+
+
+
+  $(document).on('click', '.move-up', function() {
+    alert('aa')
+
+    var row = $(this).closest('tr');
+    row.insertBefore(row.prev());
+  });
+
+
+  $(document).on('click', '.move-down', function() {
+        alert('bb')
+
+    var row = $(this).closest('tr');
+
+    row.insertAfter(row.next());
+  });

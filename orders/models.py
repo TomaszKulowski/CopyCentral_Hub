@@ -108,8 +108,41 @@ class Order(models.Model):
             self.payer = self.customer
         super().save(*args, **kwargs)
 
+        if self.executor:
+            existing_sort_order = SortOrder.objects.filter(order=self, employee=self.executor)
+            existing_sort_orders = SortOrder.objects.filter(employee=self.executor).order_by('-number')
+            if existing_sort_orders:
+                last_number = existing_sort_orders.first().number + 1
+            else:
+                last_number = 0
+            if not existing_sort_order:
+                SortOrder.objects.create(order=self, employee=self.executor, number=last_number)
+
 
 class Attachment(models.Model):
     order = models.ForeignKey(Order, on_delete=models.PROTECT)
     image = ImageField(upload_to=upload_to, max_length=150, blank=True, null=True, validators=[validate_file_size])
     file = models.FileField(upload_to=upload_to, max_length=150, blank=True, null=True, validators=[validate_file_size])
+
+
+class SortOrder(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.PROTECT)
+    employee = models.ForeignKey(Employee, on_delete=models.PROTECT)
+    number = models.PositiveSmallIntegerField()
+
+    def save(self, *args, **kwargs):
+        if self.number is None:
+            highest_sort_order = SortOrder.objects.filter(employee=self.employee).order_by('-number').first()
+            if highest_sort_order:
+                self.number = highest_sort_order.number + 1
+            else:
+                self.number = 1
+
+        existing_sort_order = SortOrder.objects.filter(number=self.number, employee=self.employee).first()
+        if existing_sort_order:
+            SortOrder.objects.filter(id=existing_sort_order.id).update(number=self.number)
+            SortOrder.objects.filter(employee=self.employee, number__gt=self.number).update(number=models.F('number') + 1)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'num: {self.number} - order id: {str(self.order.id)}'
