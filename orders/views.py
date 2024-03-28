@@ -122,7 +122,6 @@ class AttachmentDelete(EmployeeRequiredMixin, View):
 
 class OrderUpdateAPIView(EmployeeRequiredMixin, View):
     def post(self, request, order_id):
-        print('okokoko')
         order = get_object_or_404(Order, pk=order_id)
         selected_type = request.POST.get('selected_type')
         selected_value = request.POST.get('selected_value')
@@ -245,7 +244,6 @@ class OrderUpdate(EmployeeRequiredMixin, View):
         add_service = request.POST.get('add_service')
 
         order_instance = get_object_or_404(self.model.objects.select_related(), pk=kwargs.get('pk'))
-        order_form = self.order_form_class(request.POST, instance=order_instance)
 
         if add_service:
             service_instance = get_object_or_404(Service, pk=request.POST.get('service'))
@@ -271,6 +269,8 @@ class OrderUpdate(EmployeeRequiredMixin, View):
         address_id = request_data.pop('additional_address', None)
         if address_id:
             address_id = address_id.pop()
+
+        order_form = self.order_form_class(request_data, instance=order_instance)
 
         for file in request.FILES:
             att = AttachmentForm(files={file.split('-')[2]: request.FILES[file]})
