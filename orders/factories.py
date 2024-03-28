@@ -56,11 +56,20 @@ class OrderFactory(factory.django.DjangoModelFactory):
     additional_info = factory.LazyAttribute(lambda x: faker.sentence(20))
     priority = factory.LazyAttribute(lambda x: random.randrange(0, 3))
     device = factory.SubFactory(DeviceFactory)
+    description = factory.LazyAttribute(lambda x: faker.sentence(10))
+    order_type = factory.LazyAttribute(lambda x: random.randrange(0, 10))
+    status = factory.LazyAttribute(lambda x: random.randrange(0, 9))
+    total_counter = factory.LazyAttribute(lambda x: random.randrange(0, 10**6))
+    mono_counter = None
+    color_counter = None
     payment_method = factory.LazyAttribute(lambda x: random.randrange(0, 3))
     created_at = factory.LazyFunction(faker.date_time_this_month)
     updated_at = factory.LazyAttribute(lambda obj: obj.created_at + timedelta(seconds=faker.pyint()))
     signer_name = factory.LazyAttribute(lambda x: faker.name())
 
+
     @post_generation
     def post(self, create, *args, **kwargs):
         self.payer = self.customer
+        self.mono_counter = self.total_counter - random.randint(0, self.total_counter)
+        self.color_counter = self.total_counter - self.mono_counter

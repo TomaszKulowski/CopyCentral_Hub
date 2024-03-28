@@ -7,7 +7,7 @@
     <h1 class="h2">Service Order Update</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
-        <h1 class="h2">Service ID: {{ service_order_instance.id }}</h1>
+        <h1 class="h2">Service ID: {{ order_instance.id }}</h1>
       </div>
     </div>
   </div>
@@ -34,10 +34,10 @@
         </div>
       </div>
     </div>
-    <input type="hidden" id="customerId" name="customer" value="{{ service_order_instance.order.customer.id }}" />
-    <input type="hidden" id="payerId" name="payer" value="{{ service_order_instance.order.payer.id }}" />
-    <input type="hidden" id="addressId" name="address" value="{{ service_order_instance.order.additional_address.id }}" />
-    <input type="hidden" id="deviceId" name="device" value="{{ service_order_instance.order.device.id }}" />
+    <input type="hidden" id="customerId" name="customer" value="{{ order_instance.customer.id }}" />
+    <input type="hidden" id="payerId" name="payer" value="{{ order_instance.payer.id }}" />
+    <input type="hidden" id="addressId" name="address" value="{{ order_instance.additional_address.id }}" />
+    <input type="hidden" id="deviceId" name="device" value="{{ order_instance.device.id }}" />
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="customer_details" role="tabpanel" aria-labelledby="customer_details-tab">
         <ul class="nav nav-tabs" id="payer-tab" role="tablist">
@@ -60,20 +60,20 @@
             </div>
             <div id="customer-details">
               <span>Name:</span>
-              <textarea class="form-control" rows="2" disabled>{{ service_order_instance.order.customer.name }}</textarea>
+              <textarea class="form-control" rows="2" disabled>{{ order_instance.customer.name }}</textarea>
               <span>Tax:</span>
-              <input class="form-control" disabled value="{{ service_order_instance.order.customer.tax }}">
+              <input class="form-control" disabled value="{{ order_instance.customer.tax }}">
               <span>Billing Country:</span>
-              <input class="form-control" disabled value="{{ service_order_instance.order.customer.billing_country }}">
+              <input class="form-control" disabled value="{{ order_instance.customer.billing_country }}">
               <span>Billing Postal Code:</span>
-              <input class="form-control" disabled value="{{ service_order_instance.order.customer.billing_postal_code }}">
+              <input class="form-control" disabled value="{{ order_instance.customer.billing_postal_code }}">
               <span>Billing City:</span>
-              <input class="form-control" disabled value="{{ service_order_instance.order.customer.billing_city }}">
+              <input class="form-control" disabled value="{{ order_instance.customer.billing_city }}">
               <span>Billing Street:</span>
               <input class="form-control" disabled
-                value="{{ service_order_instance.order.customer.billing_street }} {{ service_order_instance.order.customer.billing_number }}">
+                value="{{ order_instance.customer.billing_street }} {{ order_instance.customer.billing_number }}">
               <span>Telephone:</span>
-              <input class="form-control" disabled value="{{ service_order_instance.order.customer.telephone }}">
+              <input class="form-control" disabled value="{{ order_instance.customer.telephone }}">
             </div>
             <h5>Service Address:</h5>
             <div id="id_address" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
@@ -84,14 +84,14 @@
             </div>
             <div id="address-details">
               <span>Postal Code:</span>
-              <input class="form-control" disabled value="{{ service_order_instance.order.additional_address.postal_code }}">
+              <input class="form-control" disabled value="{{ order_instance.additional_address.postal_code }}">
               <span>City:</span>
-              <input class="form-control" disabled value="{{ service_order_instance.order.additional_address.city }}">
+              <input class="form-control" disabled value="{{ order_instance.additional_address.city }}">
               <span>Street:</span>
               <input class="form-control" disabled
-                value="{{ service_order_instance.order.additional_address.street }} {{ service_order_instance.order.additional_address.number }}">
+                value="{{ order_instance.additional_address.street }} {{ order_instance.additional_address.number }}">
               <span>Description:</span>
-              <textarea class="form-control" rows="2" disabled>{{ service_order_instance.order.additional_address.description }}</textarea>
+              <textarea class="form-control" rows="2" disabled>{{ order_instance.additional_address.description }}</textarea>
             </div>
           </div>
           <div class="tab-pane fade" id="payer_details" role="tabpanel" aria-labelledby="payer_details-tab">
@@ -104,20 +104,20 @@
             </div>
             <div id="payer-details">
               <span>Name:</span>
-              <textarea class="form-control" rows="2" disabled>{{ service_order_instance.order.payer.name }}</textarea>
+              <textarea class="form-control" rows="2" disabled>{{ order_instance.payer.name }}</textarea>
               <span>Tax:</span>
-              <input class="form-control" disabled value="{{ service_order_instance.order.payer.tax }}">
+              <input class="form-control" disabled value="{{ order_instance.payer.tax }}">
               <span>Billing Country:</span>
-              <input class="form-control" disabled value="{{ service_order_instance.order.payer.billing_country }}">
+              <input class="form-control" disabled value="{{ order_instance.payer.billing_country }}">
               <span>Billing Postal Code:</span>
-              <input class="form-control" disabled value="{{ service_order_instance.order.payer.billing_postal_code }}">
+              <input class="form-control" disabled value="{{ order_instance.payer.billing_postal_code }}">
               <span>Billing City:</span>
-              <input class="form-control" disabled value="{{ service_order_instance.order.payer.billing_city }}">
+              <input class="form-control" disabled value="{{ order_instance.payer.billing_city }}">
               <span>Billing Street:</span>
               <input class="form-control" disabled
-                value="{{ service_order_instance.order.payer.billing_street }} {{ service_order_instance.order.payer.billing_number }}">
+                value="{{ order_instance.payer.billing_street }} {{ order_instance.payer.billing_number }}">
               <span>Telephone:</span>
-              <input class="form-control" disabled value="{{ service_order_instance.order.payer.telephone }}">
+              <input class="form-control" disabled value="{{ order_instance.payer.telephone }}">
             </div>
           </div>
         </div>
@@ -126,11 +126,11 @@
         <div class="row justify-content-md-center">
           <div class="col-md-6">
             <span>Created At:</span>
-            <input class="form-control" disabled value="{{ service_order_instance.order.created_at }}">
+            <input class="form-control" disabled value="{{ order_instance.created_at }}">
           </div>
           <div class="col-md-6">
             <span>Updated At:</span>
-            <input class="form-control" disabled value="{{ service_order_instance.order.updated_at }}">
+            <input class="form-control" disabled value="{{ order_instance.updated_at }}">
           </div>
         </div>
         <div class="row justify-content-md-center">
@@ -139,8 +139,8 @@
             {{ order_form.priority }}
           </div>
           <div class="col-md-4">
-            {{ service_order_form.order_type.label }}:
-            {{ service_order_form.order_type }}
+            {{ order_form.order_type.label }}:
+            {{ order_form.order_type }}
           </div>
           <div class="col-md-4">
             {{ order_form.payment_method.label }}:
@@ -149,11 +149,11 @@
         </div>
         <div class="col-md-12">
           <span>Order Intake:</span>
-          <input class="form-control" disabled value="{{ service_order_instance.order.user_intake.user.first_name }} {{ service_order_instance.order.user_intake.user.last_name }}">
+          <input class="form-control" disabled value="{{ order_instance.user_intake.user.first_name }} {{ order_instance.user_intake.user.last_name }}">
         </div>
         <div class="col-md-12">
           <span>Approver:</span>
-          <input class="form-control" disabled value="{{ service_order_instance.order.approver.user.first_name }} {{ service_order_instance.order.approver.user.last_name }}">
+          <input class="form-control" disabled value="{{ order_instance.approver.user.first_name }} {{ order_instance.approver.user.last_name }}">
         </div>
         {{ order_form.executor.label }}:
         {{ order_form.executor }}
@@ -165,8 +165,8 @@
         {{ order_form.additional_info }}
         {{ order_form.invoice_number.label }}:
         {{ order_form.invoice_number }}
-        {{ service_order_form.status.label }}:
-        {{ service_order_form.status }}
+        {{ order_form.status.label }}:
+        {{ order_form.status }}
         {{ order_form.signer_name.label }}:
         {{ order_form.signer_name }}
         {{ order_form.signature.label }}:
@@ -194,14 +194,14 @@
                 Add New
               </button>
             </div>
-            {{ service_order_form.description.label }}:
-            {{ service_order_form.description }}
-            {{ service_order_form.total_counter.label }}:
-            {{ service_order_form.total_counter }}
-            {{ service_order_form.mono_counter.label }}:
-            {{ service_order_form.mono_counter }}
-            {{ service_order_form.color_counter.label }}:
-            {{ service_order_form.color_counter }}
+            {{ order_form.description.label }}:
+            {{ order_form.description }}
+            {{ order_form.total_counter.label }}:
+            {{ order_form.total_counter }}
+            {{ order_form.mono_counter.label }}:
+            {{ order_form.mono_counter }}
+            {{ order_form.color_counter.label }}:
+            {{ order_form.color_counter }}
           </div>
           <div class="tab-pane fade" id="services_details" role="tabpanel" aria-labelledby="services_details-tab">
             <div id="id_service" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
@@ -221,7 +221,7 @@
                     </tr>
                   </thead>
                   <tbody id="service-table-body">
-                    {% for service in service_order_instance.order.services.all %}
+                    {% for service in order_instance.services.all %}
                     <tr>
                       <td hidden="hidden">{{ service.id }}</td>
                       <td>{{ service.name|title }}</td>
@@ -300,7 +300,7 @@
           <form id="customerForm" method="post">
             {% csrf_token %}
             {{ customer_form.as_p }}
-            <input type="hidden" id="orderId" name="order_id" value="{{ service_order_instance.id }}" />
+            <input type="hidden" id="orderId" name="order_id" value="{{ order_instance.id }}" />
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-top">
               <h1 class="h2"></h1>
               <div class="btn-toolbar mb-2 mb-md-0">
@@ -441,5 +441,5 @@
   <script src="{% static 'admin/js/vendor/select2/select2.full.js' %}"></script>
   <link href="{% static 'admin/css/autocomplete.css' %}" rel="stylesheet">
   <script src="{% static 'admin/js/autocomplete.js' %}"></script>
-  <script src="{% static 'service_orders/scripts/scripts.js' %}"></script>
+  <script src="{% static 'orders/scripts/scripts.js' %}"></script>
 {% endblock %}

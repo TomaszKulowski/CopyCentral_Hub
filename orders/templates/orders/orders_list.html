@@ -10,7 +10,7 @@
     </form>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
-        <a href="{% url 'service_orders:create' %}"  class="btn btn-sm btn-outline-secondary">Add New</a>
+        <a href="{% url 'orders:order_create' %}"  class="btn btn-sm btn-outline-secondary">Add New</a>
       </div>
     </div>
   </div>
@@ -28,26 +28,26 @@
         </tr>
       </thead>
       <tbody id="table-body">
-        {% for service_order in page_obj %}
+        {% for order in page_obj %}
         <tr>
-          <td hidden="hidden">{% url "service_orders:details" service_order.id %}</td>
-          <td>{{ service_order.id }}</td>
-          <td>{{ service_order.order.customer.name|title }}</td>
-          {% if service_order.additional_address %}
-            <td>{{ service_order.additional_address.city|title }}</td>
+          <td hidden="hidden">{% url "orders:order_details" order.id %}</td>
+          <td>{{ order.id }}</td>
+          <td>{{ order.customer.name|title }}</td>
+          {% if order.additional_address %}
+            <td>{{ order.additional_address.city|title }}</td>
           {% else %}
-            <td>{{ service_order.order.customer.billing_city|title }}</td>
+            <td>{{ order.customer.billing_city|title }}</td>
           {% endif %}
-          {% if service_order.order.device.brand and service_order.order.device.model %}
-            <td>{{ service_order.order.device.brand|title }} {{ service_order.order.device.model|title }}</td>
-          {% elif service_order.order.device.brand and not service_order.order.device.model %}
-            <td>{{ service_order.order.device.brand|title }}</td>
+          {% if order.device.brand and order.device.model %}
+            <td>{{ order.device.brand|title }} {{ order.device.model|title }}</td>
+          {% elif order.device.brand and not order.device.model %}
+            <td>{{ order.device.brand|title }}</td>
           {% else %}
             <td> --- </td>
           {% endif %}
-          <td>{{ service_order.get_status_display }}</td>
-          <td>{{ service_order.order.created_at }}</td>
-          <td>{{ service_order.order.updated_at }}</td>
+          <td>{{ order.get_status_display }}</td>
+          <td>{{ order.created_at }}</td>
+          <td>{{ order.updated_at }}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -57,5 +57,5 @@
 
 {% block additional_scripts %}
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  <script type="text/javascript" src="{% static 'service_orders/scripts/scripts.js' %}"></script>
+  <script type="text/javascript" src="{% static 'orders/scripts/scripts.js' %}"></script>
 {% endblock %}

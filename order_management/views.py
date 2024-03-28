@@ -8,67 +8,65 @@ from django.views.generic import ListView
 
 from CopyCentral_Hub.mixins import EmployeeRequiredMixin
 from employees.models import Employee
-from orders.models import PriorityChoices, PaymentMethodChoices, Region
-from service_orders.models import ServiceOrder, OrderType, Status
+from orders.models import Order, PriorityChoices, PaymentMethodChoices, Region, OrderTypeChoices, StatusChoices
 
 
-class OrdersList(EmployeeRequiredMixin, ListView):
-    model = ServiceOrder
-    template_name = 'order_management/main_order_management.html'
+class OrderListViewBase(EmployeeRequiredMixin, ListView):
+    model = Order
+    template_name = ''
     context_object_name = 'orders'
 
     def get_queryset(self):
-        orders = ServiceOrder.objects.exclude(status__in=[2, 3, 4, 5]).values(
+        orders = Order.objects.exclude(status__in=[2, 3, 4, 5]).values(
             'id',
-            'order__id',
             'status',
             'order_type',
-            region=F('order__region__name'),
-            customer=F('order__customer__name'),
-            customer_id=F('order__customer__id'),
-            priority=F('order__priority'),
-            short_description=F('order__short_description__name'),
-            executor=Concat(
-                F('order__executor__user__first_name'),
+            'priority',
+            'created_at',
+            'updated_at',
+            'payment_method',
+            'customer__id',
+            'region__name',
+            'short_description__name',
+            'customer__name',
+            executor_full_name=Concat(
+                F('executor__user__first_name'),
                 Value(' '),
-                F('order__executor__user__last_name'),
+                F('executor__user__last_name'),
                 output_field=CharField()
             ),
-            device=Case(
-                When(order__device__isnull=False, then=Concat(
-                    F('order__device__brand'), Value(', '),
-                    F('order__device__model'), Value(', '),
+            device_full_name=Case(
+                When(device__isnull=False, then=Concat(
+                    F('device__brand'), Value(', '),
+                    F('device__model'), Value(', '),
                 )),
-                default=F('order__device_name'),
+                default=F('device_name'),
                 output_field=CharField()
             ),
-            address=Case(
-                When(order__additional_address__isnull=False, then=Concat(
-                    F('order__additional_address__city'), Value(', '),
-                    F('order__additional_address__street'), Value(' '),
-                    F('order__additional_address__number')
+            address_full_name=Case(
+                When(additional_address__isnull=False, then=Concat(
+                    F('additional_address__city'), Value(', '),
+                    F('additional_address__street'), Value(' '),
+                    F('additional_address__number')
                 )),
                 default=Concat(
-                    F('order__customer__billing_city'), Value(', '),
-                    F('order__customer__billing_street'), Value(' '),
-                    F('order__customer__billing_number')
+                    F('customer__billing_city'), Value(', '),
+                    F('customer__billing_street'), Value(' '),
+                    F('customer__billing_number')
                 ),
                 output_field=CharField(),
             ),
-            order_intake=Concat(
-                F('order__user_intake__user__first_name'),
+            order_intake_full_name=Concat(
+                F('user_intake__user__first_name'),
                 Value(' '),
-                F('order__user_intake__user__last_name'),
+                F('user_intake__user__last_name'),
                 output_field=CharField()
             ),
-            created_at=F('order__created_at'),
-            updated_at=F('order__updated_at'),
-            payment_method=F('order__payment_method'),
         ).order_by('-id')
 
-        status_map = {str(choice.value): choice.label for choice in Status}
+        status_map = {str(choice.value): choice.label for choice in StatusChoices}
         priority_map = {str(choice.value): choice.label for choice in PriorityChoices}
-        order_type_map = {str(choice.value): choice.label for choice in OrderType}
+        order_type_map = {str(choice.value): choice.label for choice in OrderTypeChoices}
         payment_method_map = {str(choice.value): choice.label for choice in PaymentMethodChoices}
 
         for order in orders:
@@ -81,6 +79,7 @@ class OrdersList(EmployeeRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context.pop('object_list', None)
 
         employees = Employee.objects.annotate(
             full_name=Concat(F('user__first_name'), Value(' '), F('user__last_name'), output_field=CharField())
@@ -104,73 +103,19 @@ class OrdersList(EmployeeRequiredMixin, ListView):
         return context
 
 
-class EmployeesOrdersList(EmployeeRequiredMixin, ListView):
-    model = ServiceOrder
+class OrdersList(OrderListViewBase):
+    template_name = 'order_management/main_order_management.html'
+
+
+class EmployeesOrdersList(OrderListViewBase):
     template_name = 'order_management/employee_order_management.html'
-    context_object_name = 'orders'
 
     def get_queryset(self):
-        orders = ServiceOrder.objects.exclude(status__in=[2, 3, 4, 5]).values(
-            'id',
-            'order__id',
-            'status',
-            'order_type',
-            region=F('order__region__name'),
-            customer=F('order__customer__name'),
-            customer_id=F('order__customer__id'),
-            priority=F('order__priority'),
-            short_description=F('order__short_description__name'),
-            executor=Concat(
-                F('order__executor__user__first_name'),
-                Value(' '),
-                F('order__executor__user__last_name'),
-                output_field=CharField()
-            ),
-            device=Case(
-                When(order__device__isnull=False, then=Concat(
-                    F('order__device__brand'), Value(', '),
-                    F('order__device__model'), Value(', '),
-                )),
-                default=F('order__device_name'),
-                output_field=CharField()
-            ),
-            address=Case(
-                When(order__additional_address__isnull=False, then=Concat(
-                    F('order__additional_address__city'), Value(', '),
-                    F('order__additional_address__street'), Value(' '),
-                    F('order__additional_address__number')
-                )),
-                default=Concat(
-                    F('order__customer__billing_city'), Value(', '),
-                    F('order__customer__billing_street'), Value(' '),
-                    F('order__customer__billing_number')
-                ),
-                output_field=CharField(),
-            ),
-            order_intake=Concat(
-                F('order__user_intake__user__first_name'),
-                Value(' '),
-                F('order__user_intake__user__last_name'),
-                output_field=CharField()
-            ),
-            created_at=F('order__created_at'),
-            updated_at=F('order__updated_at'),
-            payment_method=F('order__payment_method'),
-        )
-
+        orders = super().get_queryset()
         orders_dict = defaultdict(list)
-        status_map = {str(choice.value): choice.label for choice in Status}
-        priority_map = {str(choice.value): choice.label for choice in PriorityChoices}
-        order_type_map = {str(choice.value): choice.label for choice in OrderType}
-        payment_method_map = {str(choice.value): choice.label for choice in PaymentMethodChoices}
 
         for order in orders:
-            order['status'] = status_map.get(str(order['status']), 'Unknown')
-            order['priority'] = priority_map.get(str(order['priority']), 'Unknown')
-            order['order_type'] = order_type_map.get(str(order['order_type']), 'Unknown')
-            order['payment_method'] = payment_method_map.get(str(order['payment_method']), 'Unknown')
-
-            orders_dict[order['executor']].append(order)
+            orders_dict[order['executor_full_name']].append(order)
 
         result = []
         for executor, orders in orders_dict.items():
@@ -179,7 +124,6 @@ class EmployeesOrdersList(EmployeeRequiredMixin, ListView):
             result.append({
                 'executor': executor,
                 'orders_list': orders
-
             })
 
         return result

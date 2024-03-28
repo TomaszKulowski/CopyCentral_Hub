@@ -3,7 +3,6 @@ function handleDropdownClick(event) {
 }
 
 
-
 $(document).ready(function() {
   $('.executor-select, .region-select, .priority-select').change(function() {
     var selectedValue = $(this).val();
@@ -16,7 +15,7 @@ $(document).ready(function() {
       selectedType = 'priority';
     }
     var orderId = $(this).data('order-id');
-    var url = "/orders/" + orderId + "/update/";
+    var url = "/orders/api/" + orderId + "/update/";
 
     var csrftoken = getCookie('csrftoken');
 
@@ -36,7 +35,6 @@ $(document).ready(function() {
     });
   });
 });
-
 
 
 function getCookie(name) {
@@ -129,9 +127,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-
-
-
 
 
   $(document).on('click', '.move-up', function() {

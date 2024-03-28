@@ -12,7 +12,7 @@
         placeholder="Search by Customer" aria-label="Search"></div>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
-        <a href="{% url 'service_orders:create' %}" class="btn btn-sm btn-outline-secondary">Add New Order</a>
+        <a href="{% url 'orders:order_create' %}" class="btn btn-sm btn-outline-secondary">Add New Order</a>
       </div>
     </div>
   </div>
@@ -64,23 +64,23 @@
       </thead>
       <tbody id="order-table">
         {% for order in orders %}
-          <tr class="clickable" data-toggle="collapse" data-target="#row{{ order.order__id }}">
-            <td><a  class="text-decoration-none link-dark" href="{% url 'service_orders:details' order.id %}"><b>#{{ order.order__id }}</b></a></td>
-            {% if order.customer_id %}
-              <td><a class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order.customer_id %}">{{ order.customer }}</a></td>
+          <tr class="clickable" data-toggle="collapse" data-target="#row{{ order.id }}">
+            <td><a class="text-decoration-none link-dark" href="{% url 'orders:order_details' order.id %}"><b>#{{ order.id }}</b></a></td>
+            {% if order.customer__id %}
+              <td><a class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order.customer__id %}">{{ order.customer__name }}</a></td>
             {% else %}
-              <td>{{ order.customer }}</td>
+              <td>{{ order.customer__name }}</td>
             {% endif %}
-            <td>{{ order.address }}</td>
-            <td>{{ order.short_description }}</td>
-            <td>{{ order.device }}</td>
+            <td>{{ order.address_full_name }}</td>
+            <td>{{ order.short_description__name }}</td>
+            <td>{{ order.device_full_name }}</td>
             <td>{{ order.status }}</td>
             <td>
               <div class="dropdown" onclick="handleDropdownClick(event)" >
-                <select class="region-select form-select" style="width:auto;" data-order-id="{{ order.order__id }}">
+                <select class="region-select form-select" style="width:auto;" data-order-id="{{ order.id }}">
                   <option selected disabled hidden>
-                    {% if order.region %}
-                      {{ order.region }}
+                    {% if order.region__name %}
+                      {{ order.region__name }}
                     {% else %}
                       No Region
                     {% endif %}
@@ -94,7 +94,7 @@
             </td>
             <td>
               <div class="dropdown" onclick="handleDropdownClick(event)" >
-                <select class="priority-select form-select" style="width:auto;" data-order-id="{{ order.order__id }}">
+                <select class="priority-select form-select" style="width:auto;" data-order-id="{{ order.id }}">
                   <option selected disabled hidden>
                     {{ order.priority }}
                   </option>
@@ -106,10 +106,10 @@
             </td>
             <td>
               <div class="dropdown" onclick="handleDropdownClick(event)" >
-                <select class="executor-select form-select" style="width:auto;" data-order-id="{{ order.order__id }}">
+                <select class="executor-select form-select" style="width:auto;" data-order-id="{{ order.id }}">
                   <option selected disabled hidden>
-                    {% if order.executor != ' ' %}
-                      {{ order.executor }}
+                    {% if order.executor_full_name != ' ' %}
+                      {{ order.executor_full_name }}
                     {% else %}
                       No Executor
                     {% endif %}
@@ -123,12 +123,12 @@
             </td>
           </tr>
           <tr></tr>
-          <tr id="row{{ order.order__id }}" class="collapse">
+          <tr id="row{{ order.id }}" class="collapse">
             <td colspan="3">
               <ul>
                 <li><b>Created At:</b> {{ order.created_at }}</li>
                 <li><b>Updated At:</b> {{ order.updated_at }}</li>
-                <li><b>Order Intake:</b> {{ order.order_intake }}</li>
+                <li><b>Order Intake:</b> {{ order.order_intake_full_name }}</li>
                 <li><b>Order Type:</b> {{ order.order_type }}</li>
                 <li><b>Payment Method:</b> {{ order.payment_method }}</li>
               </ul>

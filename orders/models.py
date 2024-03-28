@@ -18,7 +18,32 @@ def validate_file_size(value):
 
 
 def upload_to(instance, filename):
-    return Path().joinpath('attachments', str(instance.order.id), filename)
+    return Path().joinpath('attachments', str(instance.id), filename)
+
+
+class StatusChoices(models.IntegerChoices):
+    NEW = '0', 'New'
+    IN_PROGRESS = '1', 'In Progress'
+    CANCELED = '2', 'Canceled'
+    SETTLED = '3', 'Settled'
+    COMPLETED = '4', 'Completed'
+    SHIPPED = '5', 'Shipped'
+    AWAITING_DELIVERY = '6', 'Awaiting Delivery'
+    AWAITING_PAYMENT = '7', 'Awaiting Payment'
+    AWAITING_PICKUP = '8', 'Awaiting Pickup'
+
+
+class OrderTypeChoices(models.IntegerChoices):
+    FREE = '0', 'Free'
+    PAID = '1', 'Paid'
+    WARRANTY = '2', 'Warranty'
+    COMPLAINT = '3', 'Complaint'
+    LEASE = '4', 'Lease'
+    FREE_TO_CONFIRM = '5', 'Free - To Confirm'
+    PAID_TO_CONFIRM = '6', 'Paid - To Confirm'
+    WARRANTY_TO_CONFIRM = '7', 'Warranty - To Confirm'
+    COMPLAINT_TO_CONFIRM = '8', 'Complaint - To Confirm'
+    LEASE_TO_CONFIRM = '9', 'Lease - To Confirm'
 
 
 class PriorityChoices(models.IntegerChoices):
@@ -93,6 +118,12 @@ class Order(models.Model):
     priority = models.SmallIntegerField(choices=PriorityChoices.choices, default=PriorityChoices.STANDARD)
     device_name = models.CharField(max_length=40, blank=True, null=True)
     device = models.ForeignKey(Device, on_delete=models.PROTECT, blank=True, null=True)
+    description = models.TextField(max_length=2000, blank=True, null=True)
+    order_type = models.SmallIntegerField(choices=OrderTypeChoices.choices, default=OrderTypeChoices.PAID)
+    status = models.SmallIntegerField(choices=StatusChoices.choices, default=StatusChoices.NEW)
+    total_counter = models.PositiveIntegerField(blank=True, null=True)
+    mono_counter = models.PositiveIntegerField(blank=True, null=True)
+    color_counter = models.PositiveIntegerField(blank=True, null=True)
     services = models.ManyToManyField(OrderServices, blank=True)
     payment_method = models.SmallIntegerField(
         choices=PaymentMethodChoices.choices,

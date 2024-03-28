@@ -59,7 +59,6 @@ INSTALLED_APPS = [
     'customers.apps.CustomersConfig',
     'services.apps.ServicesConfig',
     'orders.apps.OrdersConfig',
-    'service_orders.apps.ServiceOrdersConfig',
     'order_management.apps.OrderManagementConfig',
 ]
 

@@ -12,128 +12,119 @@
         placeholder="Search by Customer" aria-label="Search"></div>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
-        <a href="{% url 'service_orders:create' %}" class="btn btn-sm btn-outline-secondary">Add New Order</a>
+        <a href="{% url 'orders:order_create' %}" class="btn btn-sm btn-outline-secondary">Add New Order</a>
       </div>
     </div>
   </div>
-
-
-
-
-
   <script type="text/javascript" src="{% static 'order_management/scripts/scripts.js' %}"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-{% for order in orders %}
-  <h2>{{ order.executor }}</h2>
-  <div class="table-responsive small">
-    <table class="table table-striped table-sm">
-      <thead class="table-dark">
-        <tr>
-          <th scope="col" width=5%>#ID</th>
-          <th scope="col" width=20%>Customer</th>
-          <th scope="col" width=10%>Address</th>
-          <th scope="col" width=10%>Short Description</th>
-          <th scope="col" width=10%>Device</th>
-          <th scope="col" width=8%>Status</th>
-          <th scope="col" width=8%>Region</th>
-          <th scope="col" width=8%>Priority</th>
-          <th scope="col" width=14%>Executor</th>
-          <th scope="col" width=5%></th>
-        </tr>
-      </thead>
-      <tbody id="order-table-{{ forloop.counter }}">
-        {% for order in order.orders_list %}
-            <tr class="clickable" data-toggle="collapse" data-target="#row{{ order.order__id }}">
-            <td><a  class="text-decoration-none link-dark" href="{% url 'service_orders:details' order.id %}"><b>#{{ order.order__id }}</b></a></td>
-            {% if order.customer_id %}
-              <td><a class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order.customer_id %}">{{ order.customer }}</a></td>
-            {% else %}
-              <td>{{ order.customer }}</td>
-            {% endif %}
-            <td>{{ order.address }}</td>
-            <td>{{ order.short_description }}</td>
-            <td>{{ order.device }}</td>
-            <td>{{ order.status }}</td>
-            <td>
-              <div class="dropdown" onclick="handleDropdownClick(event)" >
-                <select class="region-select form-select" style="width:auto;" data-order-id="{{ order.order__id }}">
-                  <option selected disabled hidden>
-                    {% if order.region %}
-                      {{ order.region }}
-                    {% else %}
-                      No Region
-                    {% endif %}
-                  </option>
-                  <option value="-1">No Region</option>
-                  {% for region in regions %}
-                    <option value="{{ region.id }}">{{ region.name }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-            </td>
-            <td>
-              <div class="dropdown" onclick="handleDropdownClick(event)" >
-                <select class="priority-select form-select" style="width:auto;" data-order-id="{{ order.order__id }}">
-                  <option selected disabled hidden>
-                    {{ order.priority }}
-                  </option>
-                  {% for id, priority in priorities %}
-                  <option value="{{ id }}">{{ priority }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-            </td>
-            <td>
-              <div class="dropdown" onclick="handleDropdownClick(event)">
-                <select class="executor-select form-select" style="width:auto;" data-order-id="{{ order.order__id }}">
-                  <option selected disabled hidden>
-                    {% if order.executor != ' ' %}
-                      {{ order.executor }}
-                    {% else %}
-                      No Executor
-                    {% endif %}
-                  </option>
-                  <option value="-1">No Executor</option>
-                  {% for employee in employees %}
-                    <option value="{{ employee.id }}">{{ employee.full_name }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-            </td>
-            <td>
-
-              <div class="btn-group me-2" onclick="handleDropdownClick(event)">
-                <a class="btn btn-sm btn-outline-secondary move-up"><i class="bi bi-arrow-up-square"></i></a>
-                <a class="btn btn-sm btn-outline-secondary move-down"><i class="bi bi-arrow-down-square"></i></a>
-              </div>
-            </td>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  {% for order in orders %}
+    <h2>{{ order.executor }}</h2>
+    <div class="table-responsive small">
+      <table class="table table-striped table-sm">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col" width=5%>#ID</th>
+            <th scope="col" width=20%>Customer</th>
+            <th scope="col" width=10%>Address</th>
+            <th scope="col" width=10%>Short Description</th>
+            <th scope="col" width=10%>Device</th>
+            <th scope="col" width=8%>Status</th>
+            <th scope="col" width=8%>Region</th>
+            <th scope="col" width=8%>Priority</th>
+            <th scope="col" width=14%>Executor</th>
+            <th scope="col" width=5%></th>
           </tr>
-          <tr></tr>
-          <tr id="row{{ order.order__id }}" class="collapse">
-            <td colspan="3">
-              <ul>
-                <li><b>Created At:</b> {{ order.created_at }}</li>
-                <li><b>Updated At:</b> {{ order.updated_at }}</li>
-                <li><b>Order Intake:</b> {{ order.order_intake }}</li>
-                <li><b>Order Type:</b> {{ order.order_type }}</li>
-                <li><b>Payment Method:</b> {{ order.payment_method }}</li>
-              </ul>
-            </td>
-            <td colspan="3"><strong>Additional Information:</strong><br>{{ order.additional_info }}</td>
-            <td colspan="3"><strong>Order Description:</strong><br>{{ order.description }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-{% endfor %}
+        </thead>
+        <tbody id="order-table-{{ forloop.counter }}">
+          {% for order_details in order.orders_list %}
+              <tr class="clickable" data-toggle="collapse" data-target="#row{{ order_details.id }}">
+              <td><a  class="text-decoration-none link-dark" href="{% url 'orders:order_details' order_details.id %}"><b>#{{ order_details.id }}</b></a></td>
+              {% if order_details.customer_id %}
+                <td><a class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order_details.customer__id %}">{{ order_details.customer__name }}</a></td>
+              {% else %}
+                <td>{{ order_details.customer__name }}</td>
+              {% endif %}
+              <td>{{ order_details.address_full_name }}</td>
+              <td>{{ order_details.short_description__name }}</td>
+              <td>{{ order_details.device_full_name }}</td>
+              <td>{{ order_details.status }}</td>
+              <td>
+                <div class="dropdown" onclick="handleDropdownClick(event)" >
+                  <select class="region-select form-select" style="width:auto;" data-order-id="{{ order_details.id }}">
+                    <option selected disabled hidden>
+                      {% if order_details.region__name %}
+                        {{ order_details.region__name }}
+                      {% else %}
+                        No Region
+                      {% endif %}
+                    </option>
+                    <option value="-1">No Region</option>
+                    {% for region in regions %}
+                      <option value="{{ region.id }}">{{ region.name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </td>
+              <td>
+                <div class="dropdown" onclick="handleDropdownClick(event)" >
+                  <select class="priority-select form-select" style="width:auto;" data-order-id="{{ order_details.id }}">
+                    <option selected disabled hidden>
+                      {{ order_details.priority }}
+                    </option>
+                    {% for id, priority in priorities %}
+                    <option value="{{ id }}">{{ priority }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </td>
+              <td>
+                <div class="dropdown" onclick="handleDropdownClick(event)">
+                  <select class="executor-select form-select" style="width:auto;" data-order-id="{{ order_details.id }}">
+                    <option selected disabled hidden>
+                      {% if order_details.executor_full_name != ' ' %}
+                        {{ order_details.executor_full_name }}
+                      {% else %}
+                        No Executor
+                      {% endif %}
+                    </option>
+                    <option value="-1">No Executor</option>
+                    {% for employee in employees %}
+                      <option value="{{ employee.id }}">{{ employee.full_name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </td>
+              <td>
+                <div class="btn-group me-2" onclick="handleDropdownClick(event)">
+                  <a class="btn btn-sm btn-outline-secondary move-up"><i class="bi bi-arrow-up-square"></i></a>
+                  <a class="btn btn-sm btn-outline-secondary move-down"><i class="bi bi-arrow-down-square"></i></a>
+                </div>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr id="row{{ order_details.id }}" class="collapse">
+              <td colspan="4">
+                <ul>
+                  <li><b>Created At:</b> {{ order_details.created_at }}</li>
+                  <li><b>Updated At:</b> {{ order_details.updated_at }}</li>
+                  <li><b>Order Intake:</b> {{ order_details.order_intake_full_name }}</li>
+                  <li><b>Order Type:</b> {{ order_details.order_type }}</li>
+                  <li><b>Payment Method:</b> {{ order_details.payment_method }}</li>
+                </ul>
+              </td>
+              <td colspan="3"><strong>Additional Information:</strong><br>{{ order_details.additional_info }}</td>
+              <td colspan="3"><strong>Order Description:</strong><br>{{ order_details.description }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endfor %}
 
 
+{% endblock %}
 
-
-
+{% block additional_scripts %}
   <script type="text/javascript" src="{% static 'order_management/scripts/scripts.js' %}"></script>
-
-
 {% endblock %}
