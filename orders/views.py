@@ -22,6 +22,7 @@ from devices.models import Device
 from employees.models import Employee
 from order_management.views import EmployeesOrdersList, OrderListViewBase
 from orders.models import SortOrder
+from orders.utils import map_choices_int_to_str
 from services.models import Brand, Model, Service
 
 
@@ -488,9 +489,9 @@ class SortOrderUpdateApiView(EmployeesOrdersList):
         sort_order.save()
         sort_order_new.save()
 
-        queryset = self.get_queryset()
+        orders = map_choices_int_to_str(self.get_queryset())
 
-        context['orders'] = queryset
+        context['orders'] = orders
         context['table_id'] = table_id
 
-        return render(request, 'order_management/employee_order_management_list.html', context=context)
+        return render(request, 'order_management/employees_order_management_list.html', context=context)

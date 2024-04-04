@@ -110,7 +110,7 @@ class OrdersList(OrderListViewBase):
 
 
 class EmployeesOrdersList(OrderListViewBase):
-    template_name = 'order_management/employee_order_management.html'
+    template_name = 'order_management/employees_order_management.html'
 
     def get_queryset(self):
         orders = SortOrder.objects.exclude(order__status__in=[2, 3, 4, 5]).values(
