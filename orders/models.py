@@ -135,11 +135,18 @@ class Order(models.Model):
     signature = JSignatureField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        if not self.payer:
-            self.payer = self.customer
-        super().save(*args, **kwargs)
+        if self.pk:
+            old_instance = Order.objects.get(pk=self.pk)
+            if old_instance.executor:
+                if old_instance.executor != self.executor or self.status in [2, 3, 4, 5]:
+                    old_sort_order = SortOrder.objects.get(order=self)
+                    SortOrder.objects.filter(
+                        employee=old_instance.executor,
+                        number__gt=old_sort_order.numbe
+                    ).update(number=models.F('number') - 1)
+                    old_sort_order.delete()
 
-        if self.executor:
+        if self.executor and self.status not in [2, 3, 4, 5]:
             existing_sort_order = SortOrder.objects.filter(order=self, employee=self.executor)
             existing_sort_orders = SortOrder.objects.filter(employee=self.executor).order_by('-number')
             if existing_sort_orders:
@@ -147,7 +154,11 @@ class Order(models.Model):
             else:
                 last_number = 0
             if not existing_sort_order:
-                SortOrder.objects.create(order=self, employee=self.executor, number=last_number)
+                SortOrder.objects.create(order_id=self.pk, employee=self.executor, number=last_number)
+
+        if not self.payer:
+            self.payer = self.customer
+        super().save(*args, **kwargs)
 
 
 class Attachment(models.Model):
@@ -159,21 +170,4 @@ class Attachment(models.Model):
 class SortOrder(models.Model):
     order = models.ForeignKey(Order, on_delete=models.PROTECT)
     employee = models.ForeignKey(Employee, on_delete=models.PROTECT)
-    number = models.PositiveSmallIntegerField()
-
-    def save(self, *args, **kwargs):
-        if self.number is None:
-            highest_sort_order = SortOrder.objects.filter(employee=self.employee).order_by('-number').first()
-            if highest_sort_order:
-                self.number = highest_sort_order.number + 1
-            else:
-                self.number = 1
-
-        existing_sort_order = SortOrder.objects.filter(number=self.number, employee=self.employee).first()
-        if existing_sort_order:
-            SortOrder.objects.filter(id=existing_sort_order.id).update(number=self.number)
-            SortOrder.objects.filter(employee=self.employee, number__gt=self.number).update(number=models.F('number') + 1)
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return f'num: {self.number} - order id: {str(self.order.id)}'
+    number = models.SmallIntegerField()

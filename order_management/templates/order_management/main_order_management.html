@@ -5,6 +5,7 @@
   <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="{% static 'order_management/scripts/base_scripts.js' %}"></script>
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Order Management</h1>
     <div class="container" style="width: 40%;">
@@ -65,14 +66,14 @@
       <tbody id="order-table">
         {% for order in orders %}
           <tr class="clickable" data-toggle="collapse" data-target="#row{{ order.id }}">
-            <td><a class="text-decoration-none link-dark" href="{% url 'orders:order_details' order.id %}"><b>#{{ order.id }}</b></a></td>
+            <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'orders:order_details' order.id %}"><b>#{{ order.id }}</b></a></td>
             {% if order.customer__id %}
-              <td><a class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order.customer__id %}">{{ order.customer__name }}</a></td>
+              <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order.customer__id %}">{{ order.customer_name }}</a></td>
             {% else %}
-              <td>{{ order.customer__name }}</td>
+              <td>{{ order.customer_name }}</td>
             {% endif %}
-            <td>{{ order.address_full_name }}</td>
-            <td>{{ order.short_description__name }}</td>
+            <td>{{ order.address_name }}</td>
+            <td>{{ order.short_description_name }}</td>
             <td>{{ order.device_full_name }}</td>
             <td>{{ order.status }}</td>
             <td>
@@ -108,8 +109,8 @@
               <div class="dropdown" onclick="handleDropdownClick(event)" >
                 <select class="executor-select form-select" style="width:auto;" data-order-id="{{ order.id }}">
                   <option selected disabled hidden>
-                    {% if order.executor_full_name != ' ' %}
-                      {{ order.executor_full_name }}
+                    {% if order.executor_name != ' ' %}
+                      {{ order.executor_name }}
                     {% else %}
                       No Executor
                     {% endif %}
@@ -128,7 +129,7 @@
               <ul>
                 <li><b>Created At:</b> {{ order.created_at }}</li>
                 <li><b>Updated At:</b> {{ order.updated_at }}</li>
-                <li><b>Order Intake:</b> {{ order.order_intake_full_name }}</li>
+                <li><b>Order Intake:</b> {{ order.order_intake_name }}</li>
                 <li><b>Order Type:</b> {{ order.order_type }}</li>
                 <li><b>Payment Method:</b> {{ order.payment_method }}</li>
               </ul>

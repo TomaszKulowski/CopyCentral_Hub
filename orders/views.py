@@ -5,7 +5,6 @@ from json import loads
 from dal import autocomplete
 from django.db.models import Q
 from django.forms import ModelForm
-
 from django.http import FileResponse, HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
@@ -21,6 +20,8 @@ from customers.models import Customer, AdditionalAddress
 from devices.forms import DeviceForm
 from devices.models import Device
 from employees.models import Employee
+from order_management.views import EmployeesOrdersList, OrderListViewBase
+from orders.models import SortOrder
 from services.models import Brand, Model, Service
 
 
@@ -125,26 +126,26 @@ class OrderUpdateAPIView(EmployeeRequiredMixin, View):
         order = get_object_or_404(Order, pk=order_id)
         selected_type = request.POST.get('selected_type')
         selected_value = request.POST.get('selected_value')
-        if selected_type == 'region':
-            if selected_value and selected_value != '-1':
-                region = get_object_or_404(Region, pk=selected_value)
-            if selected_value == '-1':
-                region = None
-            order.region = region
 
-        elif selected_type == 'priority':
-            if selected_value in [str(choice.value) for choice in PriorityChoices]:
-                order.priority = selected_value
-
-        else:
+        if selected_type == 'executor' and selected_value:
             if selected_value and selected_value != '-1':
                 employee = get_object_or_404(Employee, pk=selected_value)
             if selected_value == '-1':
                 employee = None
             order.executor = employee
 
-        order.save()
+        elif selected_type == 'region' and selected_value:
+            if selected_value and selected_value != '-1':
+                region = get_object_or_404(Region, pk=selected_value)
+            if selected_value == '-1':
+                region = None
+            order.region = region
 
+        elif selected_type == 'priority' and selected_value:
+            if selected_value in [str(choice.value) for choice in PriorityChoices]:
+                order.priority = selected_value
+
+        order.save()
         return JsonResponse({'success': 'true'})
 
 
@@ -460,5 +461,36 @@ class ServiceDelete(EmployeeRequiredMixin, View):
         return JsonResponse({'success': True})
 
 
-class SortOrder(EmployeeRequiredMixin, View):
-    pass
+class SortOrderUpdateApiView(EmployeesOrdersList):
+    object_list = ''
+
+    def get_queryset(self, ):
+        executor_id = self.request.POST.get('executor_id')
+        queryset = super().get_queryset().filter(employee__id=executor_id).order_by('number')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = OrderListViewBase.get_context_data(self, **kwargs)
+        return context
+
+    def post(self, request, order_id, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        new_position = request.POST.get('new_position')
+        table_id = request.POST.get('table_id')
+        executor_id = request.POST.get('executor_id')
+
+        sort_order = get_object_or_404(SortOrder, order__id=order_id)
+        sort_order_new = get_object_or_404(SortOrder, employee__id=executor_id, number=new_position)
+
+        sort_order_new.number = sort_order.number
+        sort_order.number = new_position
+
+        sort_order.save()
+        sort_order_new.save()
+
+        queryset = self.get_queryset()
+
+        context['orders'] = queryset
+        context['table_id'] = table_id
+
+        return render(request, 'order_management/employee_order_management_list.html', context=context)

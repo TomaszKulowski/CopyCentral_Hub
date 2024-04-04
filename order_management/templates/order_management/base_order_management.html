@@ -7,9 +7,15 @@
   </h6>
   <ul class="nav flex-column mb-auto">
     <li class="nav-item">
-      <a class="nav-link d-flex align-items-center gap-2" href="{% url 'order_management:employee_orders_list' %}">
+      <a class="nav-link d-flex align-items-center gap-2" href="{% url 'order_management:employees_orders_list' %}">
         <svg class="bi"><use xlink:href="#technician"/></svg>
         Orders By Employees
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center gap-2" href="{% url 'order_management:employees_orders_list' %}">
+        <svg class="bi"><use xlink:href="#geo-alt"/></svg>
+        Orders By Regions
       </a>
     </li>
   </ul>
@@ -19,5 +25,5 @@
 {% endblock %}
 
 {% block additional_scripts %}
-  <script type="text/javascript" src="{% static 'order_management/scripts/scripts.js' %}"></script>
+  <script type="text/javascript" src="{% static 'order_management/scripts/main_scripts.js' %}"></script>
 {% endblock %}

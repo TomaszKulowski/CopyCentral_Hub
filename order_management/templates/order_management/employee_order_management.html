@@ -5,23 +5,19 @@
   <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="{% static 'order_management/scripts/base_scripts.js' %}"></script>
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Order Management</h1>
-    <div class="container" style="width: 40%;">
-      <input type="search" class="form-control form-control-dark sea"
-        placeholder="Search by Customer" aria-label="Search"></div>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
         <a href="{% url 'orders:order_create' %}" class="btn btn-sm btn-outline-secondary">Add New Order</a>
       </div>
     </div>
   </div>
-  <script type="text/javascript" src="{% static 'order_management/scripts/scripts.js' %}"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   {% for order in orders %}
     <h2>{{ order.executor }}</h2>
     <div class="table-responsive small">
-      <table class="table table-striped table-sm">
+      <table class="table table-striped table-sm" id="order-table-{{ forloop.counter }}">
         <thead class="table-dark">
           <tr>
             <th scope="col" width=5%>#ID</th>
@@ -36,79 +32,90 @@
             <th scope="col" width=5%></th>
           </tr>
         </thead>
-        <tbody id="order-table-{{ forloop.counter }}">
+        <tbody>
           {% for order_details in order.orders_list %}
-              <tr class="clickable" data-toggle="collapse" data-target="#row{{ order_details.id }}">
-              <td><a  class="text-decoration-none link-dark" href="{% url 'orders:order_details' order_details.id %}"><b>#{{ order_details.id }}</b></a></td>
-              {% if order_details.customer_id %}
-                <td><a class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order_details.customer__id %}">{{ order_details.customer__name }}</a></td>
-              {% else %}
-                <td>{{ order_details.customer__name }}</td>
-              {% endif %}
-              <td>{{ order_details.address_full_name }}</td>
-              <td>{{ order_details.short_description__name }}</td>
-              <td>{{ order_details.device_full_name }}</td>
-              <td>{{ order_details.status }}</td>
-              <td>
-                <div class="dropdown" onclick="handleDropdownClick(event)" >
-                  <select class="region-select form-select" style="width:auto;" data-order-id="{{ order_details.id }}">
-                    <option selected disabled hidden>
-                      {% if order_details.region__name %}
-                        {{ order_details.region__name }}
-                      {% else %}
-                        No Region
-                      {% endif %}
-                    </option>
-                    <option value="-1">No Region</option>
-                    {% for region in regions %}
-                      <option value="{{ region.id }}">{{ region.name }}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-              </td>
-              <td>
-                <div class="dropdown" onclick="handleDropdownClick(event)" >
-                  <select class="priority-select form-select" style="width:auto;" data-order-id="{{ order_details.id }}">
-                    <option selected disabled hidden>
-                      {{ order_details.priority }}
-                    </option>
-                    {% for id, priority in priorities %}
-                    <option value="{{ id }}">{{ priority }}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-              </td>
-              <td>
-                <div class="dropdown" onclick="handleDropdownClick(event)">
-                  <select class="executor-select form-select" style="width:auto;" data-order-id="{{ order_details.id }}">
-                    <option selected disabled hidden>
-                      {% if order_details.executor_full_name != ' ' %}
-                        {{ order_details.executor_full_name }}
-                      {% else %}
-                        No Executor
-                      {% endif %}
-                    </option>
-                    <option value="-1">No Executor</option>
-                    {% for employee in employees %}
-                      <option value="{{ employee.id }}">{{ employee.full_name }}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-              </td>
-              <td>
-                <div class="btn-group me-2" onclick="handleDropdownClick(event)">
-                  <a class="btn btn-sm btn-outline-secondary move-up"><i class="bi bi-arrow-up-square"></i></a>
-                  <a class="btn btn-sm btn-outline-secondary move-down"><i class="bi bi-arrow-down-square"></i></a>
-                </div>
-              </td>
+            <tr class="clickable" data-toggle="collapse" data-executor_id="{{ order.executor_id }}" data-table_id="{{ forloop.parentloop.counter }}" data-current_position="{{ order_details.number }}" data-order_id="{{ order_details.order__id }}" data-target="#row{{ order_details.order__id }}">
+            <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'orders:order_details' order_details.order__id %}"><b>#{{ order_details.order__id }}</b></a></td>
+            {% if order_details.order__customer__id %}
+              <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order_details.order__customer__id %}">{{ order_details.customer_name }}</a></td>
+            {% else %}
+              <td>{{ order_details.customer_name }}</td>
+            {% endif %}
+            <td>{{ order_details.address_name }}</td>
+            <td>{{ order_details.short_description_name }}</td>
+            <td>{{ order_details.device_full_name }}</td>
+            <td>{{ order_details.status }}</td>
+            <td>
+              <div class="dropdown" onclick="handleDropdownClick(event)">
+                <select class="region-select form-select" style="width:auto;" data-order-id="{{ order_details.id }}">
+                  <option selected disabled hidden>
+                    {% if order_details.order__region__name %}
+                      {{ order_details.order__region__name }}
+                    {% else %}
+                      No Region
+                    {% endif %}
+                  </option>
+                  <option value="-1">No Region</option>
+                  {% for region in regions %}
+                    <option value="{{ region.id }}">{{ region.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </td>
+            <td>
+              <div class="dropdown" onclick="handleDropdownClick(event)">
+                <select class="priority-select form-select" style="width:auto;" data-order-id="{{ order_details.id }}">
+                  <option selected disabled hidden>
+                    {{ order_details.priority }}
+                  </option>
+                  {% for id, priority in priorities %}
+                  <option value="{{ id }}">{{ priority }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </td>
+            <td>
+              <div class="dropdown" onclick="handleDropdownClick(event)">
+                <select class="executor-select form-select" style="width:auto;" data-order-id="{{ order_details.id }}">
+                  <option selected disabled hidden>
+                    {% if order_details.executor_name != ' ' %}
+                      {{ order_details.executor_name }}
+                    {% else %}
+                      No Executor
+                    {% endif %}
+                  </option>
+                  <option value="-1">No Executor</option>
+                  {% for employee in employees %}
+                    <option value="{{ employee.id }}">{{ employee.full_name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </td>
+            <td>
+              <div class="btn-group me-2">
+                {% if order.orders_list|length == 1 %}
+                  <button disabled="disabled" class="btn btn-sm btn-outline-secondary move-up"><i class="bi bi-arrow-up-square"></i></button>
+                  <button disabled="disabled" class="btn btn-sm btn-outline-secondary move-down"><i class="bi bi-arrow-down-square"></i></button>
+                {% elif forloop.counter != order.orders_list|length and forloop.counter != 1 %}
+                  <button class="btn btn-sm btn-outline-secondary move-up"><i class="bi bi-arrow-up-square"></i></button>
+                  <button class="btn btn-sm btn-outline-secondary move-down"><i class="bi bi-arrow-down-square"></i></button>
+                {% elif forloop.counter == order.orders_list|length %}
+                  <button class="btn btn-sm btn-outline-secondary move-up"><i class="bi bi-arrow-up-square"></i></button>
+                  <button disabled="disabled" class="btn btn-sm btn-outline-secondary move-down"><i class="bi bi-arrow-down-square"></i></button>
+                {% elif forloop.counter == 1 %}
+                  <button disabled="disabled" class="btn btn-sm btn-outline-secondary move-up"><i class="bi bi-arrow-up-square"></i></button>
+                  <button class="btn btn-sm btn-outline-secondary move-down"><i class="bi bi-arrow-down-square"></i></button>
+                {% endif %}
+              </div>
+            </td>
             </tr>
             <tr></tr>
-            <tr id="row{{ order_details.id }}" class="collapse">
+            <tr id="row{{ order_details.order__id }}" class="collapse">
               <td colspan="4">
                 <ul>
-                  <li><b>Created At:</b> {{ order_details.created_at }}</li>
-                  <li><b>Updated At:</b> {{ order_details.updated_at }}</li>
-                  <li><b>Order Intake:</b> {{ order_details.order_intake_full_name }}</li>
+                  <li><b>Created At:</b> {{ order_details.order__created_at }}</li>
+                  <li><b>Updated At:</b> {{ order_details.order__updated_at }}</li>
+                  <li><b>Order Intake:</b> {{ order_details.order_intake_name }}</li>
                   <li><b>Order Type:</b> {{ order_details.order_type }}</li>
                   <li><b>Payment Method:</b> {{ order_details.payment_method }}</li>
                 </ul>
@@ -121,10 +128,8 @@
       </table>
     </div>
   {% endfor %}
-
-
 {% endblock %}
 
 {% block additional_scripts %}
-  <script type="text/javascript" src="{% static 'order_management/scripts/scripts.js' %}"></script>
+  <script type="text/javascript" src="{% static 'order_management/scripts/employee_scripts.js' %}"></script>
 {% endblock %}

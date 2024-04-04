@@ -8,7 +8,8 @@ from django.views.generic import ListView
 
 from CopyCentral_Hub.mixins import EmployeeRequiredMixin
 from employees.models import Employee
-from orders.models import Order, PriorityChoices, PaymentMethodChoices, Region, OrderTypeChoices, StatusChoices
+from orders.models import Order, PriorityChoices, Region, SortOrder
+from orders.utils import map_choices_int_to_str
 
 
 class OrderListViewBase(EmployeeRequiredMixin, ListView):
@@ -27,23 +28,32 @@ class OrderListViewBase(EmployeeRequiredMixin, ListView):
             'payment_method',
             'customer__id',
             'region__name',
-            'short_description__name',
-            'customer__name',
-            executor_full_name=Concat(
+            short_description_name=Case(
+                When(short_description__name__isnull=False, then=F('short_description__name')),
+                default=Value('---'),
+                output_field=CharField()
+            ),
+            customer_name=Case(
+                When(customer__name__isnull=False, then=F('customer__name')),
+                default=Value('---'),
+                output_field=CharField()
+            ),
+            executor_name=Concat(
                 F('executor__user__first_name'),
                 Value(' '),
                 F('executor__user__last_name'),
                 output_field=CharField()
             ),
             device_full_name=Case(
-                When(device__isnull=False, then=Concat(
+                When(device__brand__isnull=False, then=Concat(
                     F('device__brand'), Value(', '),
                     F('device__model'), Value(', '),
                 )),
-                default=F('device_name'),
+                When(device_name__isnull=False, then=F('device_name')),
+                default=Value('---'),
                 output_field=CharField()
             ),
-            address_full_name=Case(
+            address_name=Case(
                 When(additional_address__isnull=False, then=Concat(
                     F('additional_address__city'), Value(', '),
                     F('additional_address__street'), Value(' '),
@@ -56,7 +66,7 @@ class OrderListViewBase(EmployeeRequiredMixin, ListView):
                 ),
                 output_field=CharField(),
             ),
-            order_intake_full_name=Concat(
+            order_intake_name=Concat(
                 F('user_intake__user__first_name'),
                 Value(' '),
                 F('user_intake__user__last_name'),
@@ -64,22 +74,12 @@ class OrderListViewBase(EmployeeRequiredMixin, ListView):
             ),
         ).order_by('-id')
 
-        status_map = {str(choice.value): choice.label for choice in StatusChoices}
-        priority_map = {str(choice.value): choice.label for choice in PriorityChoices}
-        order_type_map = {str(choice.value): choice.label for choice in OrderTypeChoices}
-        payment_method_map = {str(choice.value): choice.label for choice in PaymentMethodChoices}
-
-        for order in orders:
-            order['status'] = status_map.get(str(order['status']), 'Unknown')
-            order['priority'] = priority_map.get(str(order['priority']), 'Unknown')
-            order['order_type'] = order_type_map.get(str(order['order_type']), 'Unknown')
-            order['payment_method'] = payment_method_map.get(str(order['payment_method']), 'Unknown')
-
         return orders
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.pop('object_list', None)
+        orders = self.get_queryset()
+
+        orders = map_choices_int_to_str(orders)
 
         employees = Employee.objects.annotate(
             full_name=Concat(F('user__first_name'), Value(' '), F('user__last_name'), output_field=CharField())
@@ -94,11 +94,13 @@ class OrderListViewBase(EmployeeRequiredMixin, ListView):
         regions = Region.objects.all()
         priorities = PriorityChoices.choices
 
-        context['employees'] = employees
-        context['regions'] = regions
-        context['priorities'] = priorities
-
-        context['selected_region'] = self.request.session.get('selected_region', 'Display All')
+        context = {
+            'orders': orders,
+            'employees': employees,
+            'regions': regions,
+            'priorities': priorities,
+            'selected_region': self.request.session.get('selected_region', 'Display All')
+        }
 
         return context
 
@@ -111,22 +113,86 @@ class EmployeesOrdersList(OrderListViewBase):
     template_name = 'order_management/employee_order_management.html'
 
     def get_queryset(self):
-        orders = super().get_queryset()
+        orders = SortOrder.objects.exclude(order__status__in=[2, 3, 4, 5]).values(
+            'number',
+            'order__id',
+            'order__created_at',
+            'order__updated_at',
+            'order__customer__id',
+            'order__region__name',
+            payment_method=F('order__payment_method'),
+            order_type=F('order__order_type'),
+            priority=F('order__priority'),
+            status=F('order__status'),
+            executor_id=F('order__executor__id'),
+            short_description_name=Case(
+                When(order__short_description__name__isnull=False, then=F('order__short_description__name')),
+                default=Value('---'),
+                output_field=CharField()
+            ),
+            customer_name=Case(
+                When(order__customer__name__isnull=False, then=F('order__customer__name')),
+                default=Value('---'),
+                output_field=CharField()
+            ),
+            executor_name=Concat(
+                F('order__executor__user__first_name'),
+                Value(' '),
+                F('order__executor__user__last_name'),
+                output_field=CharField()
+            ),
+            device_full_name=Case(
+                When(order__device__brand__isnull=False, then=Concat(
+                    F('order__device__brand'), Value(', '),
+                    F('order__device__model'), Value(', '),
+                )),
+                When(order__device_name__isnull=False, then=F('order__device_name')),
+                default=Value('---'),
+                output_field=CharField()
+            ),
+            address_name=Case(
+                When(order__additional_address__isnull=False, then=Concat(
+                    F('order__additional_address__city'), Value(', '),
+                    F('order__additional_address__street'), Value(' '),
+                    F('order__additional_address__number')
+                )),
+                default=Concat(
+                    F('order__customer__billing_city'), Value(', '),
+                    F('order__customer__billing_street'), Value(' '),
+                    F('order__customer__billing_number')
+                ),
+                output_field=CharField(),
+            ),
+            order_intake_name=Concat(
+                F('order__user_intake__user__first_name'),
+                Value(' '),
+                F('order__user_intake__user__last_name'),
+                output_field=CharField()
+            ),
+        ).order_by('number')
+
+        return orders
+
+    def get_context_data(self, **kwargs):
+        orders = self.get_queryset()
         orders_dict = defaultdict(list)
 
+        orders = map_choices_int_to_str(orders)
+
         for order in orders:
-            orders_dict[order['executor_full_name']].append(order)
+            if order['executor_name'] and order['executor_name'] != ' ':
+                orders_dict[order['executor_name']].append(order)
 
         result = []
         for executor, orders in orders_dict.items():
-            if executor == ' ':
-                continue
             result.append({
                 'executor': executor,
+                'executor_id': orders[0].get('executor_id'),
                 'orders_list': orders
             })
+        result_sorted = sorted(result, key=lambda x: x['executor'])
 
-        return result
+        return {'orders': result_sorted}
 
 
 class ApplyFilters(EmployeeRequiredMixin, View):
