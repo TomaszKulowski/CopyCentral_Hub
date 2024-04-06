@@ -29,6 +29,16 @@ class OrderListViewBase(EmployeeRequiredMixin, ListView):
             'payment_method',
             'customer__id',
             'region__name',
+            additional_info_name=Case(
+                When(additional_info__isnull=False, then=F('additional_info')),
+                default=Value('---'),
+                output_field=CharField()
+            ),
+            description_name=Case(
+                When(description__isnull=False, then=F('description')),
+                default=Value('---'),
+                output_field=CharField()
+            ),
             short_description_name=Case(
                 When(short_description__name__isnull=False, then=F('short_description__name')),
                 default=Value('---'),
@@ -126,6 +136,16 @@ class EmployeesOrdersList(OrderListViewBase):
             priority=F('order__priority'),
             status=F('order__status'),
             executor_id=F('order__executor__id'),
+            additional_info_name=Case(
+                When(order__additional_info__isnull=False, then=F('order__additional_info')),
+                default=Value('---'),
+                output_field=CharField()
+            ),
+            description_name=Case(
+                When(order__description__isnull=False, then=F('order__description')),
+                default=Value('---'),
+                output_field=CharField()
+            ),
             short_description_name=Case(
                 When(order__short_description__name__isnull=False, then=F('order__short_description__name')),
                 default=Value('---'),
