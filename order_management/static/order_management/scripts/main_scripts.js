@@ -1,24 +1,13 @@
-document.getElementById('filterByRegion').addEventListener('change', function() {
-    var selectedRegion = this.value;
+document.getElementById('filterByRegion').addEventListener('change', handleFilterChange);
+document.getElementById('filterByPriority').addEventListener('change', handleFilterChange);
+document.getElementById('filterByEmployee').addEventListener('change', handleFilterChange);
+
+function handleFilterChange() {
+    var selectedRegion = document.getElementById('filterByRegion').value;
     var selectedPriority = document.getElementById('filterByPriority').value;
     var selectedExecutor = document.getElementById('filterByEmployee').value;
     filterOrders(selectedRegion, selectedPriority, selectedExecutor);
-});
-
-document.getElementById('filterByPriority').addEventListener('change', function() {
-    var selectedRegion = document.getElementById('filterByRegion').value;
-    var selectedPriority = this.value;
-    var selectedExecutor = document.getElementById('filterByEmployee').value;
-    filterOrders(selectedRegion, selectedPriority, selectedExecutor);
-});
-
-document.getElementById('filterByEmployee').addEventListener('change', function() {
-    var selectedRegion = document.getElementById('filterByRegion').value;
-    var selectedPriority = document.getElementById('filterByPriority').value;
-    var selectedExecutor = this.value;
-    filterOrders(selectedRegion, selectedPriority, selectedExecutor);
-});
-
+}
 
 function filterOrders(selectedRegion, selectedPriority, selectedExecutor) {
     var rows = document.querySelectorAll('#order-table tr.clickable');
@@ -42,38 +31,10 @@ function filterOrders(selectedRegion, selectedPriority, selectedExecutor) {
         }
     });
 
-    $.ajax({
-        url: "apply_filters/?region=" + selectedRegion,
-        type: 'GET',
-    });
+     $.ajax({
+         url: "apply_filters/?region=" + selectedRegion,
+         type: 'GET',
+     });
 }
 
-function initFilters() {
-    var selectedRegion = document.getElementById('filterByRegion').value;
-    var selectedPriority = document.getElementById('filterByPriority').value;
-    var selectedExecutor = document.getElementById('filterByEmployee').value;
-    filterOrders(selectedRegion, selectedPriority, selectedExecutor);
-}
-
-document.getElementById('filterByRegion').addEventListener('change', function() {
-    var selectedRegion = this.value;
-    var selectedPriority = document.getElementById('filterByPriority').value;
-    var selectedExecutor = document.getElementById('filterByEmployee').value;
-    filterOrders(selectedRegion, selectedPriority, selectedExecutor);
-});
-
-document.getElementById('filterByPriority').addEventListener('change', function() {
-    var selectedRegion = document.getElementById('filterByRegion').value;
-    var selectedPriority = this.value;
-    var selectedExecutor = document.getElementById('filterByEmployee').value;
-    filterOrders(selectedRegion, selectedPriority, selectedExecutor);
-});
-
-document.getElementById('filterByEmployee').addEventListener('change', function() {
-    var selectedRegion = document.getElementById('filterByRegion').value;
-    var selectedPriority = document.getElementById('filterByPriority').value;
-    var selectedExecutor = this.value;
-    filterOrders(selectedRegion, selectedPriority, selectedExecutor);
-});
-
-initFilters();
+handleFilterChange();

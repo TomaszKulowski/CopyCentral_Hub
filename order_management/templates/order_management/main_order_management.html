@@ -21,9 +21,13 @@
     <div class="d-flex align-items-center border border-1 p-2 form-control">
       <span class="d-inline me-2">Filter By Region:</span>
       <select id="filterByRegion" class="form-select d-inline">
-        <option hidden="hidden" value="{{ selected_region }}">{{ selected_region }}</option>
+        {% if selected_region == 'None' %}
+          <option hidden="hidden" value="None">No Region Assigned</option>
+        {% else %}
+          <option hidden="hidden" value="{{ selected_region }}">{{ selected_region }}</option>
+        {% endif %}
         <option value="Display All">Display All</option>
-        <option value="No Region">No Region</option>
+        <option value="None">No Region Assigned</option>
         {% for region in regions %}
           <option value="{{ region.name }}">{{ region.name }}</option>
         {% endfor %}
@@ -77,15 +81,14 @@
             <td>{{ order.device_full_name }}</td>
             <td>{{ order.status }}</td>
             <td>
-              <div class="dropdown" onclick="handleDropdownClick(event)" >
+              <div class="dropdown" onclick="handleDropdownClick(event)">
                 <select class="region-select form-select" style="width:auto;" data-order-id="{{ order.id }}">
-                  <option selected disabled hidden>
+                  <option selected disabled hidden value="">
                     {% if order.region__name %}
-                      {{ order.region__name }}
+                  <option selected disabled hidden value="{{ order.region__name }}">{{ order.region__name }}</option>
                     {% else %}
-                      No Region
+                  <option selected disabled hidden value="None">No Region</option>
                     {% endif %}
-                  </option>
                   <option value="-1">No Region</option>
                   {% for region in regions %}
                     <option value="{{ region.id }}">{{ region.name }}</option>
@@ -141,4 +144,8 @@
       </tbody>
     </table>
   </div>
+{% endblock %}
+
+{% block additional_scripts %}
+  <script type="text/javascript" src="{% static 'order_management/scripts/main_scripts.js' %}"></script>
 {% endblock %}

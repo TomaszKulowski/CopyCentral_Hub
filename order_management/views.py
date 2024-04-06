@@ -3,6 +3,7 @@ from collections import defaultdict
 from django.db.models import F, Case, Value, When, CharField, IntegerField
 from django.db.models.functions import Concat
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from django.views import View
 from django.views.generic import ListView
 
@@ -47,7 +48,7 @@ class OrderListViewBase(EmployeeRequiredMixin, ListView):
             device_full_name=Case(
                 When(device__brand__isnull=False, then=Concat(
                     F('device__brand'), Value(', '),
-                    F('device__model'), Value(', '),
+                    F('device__model'),
                 )),
                 When(device_name__isnull=False, then=F('device_name')),
                 default=Value('---'),
@@ -144,7 +145,7 @@ class EmployeesOrdersList(OrderListViewBase):
             device_full_name=Case(
                 When(order__device__brand__isnull=False, then=Concat(
                     F('order__device__brand'), Value(', '),
-                    F('order__device__model'), Value(', '),
+                    F('order__device__model'),
                 )),
                 When(order__device_name__isnull=False, then=F('order__device_name')),
                 default=Value('---'),
@@ -175,9 +176,8 @@ class EmployeesOrdersList(OrderListViewBase):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        orders = self.get_queryset()
+        orders = map_choices_int_to_str(self.get_queryset())
         orders_dict = defaultdict(list)
-        orders = map_choices_int_to_str(orders)
 
         for order in orders:
             if order['executor_name'] and order['executor_name'] != ' ':
@@ -218,6 +218,41 @@ class RegionsOrdersList(OrderListViewBase):
             })
         result_sorted = sorted(result, key=lambda x: x['region'])
         context['orders'] = result_sorted
+
+        return context
+
+
+class MyOrdersList(EmployeesOrdersList):
+    template_name = 'order_management/my_orders_management.html'
+
+    def get_queryset(self):
+        orders = super().get_queryset()
+        employee_instance = get_object_or_404(Employee, user=self.request.user)
+        orders = orders.filter(executor_id=employee_instance.id)
+        return orders
+
+    def get_context_data(self, **kwargs):
+        orders = map_choices_int_to_str(self.get_queryset())
+        orders_dict = defaultdict(list)
+
+        for order in orders:
+            if not order['order__region__name']:
+                orders_dict['None'].append(order)
+            else:
+                orders_dict[order['order__region__name']].append(order)
+
+        result = []
+        for region, orders in orders_dict.items():
+            result.append({
+                'region': region,
+                'executor_id': orders[0].get('executor_id'),
+                'orders_list': orders
+            })
+        result_sorted = sorted(result, key=lambda x: x['region'])
+        context = {
+            'orders': result_sorted,
+            'selected_region': self.request.session.get('selected_region', 'Display All'),
+        }
 
         return context
 
