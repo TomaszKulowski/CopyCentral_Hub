@@ -174,9 +174,9 @@ class EmployeesOrdersList(OrderListViewBase):
         return orders
 
     def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         orders = self.get_queryset()
         orders_dict = defaultdict(list)
-
         orders = map_choices_int_to_str(orders)
 
         for order in orders:
@@ -191,8 +191,35 @@ class EmployeesOrdersList(OrderListViewBase):
                 'orders_list': orders
             })
         result_sorted = sorted(result, key=lambda x: x['executor'])
+        context['orders'] = result_sorted
 
-        return {'orders': result_sorted}
+        return context
+
+
+class RegionsOrdersList(OrderListViewBase):
+    template_name = 'order_management/regions_order_management.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        orders_dict = defaultdict(list)
+
+        for order in context['orders']:
+            if not order['region__name']:
+                orders_dict['None'].append(order)
+            else:
+                orders_dict[order['region__name']].append(order)
+
+        result = []
+        for region, orders in orders_dict.items():
+            result.append({
+                'region': region,
+                'executor_id': orders[0].get('executor_id'),
+                'orders_list': orders
+            })
+        result_sorted = sorted(result, key=lambda x: x['region'])
+        context['orders'] = result_sorted
+
+        return context
 
 
 class ApplyFilters(EmployeeRequiredMixin, View):

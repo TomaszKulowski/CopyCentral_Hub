@@ -142,7 +142,7 @@ class Order(models.Model):
                     old_sort_order = SortOrder.objects.get(order=self)
                     SortOrder.objects.filter(
                         employee=old_instance.executor,
-                        number__gt=old_sort_order.numbe
+                        number__gt=old_sort_order.number
                     ).update(number=models.F('number') - 1)
                     old_sort_order.delete()
 

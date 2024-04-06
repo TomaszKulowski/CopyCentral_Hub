@@ -9,21 +9,17 @@
     <li class="nav-item">
       <a class="nav-link d-flex align-items-center gap-2" href="{% url 'order_management:employees_orders_list' %}">
         <svg class="bi"><use xlink:href="#technician"/></svg>
-        Orders By Employees
+        Employees Orders
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link d-flex align-items-center gap-2" href="{% url 'order_management:employees_orders_list' %}">
+      <a class="nav-link d-flex align-items-center gap-2" href="{% url 'order_management:regions_orders_list' %}">
         <svg class="bi"><use xlink:href="#geo-alt"/></svg>
-        Orders By Regions
+        Regions Orders
       </a>
     </li>
   </ul>
 {% endblock %}
 
 {% block content %}
-{% endblock %}
-
-{% block additional_scripts %}
-  <script type="text/javascript" src="{% static 'order_management/scripts/main_scripts.js' %}"></script>
 {% endblock %}
