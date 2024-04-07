@@ -146,7 +146,7 @@ class Order(models.Model):
         if not self._state.adding:
             old_order_instance = get_object_or_404(Order, pk=self.pk)
             if old_order_instance.executor:
-                if self.status in [2, 3, 4, 5]:
+                if self.status in [2, 3, 4, 5] and old_order_instance.sort_number:
                     self.sort_number = None
                     Order.objects.filter(
                         executor=old_order_instance.executor,
