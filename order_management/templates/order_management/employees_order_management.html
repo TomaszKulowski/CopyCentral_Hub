@@ -34,10 +34,10 @@
         </thead>
         <tbody>
           {% for order_details in order.orders_list %}
-            <tr class="clickable" data-toggle="collapse" data-executor_id="{{ order.executor_id }}" data-table_id="{{ forloop.parentloop.counter }}" data-current_position="{{ order_details.number }}" data-order_id="{{ order_details.order__id }}" data-target="#row{{ order_details.order__id }}">
-            <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'orders:order_details' order_details.order__id %}"><b>#{{ order_details.order__id }}</b></a></td>
-            {% if order_details.order__customer__id %}
-              <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order_details.order__customer__id %}">{{ order_details.customer_name }}</a></td>
+            <tr class="clickable" data-toggle="collapse" data-executor_id="{{ order_details.executor__id }}" data-table_id="{{ forloop.parentloop.counter }}" data-current_position="{{ order_details.sort_number }}" data-order_id="{{ order_details.id }}" data-target="#row{{ order_details.id }}">
+            <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'orders:order_details' order_details.id %}"><b>#{{ order_details.id }}</b></a></td>
+            {% if order_details.customer__id %}
+              <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order_details.customer__id %}">{{ order_details.customer_name }}</a></td>
             {% else %}
               <td>{{ order_details.customer_name }}</td>
             {% endif %}
@@ -47,10 +47,10 @@
             <td>{{ order_details.status }}</td>
             <td>
               <div class="dropdown" onclick="handleDropdownClick(event)">
-                <select class="region-select form-select" style="width:auto;" data-order-id="{{ order_details.order__id }}">
+                <select class="region-select form-select" style="width:auto;" data-order-id="{{ order_details.id }}">
                   <option selected disabled hidden>
-                    {% if order_details.order__region__name %}
-                      {{ order_details.order__region__name }}
+                    {% if order_details.region__name %}
+                      {{ order_details.region__name }}
                     {% else %}
                       No Region
                     {% endif %}
@@ -64,7 +64,7 @@
             </td>
             <td>
               <div class="dropdown" onclick="handleDropdownClick(event)">
-                <select class="priority-select form-select" style="width:auto;" data-order-id="{{ order_details.order__id }}">
+                <select class="priority-select form-select" style="width:auto;" data-order-id="{{ order_details.id }}">
                   <option selected disabled hidden>
                     {{ order_details.priority }}
                   </option>
@@ -76,7 +76,7 @@
             </td>
             <td>
               <div class="dropdown" onclick="handleDropdownClick(event)">
-                <select class="executor-select form-select" style="width:auto;" data-order-id="{{ order_details.order__id }}">
+                <select class="executor-select form-select" style="width:auto;" data-order-id="{{ order_details.id }}">
                   <option selected disabled hidden>
                     {% if order_details.executor_name != ' ' %}
                       {{ order_details.executor_name }}
@@ -110,11 +110,11 @@
             </td>
             </tr>
             <tr></tr>
-            <tr id="row{{ order_details.order__id }}" class="collapse">
+            <tr id="row{{ order_details.id }}" class="collapse">
               <td colspan="4">
                 <ul>
-                  <li><b>Created At:</b> {{ order_details.order__created_at }}</li>
-                  <li><b>Updated At:</b> {{ order_details.order__updated_at }}</li>
+                  <li><b>Created At:</b> {{ order_details.created_at }}</li>
+                  <li><b>Updated At:</b> {{ order_details.updated_at }}</li>
                   <li><b>Order Intake:</b> {{ order_details.order_intake_name }}</li>
                   <li><b>Order Type:</b> {{ order_details.order_type }}</li>
                   <li><b>Payment Method:</b> {{ order_details.payment_method }}</li>

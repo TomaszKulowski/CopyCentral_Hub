@@ -9,7 +9,7 @@ from django.views.generic import ListView
 
 from CopyCentral_Hub.mixins import EmployeeRequiredMixin
 from employees.models import Employee
-from orders.models import Order, PriorityChoices, Region, SortOrder
+from orders.models import Order, PriorityChoices, Region
 from orders.utils import map_choices_int_to_str
 
 
@@ -29,6 +29,8 @@ class OrderListViewBase(EmployeeRequiredMixin, ListView):
             'payment_method',
             'customer__id',
             'region__name',
+            'sort_number',
+            'executor__id',
             additional_info_name=Case(
                 When(additional_info__isnull=False, then=F('additional_info')),
                 default=Value('---'),
@@ -89,7 +91,6 @@ class OrderListViewBase(EmployeeRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         orders = self.get_queryset()
-
         orders = map_choices_int_to_str(orders)
 
         employees = Employee.objects.annotate(
@@ -123,80 +124,9 @@ class OrdersList(OrderListViewBase):
 class EmployeesOrdersList(OrderListViewBase):
     template_name = 'order_management/employees_order_management.html'
 
-    def get_queryset(self):
-        orders = SortOrder.objects.exclude(order__status__in=[2, 3, 4, 5]).values(
-            'number',
-            'order__id',
-            'order__created_at',
-            'order__updated_at',
-            'order__customer__id',
-            'order__region__name',
-            payment_method=F('order__payment_method'),
-            order_type=F('order__order_type'),
-            priority=F('order__priority'),
-            status=F('order__status'),
-            executor_id=F('order__executor__id'),
-            additional_info_name=Case(
-                When(order__additional_info__isnull=False, then=F('order__additional_info')),
-                default=Value('---'),
-                output_field=CharField()
-            ),
-            description_name=Case(
-                When(order__description__isnull=False, then=F('order__description')),
-                default=Value('---'),
-                output_field=CharField()
-            ),
-            short_description_name=Case(
-                When(order__short_description__name__isnull=False, then=F('order__short_description__name')),
-                default=Value('---'),
-                output_field=CharField()
-            ),
-            customer_name=Case(
-                When(order__customer__name__isnull=False, then=F('order__customer__name')),
-                default=Value('---'),
-                output_field=CharField()
-            ),
-            executor_name=Concat(
-                F('order__executor__user__first_name'),
-                Value(' '),
-                F('order__executor__user__last_name'),
-                output_field=CharField()
-            ),
-            device_full_name=Case(
-                When(order__device__brand__isnull=False, then=Concat(
-                    F('order__device__brand'), Value(', '),
-                    F('order__device__model'),
-                )),
-                When(order__device_name__isnull=False, then=F('order__device_name')),
-                default=Value('---'),
-                output_field=CharField()
-            ),
-            address_name=Case(
-                When(order__additional_address__isnull=False, then=Concat(
-                    F('order__additional_address__city'), Value(', '),
-                    F('order__additional_address__street'), Value(' '),
-                    F('order__additional_address__number')
-                )),
-                default=Concat(
-                    F('order__customer__billing_city'), Value(', '),
-                    F('order__customer__billing_street'), Value(' '),
-                    F('order__customer__billing_number')
-                ),
-                output_field=CharField(),
-            ),
-            order_intake_name=Concat(
-                F('order__user_intake__user__first_name'),
-                Value(' '),
-                F('order__user_intake__user__last_name'),
-                output_field=CharField()
-            ),
-        ).order_by('number')
-
-        return orders
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        orders = map_choices_int_to_str(self.get_queryset())
+        orders = map_choices_int_to_str(self.get_queryset().order_by('sort_number'))
         orders_dict = defaultdict(list)
 
         for order in orders:
@@ -207,7 +137,6 @@ class EmployeesOrdersList(OrderListViewBase):
         for executor, orders in orders_dict.items():
             result.append({
                 'executor': executor,
-                'executor_id': orders[0].get('executor_id'),
                 'orders_list': orders
             })
         result_sorted = sorted(result, key=lambda x: x['executor'])
@@ -233,7 +162,6 @@ class RegionsOrdersList(OrderListViewBase):
         for region, orders in orders_dict.items():
             result.append({
                 'region': region,
-                'executor_id': orders[0].get('executor_id'),
                 'orders_list': orders
             })
         result_sorted = sorted(result, key=lambda x: x['region'])
@@ -248,7 +176,8 @@ class MyOrdersList(EmployeesOrdersList):
     def get_queryset(self):
         orders = super().get_queryset()
         employee_instance = get_object_or_404(Employee, user=self.request.user)
-        orders = orders.filter(executor_id=employee_instance.id)
+        orders = orders.filter(executor_id=employee_instance.id).order_by('sort_number')
+
         return orders
 
     def get_context_data(self, **kwargs):
@@ -256,16 +185,15 @@ class MyOrdersList(EmployeesOrdersList):
         orders_dict = defaultdict(list)
 
         for order in orders:
-            if not order['order__region__name']:
+            if not order['region__name']:
                 orders_dict['None'].append(order)
             else:
-                orders_dict[order['order__region__name']].append(order)
+                orders_dict[order['region__name']].append(order)
 
         result = []
         for region, orders in orders_dict.items():
             result.append({
                 'region': region,
-                'executor_id': orders[0].get('executor_id'),
                 'orders_list': orders
             })
         result_sorted = sorted(result, key=lambda x: x['region'])

@@ -63,8 +63,8 @@
         </thead>
         <tbody>
           {% for order_details in order.orders_list %}
-            <tr class="clickable" data-toggle="collapse" data-executor_id="{{ order.executor_id }}" data-order_id="{{ order_details.order__id }}" data-target="#row{{ order_details.order__id }}">
-            <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'orders:order_details' order_details.order__id %}"><b>#{{ order_details.order__id }}</b></a></td>
+            <tr class="clickable" data-toggle="collapse" data-target="#row{{ order_details.id }}">
+            <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'orders:order_details' order_details.id %}"><b>#{{ order_details.id }}</b></a></td>
             {% if order_details.customer__id %}
               <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order_details.customer__id %}">{{ order_details.customer_name }}</a></td>
             {% else %}
@@ -77,8 +77,8 @@
             <td>{{ order_details.priority }}</td>
             <td>
               <div class="btn-group me-2">
-                <a onclick="handleDropdownClick(event)" href="{% url 'orders:order_details' order_details.order__id %}" class="btn btn-sm btn-outline-secondary">Details</a>
-                <a onclick="handleDropdownClick(event)" href="{% url 'orders:order_update' order_details.order__id %}" class="btn btn-sm btn-outline-secondary">Update</a>
+                <a onclick="handleDropdownClick(event)" href="{% url 'orders:order_details' order_details.id %}" class="btn btn-sm btn-outline-secondary">Details</a>
+                <a onclick="handleDropdownClick(event)" href="{% url 'orders:order_update' order_details.id %}" class="btn btn-sm btn-outline-secondary">Update</a>
               </div>
             </td>
             </tr>
@@ -86,8 +86,8 @@
             <tr id="row{{ order_details.order__id }}" class="collapse">
               <td colspan="3">
                 <ul>
-                <li><b>Created At:</b> {{ order_details.order__created_at }}</li>
-                <li><b>Updated At:</b> {{ order_details.order__updated_at }}</li>
+                <li><b>Created At:</b> {{ order_details.created_at }}</li>
+                <li><b>Updated At:</b> {{ order_details.updated_at }}</li>
                   <li><b>Order Intake:</b> {{ order_details.order_intake_name }}</li>
                   <li><b>Order Type:</b> {{ order_details.order_type }}</li>
                   <li><b>Payment Method:</b> {{ order_details.payment_method }}</li>

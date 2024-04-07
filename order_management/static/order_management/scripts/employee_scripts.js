@@ -15,7 +15,7 @@ function handleMoveButtonClick(event, direction) {
     var currentPosition = row.getAttribute('data-current_position');
     var newPosition = direction === 'up' ? parseInt(currentPosition) - 1 : parseInt(currentPosition) + 1;
     var csrftoken = getCookie('csrftoken');
-    var url = "/orders/api/" + orderId + "/sort_order_update/";
+    var url = "/orders/api/" + orderId + "/sort_number_update/";
 
     var dataToSend = {
         order_id: orderId,

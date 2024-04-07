@@ -1,5 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import Max
+from django.shortcuts import get_object_or_404
 from jsignature.fields import JSignatureField
 from pathlib import Path
 from sorl.thumbnail import ImageField
@@ -133,28 +135,51 @@ class Order(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     signer_name = models.CharField('Signer Name', max_length=20, blank=True, null=True)
     signature = JSignatureField(blank=True, null=True)
+    sort_number = models.SmallIntegerField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        if self.pk:
-            old_instance = Order.objects.get(pk=self.pk)
-            if old_instance.executor:
-                if old_instance.executor != self.executor or self.status in [2, 3, 4, 5]:
-                    old_sort_order = SortOrder.objects.get(order=self)
-                    SortOrder.objects.filter(
-                        employee=old_instance.executor,
-                        number__gt=old_sort_order.number
-                    ).update(number=models.F('number') - 1)
-                    old_sort_order.delete()
+        if self.description == '':
+            self.description = None
+        if self.additional_info == '':
+            self.additional_info = None
 
-        if self.executor and self.status not in [2, 3, 4, 5]:
-            existing_sort_order = SortOrder.objects.filter(order=self, employee=self.executor)
-            existing_sort_orders = SortOrder.objects.filter(employee=self.executor).order_by('-number')
-            if existing_sort_orders:
-                last_number = existing_sort_orders.first().number + 1
+        if not self._state.adding:
+            old_order_instance = get_object_or_404(Order, pk=self.pk)
+            if old_order_instance.executor:
+                if self.status in [2, 3, 4, 5]:
+                    self.sort_number = None
+                    Order.objects.filter(
+                        executor=old_order_instance.executor,
+                        sort_number__gt=old_order_instance.sort_number
+                    ).update(sort_number=models.F('sort_number') - 1)
+
+                if old_order_instance.executor != self.executor:
+                    if self.executor is not None:
+                        max_sort_number_new_executor = Order.objects.filter(
+                            executor=self.executor
+                        ).aggregate(Max('sort_number'))['sort_number__max']
+                        if max_sort_number_new_executor:
+                            self.sort_number = max_sort_number_new_executor + 1
+                        else:
+                            self.sort_number = 1
+                    else:
+                        self.sort_number = None
+                    Order.objects.filter(
+                        executor=old_order_instance.executor,
+                        sort_number__gt=old_order_instance.sort_number
+                    ).update(sort_number=models.F('sort_number') - 1)
             else:
-                last_number = 0
-            if not existing_sort_order:
-                SortOrder.objects.create(order_id=self.pk, employee=self.executor, number=last_number)
+                if self.executor:
+                    self.sort_number = 1
+
+        if self._state.adding and self.executor:
+            max_sort_number = Order.objects.filter(
+                executor=self.executor
+            ).aggregate(Max('sort_number'))['sort_number__max']
+            if max_sort_number is not None:
+                self.sort_number = max_sort_number + 1
+            else:
+                self.sort_number = 1
 
         if not self.payer:
             self.payer = self.customer
@@ -165,9 +190,3 @@ class Attachment(models.Model):
     order = models.ForeignKey(Order, on_delete=models.PROTECT)
     image = ImageField(upload_to=upload_to, max_length=150, blank=True, null=True, validators=[validate_file_size])
     file = models.FileField(upload_to=upload_to, max_length=150, blank=True, null=True, validators=[validate_file_size])
-
-
-class SortOrder(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.PROTECT)
-    employee = models.ForeignKey(Employee, on_delete=models.PROTECT)
-    number = models.SmallIntegerField()

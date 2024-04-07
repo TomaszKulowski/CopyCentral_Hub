@@ -1,5 +1,5 @@
 <div class="table-responsive small">
-  <table class="table table-striped table-sm" id="order-table-{{ forloop.counter }}">
+  <table class="table table-striped table-sm" id="order-table-{{ table_id }}">
     <thead class="table-dark">
       <tr>
         <th scope="col" width=5%>#ID</th>
@@ -16,8 +16,8 @@
     </thead>
     <tbody>
       {% for order_details in orders %}
-        <tr class="clickable" data-toggle="collapse" data-executor_id="{{ order_details.executor_id }}" data-table_id="{{ table_id }}" data-current_position="{{ order_details.number }}" data-order_id="{{ order_details.order__id }}" data-target="#row{{ order_details.order__id }}">
-        <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'orders:order_details' order_details.order__id %}"><b>#{{ order_details.order__id }}</b></a></td>
+        <tr class="clickable" data-toggle="collapse" data-executor_id="{{ order_details.executor__id }}" data-table_id="{{ table_id }}" data-current_position="{{ order_details.sort_number }}" data-order_id="{{ order_details.id }}" data-target="#row{{ order_details.id }}">
+        <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'orders:order_details' order_details.id %}"><b>#{{ order_details.id }}</b></a></td>
         {% if order_details.customer__id %}
           <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order_details.customer__id %}">{{ order_details.customer_name }}</a></td>
         {% else %}
@@ -75,13 +75,13 @@
         </td>
         <td>
           <div class="btn-group me-2">
-            {% if orders|length == 1 %}
+            {% if order.orders_list|length == 1 %}
               <button disabled="disabled" class="btn btn-sm btn-outline-secondary move-up"><i class="bi bi-arrow-up-square"></i></button>
               <button disabled="disabled" class="btn btn-sm btn-outline-secondary move-down"><i class="bi bi-arrow-down-square"></i></button>
-            {% elif forloop.counter != orders|length and forloop.counter != 1 %}
+            {% elif forloop.counter != order.orders_list|length and forloop.counter != 1 %}
               <button class="btn btn-sm btn-outline-secondary move-up"><i class="bi bi-arrow-up-square"></i></button>
               <button class="btn btn-sm btn-outline-secondary move-down"><i class="bi bi-arrow-down-square"></i></button>
-            {% elif forloop.counter == orders|length %}
+            {% elif forloop.counter == order.orders_list|length %}
               <button class="btn btn-sm btn-outline-secondary move-up"><i class="bi bi-arrow-up-square"></i></button>
               <button disabled="disabled" class="btn btn-sm btn-outline-secondary move-down"><i class="bi bi-arrow-down-square"></i></button>
             {% elif forloop.counter == 1 %}
@@ -92,7 +92,7 @@
         </td>
         </tr>
         <tr></tr>
-        <tr id="row{{ order_details.order__id }}" class="collapse">
+        <tr id="row{{ order_details.id }}" class="collapse">
           <td colspan="4">
             <ul>
               <li><b>Created At:</b> {{ order_details.created_at }}</li>

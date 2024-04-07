@@ -21,7 +21,6 @@ from devices.forms import DeviceForm
 from devices.models import Device
 from employees.models import Employee
 from order_management.views import EmployeesOrdersList, OrderListViewBase
-from orders.models import SortOrder
 from orders.utils import map_choices_int_to_str
 from services.models import Brand, Model, Service
 
@@ -147,6 +146,7 @@ class OrderUpdateAPIView(EmployeeRequiredMixin, View):
                 order.priority = selected_value
 
         order.save()
+
         return JsonResponse({'success': 'true'})
 
 
@@ -240,6 +240,7 @@ class OrderUpdate(EmployeeRequiredMixin, View):
             'brands': Brand.objects.all(),
             'models': Model.objects.all(),
         }
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -328,6 +329,7 @@ class OrderDetails(OrderUpdate):
             if issubclass(type(form), ModelForm):
                 for field in form.fields.values():
                     field.disabled = True
+
         return context
 
 
@@ -343,6 +345,7 @@ class CustomerCreateModal(EmployeeRequiredMixin, CreateView):
     def form_valid(self, form):
         customer_instance = form.save()
         customer_id = customer_instance.id
+
         return JsonResponse({'success': True, 'customer_id': customer_id})
 
 
@@ -358,6 +361,7 @@ class AddressCreateModal(EmployeeRequiredMixin, CreateView):
     def form_valid(self, form):
         address_instance = form.save()
         address_id = address_instance.id
+
         return JsonResponse({'success': True, 'address_id': address_id})
 
 
@@ -368,6 +372,7 @@ class DeviceCreateModal(EmployeeRequiredMixin, CreateView):
     def form_valid(self, form):
         device_instance = form.save()
         device_id = device_instance.id
+
         return JsonResponse({'success': True, 'device_id': device_id})
 
 
@@ -403,6 +408,7 @@ class ServiceDetails(EmployeeRequiredMixin, DetailView):
 
     def render_to_response(self, context, **response_kwargs):
         service = context['object']
+
         return JsonResponse({
             'name': service.name,
             'price_net': service.price_net,
@@ -412,6 +418,7 @@ class ServiceDetails(EmployeeRequiredMixin, DetailView):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         context = self.get_context_data(object=self.object)
+
         return self.render_to_response(context)
 
 
@@ -453,25 +460,29 @@ class ServiceUpdate(EmployeeRequiredMixin, UpdateView):
             'price_net': context['object'].price_net,
             'quantity': context['object'].quantity,
         }
+
         return JsonResponse(context_dict)
 
 
 class ServiceDelete(EmployeeRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         get_object_or_404(OrderServices, pk=request.POST.get('pk')).delete()
+
         return JsonResponse({'success': True})
 
 
-class SortOrderUpdateApiView(EmployeesOrdersList):
+class SortNumberUpdateApiView(EmployeesOrdersList):
     object_list = ''
 
     def get_queryset(self, ):
         executor_id = self.request.POST.get('executor_id')
-        queryset = super().get_queryset().filter(employee__id=executor_id).order_by('number')
+        queryset = super().get_queryset().filter(executor_id=executor_id).order_by('sort_number')
+
         return queryset
 
     def get_context_data(self, **kwargs):
         context = OrderListViewBase.get_context_data(self, **kwargs)
+
         return context
 
     def post(self, request, order_id, *args, **kwargs):
@@ -480,13 +491,13 @@ class SortOrderUpdateApiView(EmployeesOrdersList):
         table_id = request.POST.get('table_id')
         executor_id = request.POST.get('executor_id')
 
-        sort_order = get_object_or_404(SortOrder, order__id=order_id)
-        sort_order_new = get_object_or_404(SortOrder, employee__id=executor_id, number=new_position)
+        sort_order_old = get_object_or_404(Order, pk=order_id)
+        sort_order_new = get_object_or_404(Order, executor__id=executor_id, sort_number=new_position)
 
-        sort_order_new.number = sort_order.number
-        sort_order.number = new_position
+        sort_order_new.sort_number = sort_order_old.sort_number
+        sort_order_old.sort_number = new_position
 
-        sort_order.save()
+        sort_order_old.save()
         sort_order_new.save()
 
         orders = map_choices_int_to_str(self.get_queryset())

@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import CustomerAutocomplete, ExecutorAutocomplete, AddressAutocomplete, DeviceAutocomplete,\
-    AttachmentDetails, AttachmentDelete, OrderUpdateAPIView, SortOrderUpdateApiView,\
+    AttachmentDetails, AttachmentDelete, OrderUpdateAPIView, SortNumberUpdateApiView,\
     OrderList, OrderDetails, OrderUpdate, \
     AddressCreateModal, AddressDetails, CustomerCreateModal, CustomerDetails, DeviceCreateModal,\
     ServicesList, ServicesFiler, ServiceDetails, ServiceUpdate, ServiceDelete
@@ -37,5 +37,5 @@ urlpatterns = [
     path('attachment/<int:pk>/delete/', AttachmentDelete.as_view(), name='attachment_delete'),
 
     path('api/<int:order_id>/order_update/', OrderUpdateAPIView.as_view(), name='order_update_api'),
-    path('api/<int:order_id>/sort_order_update/', SortOrderUpdateApiView.as_view(), name='sort_order_update_api'),
+    path('api/<int:order_id>/sort_number_update/', SortNumberUpdateApiView.as_view(), name='sort_number_update_api'),
 ]

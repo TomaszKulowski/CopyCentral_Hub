@@ -32,7 +32,7 @@ class Customer(models.Model):
         return f'{self.name}; Tax: {self.tax}'
 
     def get_address(self):
-        return f'{self.billing_city}, {self.billing_street} {self.billing_number}'
+        return f'{self.billing_city} - {self.billing_postal_code}, {self.billing_street} {self.billing_number}'
 
 
 class AdditionalAddress(models.Model):
