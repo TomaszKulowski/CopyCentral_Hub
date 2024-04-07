@@ -235,34 +235,11 @@ $(document).ready(function() {
 });
 
 
-
-$(document).ready(function() {
-    $('#saveServiceForm').click(function(event) {
-        event.preventDefault();
-
-        $.ajax({
-            url: $('#orderForm').attr('action'),
-            type: $('#orderForm').attr('method'),
-            data: $('#orderForm').serialize(),
-            success: function(data) {
-                    $('#order_service_id').val(null);
-
-                $('#addServiceModal').modal('show');
-            },
-        });
-    });
-});
-
-
 $(document).ready(function() {
     $('#serviceForm').submit(function(event) {
-
         event.preventDefault();
 
         var formData = $(this).serialize();
-        var serviceId = $('#order_service_id').val();
-
-        formData += '&order_service_id=' +  serviceId;
         $.ajax({
             url: $(this).attr('action'),
             type: $(this).attr('method'),
@@ -338,7 +315,6 @@ function updateServiceTable(orderId) {
 
 $(document).ready(function() {
     $('#service-table-body').on('click', 'button#service-edit', function() {
-
         var serviceId = $(this).closest('tr').find('td:first-child').text();
 
         $.ajax({

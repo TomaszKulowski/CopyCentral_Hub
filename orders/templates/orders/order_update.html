@@ -180,7 +180,7 @@
             <button class="nav-link active" id="service_details1-tab" data-bs-toggle="tab" data-bs-target="#service_details1" type="button" role="tab" aria-controls="service_details1" aria-selected="true">Service Details</button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="services_details-tab" data-bs-toggle="tab" data-bs-target="#services_details" type="button" role="tab" aria-controls="services_details" aria-selected="false">Services Details</button>
+            <button {% if not order_instance.customer.id %} disabled="disabled" {% endif %} class="nav-link" id="services_details-tab" data-bs-toggle="tab" data-bs-target="#services_details" type="button" role="tab" aria-controls="services_details" aria-selected="false">Services Details</button>
           </li>
         </ul>
         <div class="tab-content" id="service-tab-content">
@@ -418,8 +418,7 @@
           </div>
           <form id="serviceForm" method="post">
             {% csrf_token %}
-            <input type="hidden" name="add_service" value="true" />
-            <input type="hidden" id="order_service_id"/>
+            <input type="hidden" name="add_service" value="true"/>
             {{ service_form.as_div }}
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-top">
               <h1 class="h2"></h1>

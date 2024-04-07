@@ -267,6 +267,7 @@ class OrderUpdate(EmployeeRequiredMixin, View):
                     quantity=request.POST.get('quantity'),
                 )
                 order_instance.services.add(order_service_instance)
+                order_instance.save()
 
         request_data = request.POST.copy()
         address_id = request_data.pop('additional_address', None)
@@ -293,12 +294,10 @@ class OrderUpdate(EmployeeRequiredMixin, View):
                     order_instance.save()
                 else:
                     context = self.get_context_data(**kwargs)
+
                     return render(request, self.template_name, context)
-            else:
-                order_instance = order_form.save(commit=False)
 
             order_instance.save()
-            order_form.save_m2m()
 
             return HttpResponseRedirect(reverse_lazy('orders:order_details', kwargs={'pk': kwargs.get('pk')}))
 
