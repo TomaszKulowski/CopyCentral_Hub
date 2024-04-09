@@ -62,7 +62,7 @@ class PaymentMethodChoices(models.IntegerChoices):
 
 class OrderServices(models.Model):
     service = models.ForeignKey(Service, on_delete=models.PROTECT)
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=255)
     price_net = models.FloatField()
     quantity = models.PositiveSmallIntegerField()
 

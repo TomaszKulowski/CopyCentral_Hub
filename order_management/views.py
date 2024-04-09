@@ -1,14 +1,16 @@
 from collections import defaultdict
 
-from django.db.models import F, Case, Value, When, CharField, IntegerField
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import F, Case, Value, When, CharField, IntegerField, Sum
 from django.db.models.functions import Concat
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.views import View
 from django.views.generic import ListView
 
 from CopyCentral_Hub.mixins import EmployeeRequiredMixin
 from employees.models import Employee
+from orders.forms import OrderForm
 from orders.models import Order, PriorityChoices, Region
 from orders.utils import map_choices_int_to_str
 
@@ -205,8 +207,60 @@ class MyOrdersList(EmployeesOrdersList):
         return context
 
 
+class OrdersSettlement(EmployeeRequiredMixin, View):
+    template_name = 'order_management/orders_settlement.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        orders = Order.objects.filter(status__in=[2, 4, 5]).prefetch_related('services').order_by('-updated_at')
+
+        return orders
+
+    def get_context_data(self, **kwargs):
+        context = {
+            'order_form': OrderForm()
+        }
+        queryset = self.get_queryset()
+        paginator = Paginator(queryset, self.paginate_by)
+        page_number = self.request.GET.get('page')
+        try:
+            page_obj = paginator.page(page_number)
+        except PageNotAnInteger:
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            page_obj = paginator.page(paginator.num_pages)
+
+        context['page_obj'] = page_obj
+        for order in context['page_obj']:
+            total_price = order.services.aggregate(total_price=Sum('price_net'))['total_price']
+            order.total_price = total_price if total_price else 0
+
+        return context
+
+    def get(self, request, **kwargs):
+        context = self.get_context_data(**kwargs)
+
+        return render(request, self.template_name, context=context)
+
+    def post(self, request, **kwargs):
+        order_id = request.POST.get('order_id')
+        invoice_number = request.POST.get('invoice_number')
+        if order_id:
+            approver = get_object_or_404(Employee, user=request.user)
+            order_instance = get_object_or_404(Order, pk=order_id)
+            order_instance.invoice_number = invoice_number
+            order_instance.status = 3
+            order_instance.approver = approver
+            order_instance.save()
+
+        context = self.get_context_data(**kwargs)
+
+        return render(request, self.template_name, context=context)
+
+
 class ApplyFilters(EmployeeRequiredMixin, View):
     def get(self, request):
         if 'region' in request.GET:
             request.session['selected_region'] = request.GET.get('region')
+
         return JsonResponse({'status': 200})
