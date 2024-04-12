@@ -240,6 +240,10 @@ $(document).ready(function() {
         event.preventDefault();
 
         var formData = $(this).serialize();
+        var serviceId = $('#order_service_id').val();
+
+        formData += '&order_service_id=' +  serviceId;
+
         $.ajax({
             url: $(this).attr('action'),
             type: $(this).attr('method'),

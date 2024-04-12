@@ -5,16 +5,11 @@
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Device Details</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
-      <div class="btn-group me-2">
-        <a href="{% url 'devices:update' device.id %}"  class="btn btn-sm btn-outline-secondary">Update</a>
-      </div>
+      <a href="{% url 'history:list' %}?model=devices&model_id={{ device.id }}" class="btn btn-sm btn-outline-secondary">Update History</a>&nbsp;
+      <a href="{% url 'devices:update' device.id %}"  class="btn btn-sm btn-outline-secondary">Update</a>
     </div>
   </div>
   {{ form.as_div }}
-  <br>
-  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom border-top">
-    <h1 class="h2">Device History</h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
-    </div>
-  </div>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3"></div>
+
 {% endblock %}

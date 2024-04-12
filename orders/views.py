@@ -266,7 +266,7 @@ class OrderUpdate(EmployeeRequiredMixin, View):
                     price_net=request.POST.get('price_net'),
                     quantity=request.POST.get('quantity'),
                 )
-                order_instance.services.add(order_service_instance)
+                order_instance.services.add(order_service_instance),0
 
         request_data = request.POST.copy()
         address_id = request_data.pop('additional_address', None)

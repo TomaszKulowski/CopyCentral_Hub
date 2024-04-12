@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from jsignature.fields import JSignatureField
 from pathlib import Path
 from sorl.thumbnail import ImageField
+from simple_history.models import HistoricalRecords
 
 from customers.models import Customer, AdditionalAddress
 from devices.models import Device
@@ -65,9 +66,10 @@ class OrderServices(models.Model):
     name = models.CharField(max_length=255)
     price_net = models.FloatField()
     quantity = models.PositiveSmallIntegerField()
+    history = HistoricalRecords()
 
     def __str__(self):
-        return f'{self.name} - {self.price_net} - {self.quantity}'
+        return f'Name: {self.name} - Net Price: {self.price_net} - Qty: {self.quantity}'
 
 
 class Region(models.Model):
@@ -136,6 +138,10 @@ class Order(models.Model):
     signer_name = models.CharField('Signer Name', max_length=20, blank=True, null=True)
     signature = JSignatureField(blank=True, null=True)
     sort_number = models.SmallIntegerField(blank=True, null=True)
+    history = HistoricalRecords(m2m_fields=[services])
+
+    def __str__(self):
+        return f'Order ID {self.id}'
 
     def save(self, *args, **kwargs):
         if self.description == '':

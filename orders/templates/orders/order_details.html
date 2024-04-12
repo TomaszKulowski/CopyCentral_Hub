@@ -28,6 +28,7 @@
   </ul>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
+        <a href="{% url 'history:list' %}?model=orders&model_id={{ order_instance.id }}" class="btn btn-sm btn-outline-secondary">Update History</a>&nbsp;
         <a href="{% url 'orders:order_update' order_instance.id %}"  class="btn btn-sm btn-outline-secondary">Update</a>
       </div>
     </div>

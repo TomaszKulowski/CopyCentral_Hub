@@ -419,6 +419,7 @@
           <form id="serviceForm" method="post">
             {% csrf_token %}
             <input type="hidden" name="add_service" value="true"/>
+            <input type="hidden" id="order_service_id"/>
             {{ service_form.as_div }}
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-top">
               <h1 class="h2"></h1>
