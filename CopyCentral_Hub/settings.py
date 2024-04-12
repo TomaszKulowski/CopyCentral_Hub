@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     'jsignature',
     'sorl.thumbnail',
+    'simple_history',
 
     'authentication.apps.AuthenticationConfig',
     'employees.apps.EmployeesConfig',
@@ -59,7 +60,8 @@ INSTALLED_APPS = [
     'customers.apps.CustomersConfig',
     'services.apps.ServicesConfig',
     'orders.apps.OrdersConfig',
-    'service_orders.apps.ServiceOrdersConfig',
+    'order_management.apps.OrderManagementConfig',
+    'history.apps.HistoryConfig',
 ]
 
 MIDDLEWARE = [
@@ -72,7 +74,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     "debug_toolbar.middleware.DebugToolbarMiddleware",
-
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'CopyCentral_Hub.urls'

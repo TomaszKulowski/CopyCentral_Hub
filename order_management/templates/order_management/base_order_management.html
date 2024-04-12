@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block sidebar %}
+  <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-body-secondary text-uppercase">
+    <span>Management Options</span>
+  </h6>
+  <ul class="nav flex-column mb-auto">
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center gap-2" href="{% url 'order_management:employees_orders_list' %}">
+        <svg class="bi"><use xlink:href="#technician"/></svg>
+        Employees Orders
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center gap-2" href="{% url 'order_management:regions_orders_list' %}">
+        <svg class="bi"><use xlink:href="#geo-alt"/></svg>
+        Regions Orders
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center gap-2" href="{% url 'order_management:orders_settlement' %}">
+        <svg class="bi"><use xlink:href="#checked-list"/></svg>
+        Orders Settlement
+      </a>
+    </li>
+  </ul>
+{% endblock %}
+
+{% block content %}
+{% endblock %}

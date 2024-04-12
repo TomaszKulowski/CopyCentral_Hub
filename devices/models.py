@@ -1,5 +1,7 @@
 from django.db import models
 
+from simple_history.models import HistoricalRecords
+
 
 class Type(models.IntegerChoices):
     MONO = 0, 'Monochrome'
@@ -35,6 +37,7 @@ class Device(models.Model):
     description = models.TextField(max_length=255, blank=True, null=True)
     status = models.SmallIntegerField(choices=Status.choices, blank=True, null=True)
     price_net = models.FloatField(blank=True, null=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return f'{self.brand} {self.model}; {self.serial_number}'

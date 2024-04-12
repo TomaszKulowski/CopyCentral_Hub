@@ -1,4 +1,5 @@
 from django.db import models
+from simple_history.models import HistoricalRecords
 
 
 class Brand(models.Model):
@@ -31,6 +32,8 @@ class Service(models.Model):
     name = models.CharField(max_length=255)
     price_net = models.FloatField()
     description = models.TextField(max_length=300, blank=True, null=True)
+    history = HistoricalRecords()
+
 
     def __str__(self):
         name = ''

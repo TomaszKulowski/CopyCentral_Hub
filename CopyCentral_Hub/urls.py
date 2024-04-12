@@ -29,8 +29,9 @@ urlpatterns = [
     path('devices/', include('devices.urls')),
     path('customers/', include('customers.urls')),
     path('services/', include('services.urls')),
-    path('service_orders/', include('service_orders.urls')),
     path('orders/', include('orders.urls')),
+    path('order_management/', include('order_management.urls')),
+    path('history/', include('history.urls')),
     path("__debug__/", include("debug_toolbar.urls")),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \

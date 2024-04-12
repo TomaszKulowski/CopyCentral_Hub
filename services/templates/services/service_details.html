@@ -5,6 +5,7 @@
     <h1 class="h2">Service Details</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
+        <a href="{% url 'history:list' %}?model=services&model_id={{ service.id }}" class="btn btn-sm btn-outline-secondary">Update History</a>&nbsp;
         <a href="{% url 'services:service_update' service.id %}"  class="btn btn-sm btn-outline-secondary">Update</a>
       </div>
     </div>

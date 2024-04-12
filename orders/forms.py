@@ -1,11 +1,10 @@
 from dal import autocomplete
 from django import forms
 
-from .models import Order, AdditionalAddress, Attachment
+from .models import Order, AdditionalAddress, Attachment, StatusChoices, OrderServices
 from customers.models import Customer
 from devices.models import Device
 from employees.models import Employee
-from orders.models import OrderServices
 
 
 class OrderForm(forms.ModelForm):
@@ -82,6 +81,14 @@ class OrderForm(forms.ModelForm):
         customer = kwargs.pop('customer', None)
         super(OrderForm, self).__init__(*args, **kwargs)
 
+        if self.instance.executor:
+            if self.instance.executor.department > 2:
+                statuses = StatusChoices.choices.copy()
+                del(statuses[3])
+                self.fields['status'].choices = statuses
+            else:
+                self.fields['status'].choices = self.fields['status'].choices
+
         if self.instance.customer:
             self.fields['additional_address'].queryset = AdditionalAddress.objects.filter(
                 customer=self.instance.customer)
@@ -92,7 +99,9 @@ class OrderForm(forms.ModelForm):
             self.fields['additional_address'].queryset = AdditionalAddress.objects.filter(customer=customer)
 
         for field in self.fields:
-            if field == 'additional_info':
+            if field == 'name':
+                self.fields[field].widget.attrs.update({'rows': 2})
+            if field in ['additional_info', 'description']:
                 self.fields[field].widget.attrs.update({'rows': 4})
 
             self.fields[field].widget.attrs.update({'class': 'form-control'})

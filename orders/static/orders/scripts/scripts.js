@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Check if the searchQuery is different from the previous search
         if (searchQuery !== previousSearchQuery) {
-            var url = "/service_orders/?search=";
+            var url = "/orders/?search=";
 
 
             // Append the search parameter only if the searchQuery is not empty
@@ -65,7 +65,7 @@ $(document).ready(function() {
         var payerId = $('#payerId').val();
         var addressId = $('#addressId').val();
 
-        window.location.href = '/service_orders/' + orderId + '/update/?customer_id=' + customerId + '&payer_id=' + payerId + '&address_id=' + addressId;
+        window.location.href = '/orders/' + orderId + '/update/?customer_id=' + customerId + '&payer_id=' + payerId + '&address_id=' + addressId;
     });
 });
 
@@ -76,7 +76,7 @@ $(document).ready(function() {
         var customerId = $('#customerId').val();
         var addressId = $('#addressId').val();
 
-        window.location.href = '/service_orders/' + orderId + '/update/?customer_id=' + customerId + '&payer_id=' + payerId + '&address_id=' + addressId;
+        window.location.href = '/orders/' + orderId + '/update/?customer_id=' + customerId + '&payer_id=' + payerId + '&address_id=' + addressId;
     });
 });
 
@@ -87,14 +87,14 @@ $(document).ready(function() {
         var customerId = $('#customerId').val();
         var payerId = $('#payerId').val();
 
-        window.location.href = '/service_orders/' + orderId + '/update/?customer_id=' + customerId + '&payer_id=' + payerId + '&address_id=' + addressId;
+        window.location.href = '/orders/' + orderId + '/update/?customer_id=' + customerId + '&payer_id=' + payerId + '&address_id=' + addressId;
     }).on('select2:unselect', function (e) {
         var addressId = null;
         var orderId = $('#orderId').val();
         var customerId = $('#customerId').val();
         var payerId = $('#payerId').val();
 
-        window.location.href = '/service_orders/' + orderId + '/update/?customer_id=' + customerId + '&payer_id=' + payerId + '&address_id=' + addressId;
+        window.location.href = '/orders/' + orderId + '/update/?customer_id=' + customerId + '&payer_id=' + payerId + '&address_id=' + addressId;
     });
 });
 
@@ -107,18 +107,18 @@ function handleSubmitForm(formId, modalId, submit_type) {
         var addressId = $('#addressId').val();
         var deviceId = $('#deviceId').val();
         var orderId = $('#orderId').val();
-        var base_redirect_url = '/service_orders/' + orderId + '/update/'
+        var base_redirect_url = '/orders/' + orderId + '/update/'
         var formData = $(this).serialize();
         formData += '&order_id=' + orderId;
         formData += '&customer=' + customerId;
 
         var url;
         if (submit_type === 'customer' || submit_type === 'payer') {
-            url = '/service_orders/customer_create/';
+            url = '/orders/customer_create/';
         } else if (submit_type === 'address') {
-            url = '/service_orders/address_create/';
+            url = '/orders/address_create/';
         } else if (submit_type === 'device') {
-            url = '/service_orders/device_create/';
+            url = '/orders/device_create/';
         }
 
         $.ajax({
@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var modelId = document.getElementById('filterByModel').value;
 
         $.ajax({
-            url: '/service_orders/services_filter/',
+            url: '/orders/services_filter/',
             type: 'GET',
             data: {
                 brand_id: brandId,
@@ -223,7 +223,7 @@ $(document).ready(function() {
         var selectedServiceId = $(this).val();
 
         $.ajax({
-            url: '/service_orders/service_details/' + selectedServiceId + '/',
+            url: '/orders/service_details/' + selectedServiceId + '/',
             dataType: 'json',
             success: function(data) {
                 $('#id_service_name').val(data.name);
@@ -235,34 +235,15 @@ $(document).ready(function() {
 });
 
 
-
-$(document).ready(function() {
-    $('#saveServiceForm').click(function(event) {
-        event.preventDefault();
-
-        $.ajax({
-            url: $('#orderForm').attr('action'),
-            type: $('#orderForm').attr('method'),
-            data: $('#orderForm').serialize(),
-            success: function(data) {
-                    $('#order_service_id').val(null);
-
-                $('#addServiceModal').modal('show');
-            },
-        });
-    });
-});
-
-
 $(document).ready(function() {
     $('#serviceForm').submit(function(event) {
-
         event.preventDefault();
 
         var formData = $(this).serialize();
         var serviceId = $('#order_service_id').val();
 
         formData += '&order_service_id=' +  serviceId;
+
         $.ajax({
             url: $(this).attr('action'),
             type: $(this).attr('method'),
@@ -283,7 +264,7 @@ $(document).ready(function() {
 
 function updateServiceTable(orderId) {
     $.ajax({
-        url: '/service_orders/services_list/',
+        url: '/orders/services_list/',
         method: 'GET',
         data: {
             'order_id': orderId
@@ -319,7 +300,7 @@ function updateServiceTable(orderId) {
                 var orderId = $('#orderId').val();
 
                 $.ajax({
-                    url: '/service_orders/service_delete/',
+                    url: '/orders/service_delete/',
                     type: 'POST',
                     data: {
                         'pk': serviceIdToDelete,
@@ -338,11 +319,10 @@ function updateServiceTable(orderId) {
 
 $(document).ready(function() {
     $('#service-table-body').on('click', 'button#service-edit', function() {
-
         var serviceId = $(this).closest('tr').find('td:first-child').text();
 
         $.ajax({
-            url: '/service_orders/service_update/',
+            url: '/orders/service_update/',
             method: 'GET',
             data: {
                 'service_id': serviceId
@@ -373,7 +353,7 @@ $(document).ready(function() {
         var orderId = $('#orderId').val();
 
         $.ajax({
-            url: '/service_orders/service_delete/',
+            url: '/orders/service_delete/',
             type: 'POST',
             data: {
                 'pk': serviceIdToDelete,

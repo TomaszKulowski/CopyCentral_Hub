@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
+from simple_history.models import HistoricalRecords
+
 
 class Payment(models.IntegerChoices):
     CASH = 0, 'Cash'
@@ -27,9 +29,13 @@ class Customer(models.Model):
     email = models.EmailField(blank=True, null=True)
     description = models.TextField(max_length=300, blank=True, null=True)
     transfer_payment = models.SmallIntegerField(choices=Payment.choices, default=Payment.CASH)
+    history = HistoricalRecords()
 
     def __str__(self):
         return f'{self.name}; Tax: {self.tax}'
+
+    def get_address(self):
+        return f'{self.billing_city} - {self.billing_postal_code}, {self.billing_street} {self.billing_number}'
 
 
 class AdditionalAddress(models.Model):
