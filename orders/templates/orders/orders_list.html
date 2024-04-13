@@ -1,16 +1,17 @@
 {% extends "base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Service Orders</h1>
+    <h1 class="h2">{% blocktrans %}Service Orders{% endblocktrans %}</h1>
     <form class="" style="width: 45%;">
       <input type="search" class="form-control form-control-dark sea"
-        placeholder="Search by ID / Customer / Device Serial Number / Invoice Number" aria-label="Search">
+        placeholder="{% blocktrans %}Search by ID / Customer / Device Serial Number / Invoice Number{% endblocktrans %}" aria-label="Search">
     </form>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
-        <a href="{% url 'orders:order_create' %}"  class="btn btn-sm btn-outline-secondary">Add New</a>
+        <a href="{% url 'orders:order_create' %}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Add New{% endblocktrans %}</a>
       </div>
     </div>
   </div>
@@ -19,12 +20,12 @@
       <thead class="table-dark">
         <tr>
           <th scope="col" width=5%>ID</th>
-          <th scope="col" width=15%>Customer</th>
-          <th scope="col" width=10%>City</th>
-          <th scope="col" width=15%>Device</th>
-          <th scope="col" width=10%>Status</th>
-          <th scope="col" width=15%>Created at</th>
-          <th scope="col" width=15%>Updated At</th>
+          <th scope="col" width=15%>{% blocktrans %}Customer{% endblocktrans %}</th>
+          <th scope="col" width=10%>{% blocktrans %}City{% endblocktrans %}</th>
+          <th scope="col" width=15%>{% blocktrans %}Device{% endblocktrans %}</th>
+          <th scope="col" width=10%>{% blocktrans %}Status{% endblocktrans %}</th>
+          <th scope="col" width=15%>{% blocktrans %}Created at{% endblocktrans %}</th>
+          <th scope="col" width=15%>{% blocktrans %}Updated At{% endblocktrans %}</th>
         </tr>
       </thead>
       <tbody id="table-body">

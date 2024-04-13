@@ -26,7 +26,7 @@ class CustomerFactory(factory.django.DjangoModelFactory):
     country_calling_code = factory.LazyAttribute(lambda x: faker.country_calling_code())
     telephone = factory.LazyAttribute(lambda x: random.randrange(10**8, 10**9))
     description = factory.LazyAttribute(lambda x: faker.sentence(20))
-    transfer_payment = factory.LazyAttribute(lambda x: random.randrange(0, 2))
+    payment = factory.LazyAttribute(lambda x: random.randrange(0, 2))
 
 
 class AdditionalAddressFactory(factory.django.DjangoModelFactory):
