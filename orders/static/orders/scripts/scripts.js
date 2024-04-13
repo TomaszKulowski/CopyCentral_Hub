@@ -280,7 +280,7 @@ function updateServiceTable(orderId) {
                 tableBody += '<td>' + service.price_net + '</td>';
                 tableBody += '<td>';
                 tableBody += '<div class="btn-group me-2">';
-                tableBody += '<button type="button" class="btn btn-sm btn-outline-secondary" id="service-edit">Edit</button>';
+                tableBody += '<button type="button" class="btn btn-sm btn-outline-secondary" id="service-edit">Update</button>';
                 tableBody += '<button type="button" class="btn btn-sm btn-outline-secondary service-delete-btn" data-service-id="' + service.id + '">Delete</button>';
                 tableBody += '</div>';
                 tableBody += '</td>';

@@ -104,6 +104,7 @@ class Order(models.Model):
     )
     approver = models.ForeignKey(Employee, on_delete=models.PROTECT, blank=True, null=True, verbose_name=_('Approver'))
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT, blank=True, null=True, verbose_name=_('Customer'))
+    contact = models.IntegerField(_('Contact'), blank=True, null=True)
     additional_address = models.ForeignKey(
         AdditionalAddress,
         on_delete=models.PROTECT,
@@ -206,6 +207,10 @@ class Order(models.Model):
 
         if not self.payer:
             self.payer = self.customer
+        if self.customer:
+            if not self.contact:
+                customer = get_object_or_404(Customer, pk=self.customer.id)
+                self.contact = self.customer.telephone
         super().save(*args, **kwargs)
 
 

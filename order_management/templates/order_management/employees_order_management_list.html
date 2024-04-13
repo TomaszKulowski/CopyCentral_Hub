@@ -6,7 +6,8 @@
       <tr>
         <th scope="col" width=5%>#ID</th>
         <th scope="col" width=20%>{% blocktrans %}Customer{% endblocktrans %}</th>
-        <th scope="col" width=10%>{% blocktrans %}Address{% endblocktrans %}</th>
+        <th scope="col" width=20%>{% blocktrans %}Address{% endblocktrans %}</th>
+        <th scope="col" width=10%>{% blocktrans %}Contact{% endblocktrans %}</th>
         <th scope="col" width=10%>{% blocktrans %}Short Description{% endblocktrans %}</th>
         <th scope="col" width=10%>{% blocktrans %}Device{% endblocktrans %}</th>
         <th scope="col" width=8%>{% blocktrans %}Status{% endblocktrans %}</th>
@@ -26,6 +27,13 @@
           <td>{{ order_details.customer_name }}</td>
         {% endif %}
         <td>{{ order_details.address_name }}</td>
+        <td>
+          {% if order_details.contact %}
+            <a class="text-decoration-none link-dark" href="tel:+{{ order_details.contact }}">{{ order_details.contact }}</a>
+          {% else %}
+            ---
+          {% endif %}
+        </td>
         <td>{{ order_details.short_description_name }}</td>
         <td>{{ order_details.device_full_name }}</td>
         <td>{{ order_details.status }}</td>
@@ -75,7 +83,7 @@
             </select>
           </div>
         </td>
-        <td>
+        <td style="text-align: right;">
           <div class="btn-group me-2">
             {% if order.orders_list|length == 1 %}
               <button disabled="disabled" class="btn btn-sm btn-outline-secondary move-up"><i class="bi bi-arrow-up-square"></i></button>

@@ -74,7 +74,7 @@
               <input class="form-control" disabled
                 value="{{ order_instance.customer.billing_street }} {{ order_instance.customer.billing_number }}">
               <span>{% blocktrans %}Telephone{% endblocktrans %}:</span>
-              <input class="form-control" disabled value="{{ order_instance.customer.telephone }}">
+              <input class="form-control" id="contact" name="contact" value="{% if order_instance.contact %}{{ order_instance.contact }}{% endif %}" maxlength="14">
             </div>
             <h5>{% blocktrans %}Service Address{% endblocktrans %}:</h5>
             <div id="id_address" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
@@ -135,26 +135,32 @@
           </div>
         </div>
         <div class="row justify-content-md-center">
-          <div class="col-md-4">
+          <div class="col-md-6">
+            <span>{% blocktrans %}Order Intake{% endblocktrans %}:</span>
+            <input class="form-control" disabled value="{{ order_instance.user_intake.user.first_name }} {{ order_instance.user_intake.user.last_name }}">
+          </div>
+          <div class="col-md-6">
+            <span>{% blocktrans %}Approver{% endblocktrans %}:</span>
+            <input class="form-control" disabled value="{{ order_instance.approver.user.first_name }} {{ order_instance.approver.user.last_name }}">
+          </div>
+        </div>
+        <div class="row justify-content-md-center">
+          <div class="col-md-3">
             {{ order_form.priority.label }}:
             {{ order_form.priority }}
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
             {{ order_form.order_type.label }}:
             {{ order_form.order_type }}
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
             {{ order_form.payment_method.label }}:
             {{ order_form.payment_method }}
           </div>
-        </div>
-        <div class="col-md-12">
-          <span>{% blocktrans %}Order Intake{% endblocktrans %}:</span>
-          <input class="form-control" disabled value="{{ order_instance.user_intake.user.first_name }} {{ order_instance.user_intake.user.last_name }}">
-        </div>
-        <div class="col-md-12">
-          <span>{% blocktrans %}Approver{% endblocktrans %}:</span>
-          <input class="form-control" disabled value="{{ order_instance.approver.user.first_name }} {{ order_instance.approver.user.last_name }}">
+          <div class="col-md-3">
+            {{ order_form.status.label }}:
+            {{ order_form.status }}
+          </div>
         </div>
         {{ order_form.executor.label }}:
         {{ order_form.executor }}
@@ -166,8 +172,6 @@
         {{ order_form.additional_info }}
         {{ order_form.invoice_number.label }}:
         {{ order_form.invoice_number }}
-        {{ order_form.status.label }}:
-        {{ order_form.status }}
         {{ order_form.signer_name.label }}:
         {{ order_form.signer_name }}
         {{ order_form.signature.label }}:

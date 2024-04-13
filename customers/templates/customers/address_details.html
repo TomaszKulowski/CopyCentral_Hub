@@ -2,19 +2,24 @@
 {% load i18n %}
 
 {% block content %}
-  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">
-      <a class="link-dark link-offset-2 link-underline link-underline-opacity-0" href="{% url 'customers:customer_details' customer.id %}">
-        {{ customer.name }}
-      </a>
-      - {% blocktrans %}Additional Address Details{% endblocktrans %}
-    </h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
-      <div class="btn-group me-2">
-        <a href="{% url 'customers:address_update' customer_pk=customer.id pk=object.id %}"  class="btn btn-sm btn-outline-secondary">{% blocktrans %}Update{% endblocktrans %}</a>
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 mb-3">
+    <h2 class="h2"><a href="{% url 'customers:customer_details' customer.id %}" class="text-decoration-none link-dark">{% blocktrans %}Customer Details{% endblocktrans %}</a></h2>
+  </div>
+  <div class="container border">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <h2 class="h2">
+        <a class="link-dark link-offset-2 link-underline link-underline-opacity-0" href="{% url 'customers:customer_details' customer.id %}">
+          {{ customer.name }}
+        </a>
+        - {% blocktrans %}Additional Address Details{% endblocktrans %}
+      </h2>
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+          <a href="{% url 'customers:address_update' customer_pk=customer.id pk=object.id %}"  class="btn btn-sm btn-outline-secondary">{% blocktrans %}Update{% endblocktrans %}</a>
+        </div>
       </div>
     </div>
+    {{ form.as_div }}
+    <br>
   </div>
-  {{ form.as_div }}
-  <br>
 {% endblock %}

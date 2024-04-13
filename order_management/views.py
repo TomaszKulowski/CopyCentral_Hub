@@ -33,6 +33,7 @@ class OrderListViewBase(EmployeeRequiredMixin, ListView):
             'region__name',
             'sort_number',
             'executor__id',
+            'contact',
             additional_info_name=Case(
                 When(additional_info__isnull=False, then=F('additional_info')),
                 default=Value('---'),
