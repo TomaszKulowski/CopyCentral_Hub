@@ -166,6 +166,7 @@ class OrderList(EmployeeRequiredMixin, ListView):
     def get_queryset(self):
         orders = super().get_queryset()
         search_query = self.request.GET.get('search', '')
+        order_by = self.request.GET.get('order_by', '-id')
 
         if search_query:
             orders = orders.filter(
@@ -174,9 +175,18 @@ class OrderList(EmployeeRequiredMixin, ListView):
                 Q(invoice_number__icontains=search_query) |
                 Q(device__serial_number__icontains=search_query)
             )
-        orders = orders.order_by('-id')
+        orders = orders.order_by(order_by)
 
         return orders
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data()
+        order_by = self.request.GET.get('order_by', '-id')
+        context['order_by'] = order_by
+        context['page_objs'] = context['page_obj']
+        del context['page_obj']
+
+        return context
 
 
 class OrderUpdate(EmployeeRequiredMixin, View):
