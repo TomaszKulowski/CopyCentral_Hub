@@ -1,5 +1,6 @@
 from dal import autocomplete
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 from .models import Order, AdditionalAddress, Attachment, StatusChoices, OrderServices
 from customers.models import Customer
@@ -10,12 +11,12 @@ from employees.models import Employee
 class OrderForm(forms.ModelForm):
     customer = forms.ModelChoiceField(
         queryset=Customer.objects.all(),
-        label='Customer',
+        label=_('Customer'),
         widget=autocomplete.ModelSelect2(
             forward=('customer', ),
             url='orders:customer_autocomplete',
             attrs={
-                'data-placeholder': 'Customer ...',
+                'data-placeholder': _('Customer ...'),
                 'data-ajax--delay': '500',
                 'style': 'width:90%',
             }
@@ -24,12 +25,12 @@ class OrderForm(forms.ModelForm):
     additional_address = forms.ModelChoiceField(
         required=False,
         queryset=AdditionalAddress.objects.all(),
-        label='Additional Address',
+        label=_('Additional Address'),
         widget=autocomplete.ModelSelect2(
             forward=('customer',),
             url='orders:address_autocomplete',
             attrs={
-                'data-placeholder': 'Service Address ... If empty, use billing address',
+                'data-placeholder': _('Service Address ... If empty, use billing address'),
                 'data-ajax--delay': '500',
                 'style': 'width:90%',
             }
@@ -38,12 +39,12 @@ class OrderForm(forms.ModelForm):
     payer = forms.ModelChoiceField(
         required=False,
         queryset=Customer.objects.all(),
-        label='Payer',
+        label=_('Payer'),
         widget=autocomplete.ModelSelect2(
             forward=('payer', ),
             url='orders:customer_autocomplete',
             attrs={
-                'data-placeholder': 'Payer ...',
+                'data-placeholder': _('Payer ...'),
                 'data-ajax--delay': '500',
                 'style': 'width:90%',
             }
@@ -52,12 +53,12 @@ class OrderForm(forms.ModelForm):
     executor = forms.ModelChoiceField(
         required=False,
         queryset=Employee.objects.all(),
-        label='Executor',
+        label=_('Executor'),
         widget=autocomplete.ModelSelect2(
             forward=('executor', ),
             url='orders:executor_autocomplete',
             attrs={
-                'data-placeholder': 'Executor ...',
+                'data-placeholder': _('Executor ...'),
                 'data-ajax--delay': '500',
                 'style': 'width:100%',
             }
@@ -66,11 +67,11 @@ class OrderForm(forms.ModelForm):
     device = forms.ModelChoiceField(
         required=False,
         queryset=Device.objects.all(),
-        label='Device',
+        label=_('Device'),
         widget=autocomplete.ModelSelect2(
             url='orders:device_autocomplete',
             attrs={
-                'data-placeholder': 'Device ...',
+                'data-placeholder': _('Device ...'),
                 'data-ajax--delay': '500',
                 'style': 'width:90%',
             }

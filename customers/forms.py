@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 from .models import Customer, AdditionalAddress
 
@@ -35,5 +36,5 @@ class AdditionalAddressForm(forms.ModelForm):
         fields = '__all__'
         model = AdditionalAddress
         widgets = {
-            'is_active': forms.Select(choices=[(True, 'Yes'), (False, 'No')])
+            'is_active': forms.Select(choices=[(True, _('Yes')), (False, _('No'))])
         }

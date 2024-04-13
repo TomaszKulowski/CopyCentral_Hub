@@ -1,5 +1,6 @@
 {% extends "order_management/base_order_management.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
   <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
@@ -7,45 +8,49 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="{% static 'order_management/scripts/base_scripts.js' %}"></script>
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Order Management</h1>
+    <h2 class="h2">{% blocktrans %}Order Management{% endblocktrans %}</h2>
     <div class="container" style="width: 40%;">
       <input type="search" class="form-control form-control-dark sea"
-        placeholder="Search by Customer" aria-label="Search"></div>
+        placeholder="{% blocktrans %}Search by Customer{% endblocktrans %}" aria-label="Search"></div>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
-        <a href="{% url 'orders:order_create' %}" class="btn btn-sm btn-outline-secondary">Add New Order</a>
+        <a href="{% url 'orders:order_create' %}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Add New Order{% endblocktrans %}</a>
       </div>
     </div>
   </div>
   <div class="d-flex flex-wrap flex-md-nowrap">
     <div class="d-flex align-items-center border border-1 p-2 form-control">
-      <span class="d-inline me-2">Filter By Region:</span>
+      <span class="d-inline me-2">{% blocktrans %}Filter By Region{% endblocktrans %}:</span>
       <select id="filterByRegion" class="form-select d-inline">
         {% if selected_region == 'None' %}
-          <option hidden="hidden" value="None">No Region Assigned</option>
+          <option hidden="hidden" value="None">{% blocktrans %}No Region Assigned{% endblocktrans %}</option>
         {% else %}
-          <option hidden="hidden" value="{{ selected_region }}">{{ selected_region }}</option>
+          {% if selected_region == 'Display All' %}
+            <option hidden="hidden" value="{{ selected_region }}">{% blocktrans %}Display All{% endblocktrans %}</option>
+          {% else %}
+            <option hidden="hidden" value="{{ selected_region }}">{{ selected_region }}</option>
+          {% endif %}
         {% endif %}
-        <option value="Display All">Display All</option>
-        <option value="None">No Region Assigned</option>
+        <option value="Display All">{% blocktrans %}Display All{% endblocktrans %}</option>
+        <option value="None">{% blocktrans %}No Region Assigned{% endblocktrans %}</option>
         {% for region in regions %}
           <option value="{{ region.name }}">{{ region.name }}</option>
         {% endfor %}
       </select>
     </div>
     <div class="d-flex align-items-center border border-1 p-2 form-control">
-      <span class="d-inline me-2">Filter By Priority:</span>
+      <span class="d-inline me-2">{% blocktrans %}Filter By Priority{% endblocktrans %}:</span>
       <select id="filterByPriority" class="form-select d-inline">
-        <option value="All">Display All</option>
+        <option value="All">{% blocktrans %}Display All{% endblocktrans %}</option>
         {% for _, priority in priorities %}
           <option value="{{ priority }}">{{ priority }}</option>
         {% endfor %}
       </select>
     </div>
     <div class="d-flex align-items-center border border-1 p-2 form-control">
-      <span class="d-inline me-2">Filter By Employee:</span>
+      <span class="d-inline me-2">{% blocktrans %}Filter By Employee{% endblocktrans %}:</span>
       <select id="filterByEmployee" class="form-select d-inline">
-        <option value="All">Display All</option>
+        <option value="All">{% blocktrans %}Display All{% endblocktrans %}</option>
         {% for employee in employees %}
           <option value="{{ employee.full_name }}">{{ employee.full_name }}</option>
         {% endfor %}
@@ -57,14 +62,14 @@
       <thead class="table-dark">
         <tr>
           <th scope="col" width=5%>#ID</th>
-          <th scope="col" width=20%>Customer</th>
-          <th scope="col" width=10%>Address</th>
-          <th scope="col" width=10%>Short Description</th>
-          <th scope="col" width=10%>Device</th>
-          <th scope="col" width=8%>Status</th>
-          <th scope="col" width=8%>Region</th>
-          <th scope="col" width=8%>Priority</th>
-          <th scope="col" width=14%>Executor</th>
+          <th scope="col" width=20%>{% blocktrans %}Customer{% endblocktrans %}</th>
+          <th scope="col" width=10%>{% blocktrans %}Address{% endblocktrans %}</th>
+          <th scope="col" width=10%>{% blocktrans %}Short Description{% endblocktrans %}</th>
+          <th scope="col" width=10%>{% blocktrans %}Device{% endblocktrans %}</th>
+          <th scope="col" width=8%>{% blocktrans %}Status{% endblocktrans %}</th>
+          <th scope="col" width=8%>{% blocktrans %}Region{% endblocktrans %}</th>
+          <th scope="col" width=8%>{% blocktrans %}Priority{% endblocktrans %}</th>
+          <th scope="col" width=14%>{% blocktrans %}Executor{% endblocktrans %}</th>
         </tr>
       </thead>
       <tbody id="order-table">
@@ -87,9 +92,9 @@
                     {% if order.region__name %}
                   <option selected disabled hidden value="{{ order.region__name }}">{{ order.region__name }}</option>
                     {% else %}
-                  <option selected disabled hidden value="None">No Region</option>
+                  <option selected disabled hidden value="None">{% blocktrans %}No Region{% endblocktrans %}</option>
                     {% endif %}
-                  <option value="-1">No Region</option>
+                  <option value="-1">{% blocktrans %}No Region{% endblocktrans %}</option>
                   {% for region in regions %}
                     <option value="{{ region.id }}">{{ region.name }}</option>
                   {% endfor %}
@@ -115,10 +120,10 @@
                     {% if order.executor_name != ' ' %}
                       {{ order.executor_name }}
                     {% else %}
-                      No Executor
+                      {% blocktrans %}No Executor{% endblocktrans %}
                     {% endif %}
                   </option>
-                  <option value="-1">No Executor</option>
+                  <option value="-1">{% blocktrans %}No Executor{% endblocktrans %}</option>
                   {% for employee in employees %}
                     <option value="{{ employee.id }}">{{ employee.full_name }}</option>
                   {% endfor %}
@@ -130,15 +135,15 @@
           <tr id="row{{ order.id }}" class="collapse">
             <td colspan="3">
               <ul>
-                <li><b>Created At:</b> {{ order.created_at }}</li>
-                <li><b>Updated At:</b> {{ order.updated_at }}</li>
-                <li><b>Order Intake:</b> {{ order.order_intake_name }}</li>
-                <li><b>Order Type:</b> {{ order.order_type }}</li>
-                <li><b>Payment Method:</b> {{ order.payment_method }}</li>
+                <li><b>{% blocktrans %}Created At{% endblocktrans %}:</b> {{ order.created_at }}</li>
+                <li><b>{% blocktrans %}Updated At{% endblocktrans %}:</b> {{ order.updated_at }}</li>
+                <li><b>{% blocktrans %}Order Intake{% endblocktrans %}:</b> {{ order.order_intake_name }}</li>
+                <li><b>{% blocktrans %}Order Type{% endblocktrans %}:</b> {{ order.order_type }}</li>
+                <li><b>{% blocktrans %}Payment Method{% endblocktrans %}:</b> {{ order.payment_method }}</li>
               </ul>
             </td>
-            <td colspan="3"><b>Additional Information:</b><br>{{ order.additional_info_name }}</td>
-            <td colspan="3"><b>Order Description:</b><br>{{ order.description_name }}</td>
+            <td colspan="3"><b>{% blocktrans %}Additional Information{% endblocktrans %}:</b><br>{{ order.additional_info_name }}</td>
+            <td colspan="3"><b>{% blocktrans %}Order Description{% endblocktrans %}:</b><br>{{ order.description_name }}</td>
           </tr>
         {% endfor %}
       </tbody>

@@ -19,7 +19,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from .views import Home
+from .views import Home, change_language
 
 urlpatterns = [
     path('', Home.as_view(), name='home'),
@@ -32,6 +32,8 @@ urlpatterns = [
     path('orders/', include('orders.urls')),
     path('order_management/', include('order_management.urls')),
     path('history/', include('history.urls')),
+    path('change-language/', change_language, name='change_language'),
+
     path("__debug__/", include("debug_toolbar.urls")),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \

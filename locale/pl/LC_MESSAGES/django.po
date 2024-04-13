@@ -1,0 +1,1152 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-04-13 11:11+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
+"%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
+"%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+
+#: .\authentication\templates\authentication\login.html:56
+msgid "Please sign in"
+msgstr "Proszę się zalogować"
+
+#: .\authentication\templates\authentication\login.html:61
+msgid "Username"
+msgstr "Nazwa użytkownika"
+
+#: .\authentication\templates\authentication\login.html:65
+msgid "Password"
+msgstr "Hasło"
+
+#: .\authentication\templates\authentication\login.html:67
+msgid "Sign in"
+msgstr "Zaloguj się"
+
+#: .\customers\forms.py:39
+msgid "Yes"
+msgstr "Tak"
+
+#: .\customers\forms.py:39
+msgid "No"
+msgstr "Nie"
+
+#: .\customers\models.py:9 .\orders\models.py:62
+msgid "Cash"
+msgstr "Gotówka"
+
+#: .\customers\models.py:10
+msgid "Bank"
+msgstr "Przelew"
+
+#: .\customers\models.py:20 .\employees\models.py:20
+msgid "User"
+msgstr "Nazwa użytkownika"
+
+#: .\customers\models.py:22
+msgid "Full Name or Company Name"
+msgstr "Pełne imię albo nazwa firmy"
+
+#: .\customers\models.py:23 .\customers\models.py:37
+#: .\order_management\templates\order_management\orders_settlement.html:89
+#: .\order_management\templates\order_management\orders_settlement.html:106
+#: .\orders\templates\orders\customer_details.html:6
+#: .\orders\templates\orders\order_details.html:57
+#: .\orders\templates\orders\order_details.html:98
+#: .\orders\templates\orders\order_update.html:65
+#: .\orders\templates\orders\order_update.html:109
+msgid "Tax"
+msgstr "NIP"
+
+#: .\customers\models.py:24 .\orders\templates\orders\customer_details.html:8
+#: .\orders\templates\orders\order_details.html:59
+#: .\orders\templates\orders\order_details.html:100
+#: .\orders\templates\orders\order_update.html:67
+#: .\orders\templates\orders\order_update.html:111
+msgid "Billing Country"
+msgstr "Kraj rozliczenia"
+
+#: .\customers\models.py:25 .\orders\templates\orders\customer_details.html:12
+#: .\orders\templates\orders\order_details.html:63
+#: .\orders\templates\orders\order_details.html:104
+#: .\orders\templates\orders\order_update.html:71
+#: .\orders\templates\orders\order_update.html:115
+msgid "Billing City"
+msgstr "Miasto rozliczenia"
+
+#: .\customers\models.py:26 .\orders\templates\orders\customer_details.html:10
+#: .\orders\templates\orders\order_details.html:61
+#: .\orders\templates\orders\order_details.html:102
+#: .\orders\templates\orders\order_update.html:69
+#: .\orders\templates\orders\order_update.html:113
+msgid "Billing Postal Code"
+msgstr "Kod pocztowy rozliczenia"
+
+#: .\customers\models.py:27 .\orders\templates\orders\customer_details.html:14
+#: .\orders\templates\orders\order_details.html:65
+#: .\orders\templates\orders\order_details.html:106
+#: .\orders\templates\orders\order_update.html:73
+#: .\orders\templates\orders\order_update.html:117
+msgid "Billing Street"
+msgstr "Ulica rozliczenia"
+
+#: .\customers\models.py:28
+msgid "Billing Number"
+msgstr "Numer rozliczenia"
+
+#: .\customers\models.py:29
+msgid "Calling Code"
+msgstr "Nr kierunkowy"
+
+#: .\customers\models.py:30
+#: .\order_management\templates\order_management\orders_settlement.html:92
+#: .\order_management\templates\order_management\orders_settlement.html:109
+#: .\orders\templates\orders\customer_details.html:17
+#: .\orders\templates\orders\order_details.html:68
+#: .\orders\templates\orders\order_details.html:109
+#: .\orders\templates\orders\order_update.html:76
+#: .\orders\templates\orders\order_update.html:120
+msgid "Telephone"
+msgstr "Telefon"
+
+#: .\customers\models.py:31
+#: .\order_management\templates\order_management\orders_settlement.html:95
+#: .\order_management\templates\order_management\orders_settlement.html:112
+msgid "Email"
+msgstr "Email"
+
+#: .\customers\models.py:32 .\customers\models.py:50 .\devices\models.py:38
+#: .\orders\models.py:135 .\orders\templates\orders\address_details.html:11
+#: .\orders\templates\orders\order_details.html:83
+#: .\orders\templates\orders\order_update.html:94 .\services\models.py:37
+#: .\services\templates\services\services_list.html:33
+msgid "Description"
+msgstr "Opis"
+
+#: .\customers\models.py:33 .\orders\templates\orders\order_details.html:140
+msgid "Payment"
+msgstr "Płatność"
+
+#: .\customers\models.py:44
+#: .\order_management\templates\order_management\employees_order_management.html:25
+#: .\order_management\templates\order_management\employees_order_management_list.html:8
+#: .\order_management\templates\order_management\main_order_management.html:65
+#: .\order_management\templates\order_management\my_orders_management.html:60
+#: .\order_management\templates\order_management\orders_settlement.html:18
+#: .\order_management\templates\order_management\regions_order_management.html:29
+#: .\orders\forms.py:14 .\orders\models.py:106
+#: .\orders\templates\orders\order_details.html:41
+#: .\orders\templates\orders\order_update.html:46
+#: .\orders\templates\orders\orders_list.html:23
+msgid "Customer"
+msgstr "Kontrahent"
+
+#: .\customers\models.py:45
+#: .\customers\templates\customers\addresses_list.html:22
+msgid "Country"
+msgstr "Kraj"
+
+#: .\customers\models.py:46
+#: .\customers\templates\customers\addresses_list.html:23
+#: .\customers\templates\customers\customers_list.html:23
+#: .\orders\templates\orders\address_details.html:6
+#: .\orders\templates\orders\order_details.html:78
+#: .\orders\templates\orders\order_update.html:89
+#: .\orders\templates\orders\orders_list.html:24
+msgid "City"
+msgstr "Miasto"
+
+#: .\customers\models.py:47 .\orders\templates\orders\address_details.html:4
+#: .\orders\templates\orders\order_details.html:76
+#: .\orders\templates\orders\order_update.html:87
+msgid "Postal Code"
+msgstr "Kod pocztowy"
+
+#: .\customers\models.py:48
+#: .\customers\templates\customers\addresses_list.html:25
+#: .\customers\templates\customers\customers_list.html:25
+#: .\orders\templates\orders\address_details.html:8
+#: .\orders\templates\orders\order_details.html:80
+#: .\orders\templates\orders\order_update.html:91
+msgid "Street"
+msgstr "Ulica"
+
+#: .\customers\models.py:49
+#: .\customers\templates\customers\addresses_list.html:26
+msgid "Number"
+msgstr "Numer"
+
+#: .\customers\models.py:51
+msgid "Is Active"
+msgstr "Aktywny"
+
+#: .\customers\templates\customers\address_details.html:10
+msgid "Additional Address Details"
+msgstr "Szczegóły dodatkowego adresu"
+
+#: .\customers\templates\customers\address_details.html:14
+#: .\customers\templates\customers\customer_details.html:24
+#: .\devices\templates\devices\details.html:10
+#: .\order_management\templates\order_management\my_orders_management.html:86
+#: .\orders\templates\orders\order_details.html:33
+#: .\orders\templates\orders\order_update.html:233
+#: .\services\templates\services\brand_details.html:9
+#: .\services\templates\services\model_details.html:9
+#: .\services\templates\services\service_details.html:10
+msgid "Update"
+msgstr "Aktualizuj"
+
+#: .\customers\templates\customers\address_update.html:10
+msgid "Additional Address Update"
+msgstr "Aktualizacja dodatkowego adresu"
+
+#: .\customers\templates\customers\address_update.html:21
+#: .\customers\templates\customers\customer_update.html:16
+#: .\devices\templates\devices\update.html:17
+#: .\orders\templates\orders\order_update.html:34
+#: .\orders\templates\orders\order_update.html:287
+#: .\orders\templates\orders\order_update.html:309
+#: .\orders\templates\orders\order_update.html:335
+#: .\orders\templates\orders\order_update.html:359
+#: .\orders\templates\orders\order_update.html:383
+#: .\orders\templates\orders\order_update.html:429
+#: .\services\templates\services\brand_update.html:16
+#: .\services\templates\services\model_update.html:16
+#: .\services\templates\services\service_update.html:16
+#: .\templates\base.html:198
+msgid "Save"
+msgstr "Zapisz"
+
+#: .\customers\templates\customers\addresses_base.html:8
+#: .\customers\templates\customers\customer_details.html:6
+msgid "Customer Options"
+msgstr "Opcje Kontrahenta"
+
+#: .\customers\templates\customers\addresses_base.html:14
+#: .\customers\templates\customers\customer_details.html:12
+msgid "Additional addresses settings"
+msgstr "Ustawienia dodatkowych adresów"
+
+#: .\customers\templates\customers\addresses_list.html:10
+msgid "Additional Addresses"
+msgstr "Dodatkowy adres"
+
+#: .\customers\templates\customers\addresses_list.html:14
+#: .\customers\templates\customers\customers_list.html:13
+#: .\devices\templates\devices\list.html:14
+#: .\orders\templates\orders\order_details.html:92
+#: .\orders\templates\orders\order_update.html:59
+#: .\orders\templates\orders\order_update.html:83
+#: .\orders\templates\orders\order_update.html:103
+#: .\orders\templates\orders\order_update.html:195
+#: .\orders\templates\orders\orders_list.html:14
+#: .\services\templates\services\models_list.html:9
+msgid "Add New"
+msgstr "Dodaj nowy"
+
+#: .\customers\templates\customers\addresses_list.html:24
+#: .\customers\templates\customers\customers_list.html:24
+msgid "Postal code"
+msgstr "Kod pocztowy"
+
+#: .\customers\templates\customers\customer_details.html:23
+#: .\devices\templates\devices\details.html:9
+#: .\orders\templates\orders\order_details.html:32
+#: .\services\templates\services\service_details.html:9
+msgid "Update History"
+msgstr "Historia zmian"
+
+#: .\customers\templates\customers\customer_update.html:6
+msgid "Customer Update"
+msgstr "Edycja Kontrahenta"
+
+#: .\customers\templates\customers\customers_list.html:6
+#: .\templates\base.html:146
+msgid "Customers"
+msgstr "Kontrahenci"
+
+#: .\customers\templates\customers\customers_list.html:9
+msgid "Search by Name / TAX / City / Street"
+msgstr "Szukaj według nazwy / nipu / miasta / ulicy"
+
+#: .\customers\templates\customers\customers_list.html:21
+#: .\order_management\templates\order_management\orders_settlement.html:33
+#: .\order_management\templates\order_management\orders_settlement.html:38
+#: .\order_management\templates\order_management\orders_settlement.html:51
+#: .\order_management\templates\order_management\orders_settlement.html:64
+#: .\orders\models.py:67 .\orders\models.py:73 .\orders\models.py:77
+#: .\orders\models.py:84 .\orders\templates\orders\customer_details.html:4
+#: .\orders\templates\orders\order_details.html:55
+#: .\orders\templates\orders\order_details.html:96
+#: .\orders\templates\orders\order_details.html:210
+#: .\orders\templates\orders\order_update.html:63
+#: .\orders\templates\orders\order_update.html:107
+#: .\orders\templates\orders\order_update.html:218 .\services\models.py:7
+#: .\services\models.py:14 .\services\models.py:35
+#: .\services\templates\services\brands_list.html:17
+#: .\services\templates\services\models_list.html:17
+#: .\services\templates\services\services_list.html:31
+msgid "Name"
+msgstr "Nazwa"
+
+#: .\customers\templates\customers\customers_list.html:22
+msgid "TAX"
+msgstr "NIP"
+
+#: .\devices\models.py:8
+msgid "Monochrome"
+msgstr "Monochromatycza"
+
+#: .\devices\models.py:9
+msgid "Color"
+msgstr "Kolorowa"
+
+#: .\devices\models.py:13
+msgid "A4"
+msgstr "A4"
+
+#: .\devices\models.py:14
+msgid "A3"
+msgstr "A3"
+
+#: .\devices\models.py:18
+msgid "Available"
+msgstr "Dostępna"
+
+#: .\devices\models.py:19
+msgid "Unavailable"
+msgstr "Niedostępna"
+
+#: .\devices\models.py:20
+msgid "Reserved"
+msgstr "Zarezerwowana"
+
+#: .\devices\models.py:21
+msgid "Leased"
+msgstr "Wydzierżawiona"
+
+#: .\devices\models.py:22
+msgid "Sold"
+msgstr "Sprzedana"
+
+#: .\devices\models.py:23
+msgid "Replacement"
+msgstr "Zastępcza"
+
+#: .\devices\models.py:24
+msgid "In delivery INVISIBLE"
+msgstr "W dostawie NIEWIDOCZNA"
+
+#: .\devices\models.py:25
+msgid "In delivery"
+msgstr "W dostawie"
+
+#: .\devices\models.py:26
+msgid "Serviced"
+msgstr "Serwisowana"
+
+#: .\devices\models.py:30
+msgid "Brand"
+msgstr "Marka"
+
+#: .\devices\models.py:31
+msgid "Model"
+msgstr "Model"
+
+#: .\devices\models.py:32 .\devices\templates\devices\list.html:23
+msgid "Serial Number"
+msgstr "Numer Seryjny"
+
+#: .\devices\models.py:33
+msgid "Type"
+msgstr "Typ"
+
+#: .\devices\models.py:34
+msgid "Format"
+msgstr "Format"
+
+#: .\devices\models.py:35
+#: .\order_management\templates\order_management\orders_settlement.html:54
+#: .\orders\models.py:138
+msgid "Total Counter"
+msgstr "Licznik całkowity"
+
+#: .\devices\models.py:36
+#: .\order_management\templates\order_management\orders_settlement.html:57
+#: .\orders\models.py:139
+msgid "Mono Counter"
+msgstr "Licznik mono"
+
+#: .\devices\models.py:37
+#: .\order_management\templates\order_management\orders_settlement.html:60
+#: .\orders\models.py:140
+msgid "Color Counter"
+msgstr "Licznik kolor"
+
+#: .\devices\models.py:39 .\devices\templates\devices\list.html:24
+#: .\order_management\templates\order_management\employees_order_management.html:29
+#: .\order_management\templates\order_management\employees_order_management_list.html:12
+#: .\order_management\templates\order_management\main_order_management.html:69
+#: .\order_management\templates\order_management\my_orders_management.html:64
+#: .\order_management\templates\order_management\orders_settlement.html:22
+#: .\order_management\templates\order_management\regions_order_management.html:33
+#: .\orders\models.py:137 .\orders\templates\orders\orders_list.html:26
+msgid "Status"
+msgstr "Status"
+
+#: .\devices\models.py:40 .\orders\models.py:68
+#: .\orders\templates\orders\order_details.html:212
+#: .\orders\templates\orders\order_update.html:220 .\services\models.py:36
+msgid "Price Net"
+msgstr "Cena netto"
+
+#: .\devices\templates\devices\details.html:7
+msgid "Device Details"
+msgstr "Szczegóły Urządzenia"
+
+#: .\devices\templates\devices\list.html:7 .\templates\base.html:152
+msgid "Devices"
+msgstr "Urządzenia"
+
+#: .\devices\templates\devices\list.html:10
+msgid "Search by Serial Number"
+msgstr "Szukaj według numeru seryjnego"
+
+#: .\devices\templates\devices\list.html:22
+#: .\order_management\templates\order_management\employees_order_management.html:28
+#: .\order_management\templates\order_management\employees_order_management_list.html:11
+#: .\order_management\templates\order_management\main_order_management.html:68
+#: .\order_management\templates\order_management\my_orders_management.html:63
+#: .\order_management\templates\order_management\orders_settlement.html:21
+#: .\order_management\templates\order_management\regions_order_management.html:32
+#: .\orders\forms.py:70 .\orders\models.py:134
+#: .\orders\templates\orders\orders_list.html:25
+msgid "Device"
+msgstr "Urządzenie"
+
+#: .\devices\templates\devices\update.html:7
+msgid "Device Update"
+msgstr "Edycja Urządzenia"
+
+#: .\employees\models.py:7
+msgid "Boss"
+msgstr "Szef"
+
+#: .\employees\models.py:8
+msgid "Manager"
+msgstr "Kierownik"
+
+#: .\employees\models.py:9
+msgid "Office staff"
+msgstr "Pracownik Biurowy"
+
+#: .\employees\models.py:10
+msgid "Technician"
+msgstr "Serwisant"
+
+#: .\employees\models.py:11
+msgid "Seller"
+msgstr "Sprzedawca"
+
+#: .\employees\models.py:12
+msgid "Warehouse staff"
+msgstr "Magazynier"
+
+#: .\employees\models.py:22
+msgid "Department"
+msgstr "Oddział"
+
+#: .\history\templates\history\history_list.html:9
+msgid "History of"
+msgstr "Historia"
+
+#: .\history\templates\history\history_list.html:12
+#: .\history\templates\history\history_list.html:14
+msgid "Back"
+msgstr "Powrót"
+
+#: .\history\templates\history\history_list.html:22
+msgid "Date/Time"
+msgstr "Data/Czas"
+
+#: .\history\templates\history\history_list.html:23
+msgid "Employee"
+msgstr "Pracownik"
+
+#: .\history\templates\history\history_list.html:24
+msgid "Action"
+msgstr "Akcja"
+
+#: .\history\templates\history\history_list.html:34
+msgid "Changed:"
+msgstr "Edytowano"
+
+#: .\history\templates\history\history_list.html:45
+#: .\order_management\templates\order_management\my_orders_management.html:85
+#: .\order_management\templates\order_management\orders_settlement.html:75
+msgid "Details"
+msgstr "Szczegóły"
+
+#: .\history\templates\history\history_list.html:55
+#: .\history\templates\history\history_list.html:57
+msgid "New Value"
+msgstr "Nowa wartość"
+
+#: .\history\templates\history\history_list.html:60
+#: .\history\templates\history\history_list.html:62
+msgid "Old Value"
+msgstr "Stara wartość"
+
+#: .\history\templates\history\history_list.html:80 .\templates\base.html:249
+msgid "Page"
+msgstr "Strona"
+
+#: .\history\templates\history\history_list.html:80 .\templates\base.html:249
+msgid "of"
+msgstr "z"
+
+#: .\order_management\templates\order_management\base_order_management.html:7
+msgid "Management Options"
+msgstr "Opcje zarządzania"
+
+#: .\order_management\templates\order_management\base_order_management.html:13
+#: .\order_management\templates\order_management\employees_order_management.html:11
+msgid "Employees Orders"
+msgstr "Zlecenia według pracowników"
+
+#: .\order_management\templates\order_management\base_order_management.html:19
+#: .\order_management\templates\order_management\regions_order_management.html:11
+msgid "Regions Orders"
+msgstr "Zlecenia według regionów"
+
+#: .\order_management\templates\order_management\base_order_management.html:25
+#: .\order_management\templates\order_management\orders_settlement.html:11
+msgid "Orders Settlement"
+msgstr "Rozliczanie zleceń"
+
+#: .\order_management\templates\order_management\employees_order_management.html:14
+#: .\order_management\templates\order_management\main_order_management.html:17
+#: .\order_management\templates\order_management\my_orders_management.html:15
+#: .\order_management\templates\order_management\regions_order_management.html:14
+msgid "Add New Order"
+msgstr "Dodaj nowe zlecenie"
+
+#: .\order_management\templates\order_management\employees_order_management.html:26
+#: .\order_management\templates\order_management\employees_order_management_list.html:9
+#: .\order_management\templates\order_management\main_order_management.html:66
+#: .\order_management\templates\order_management\my_orders_management.html:61
+#: .\order_management\templates\order_management\orders_settlement.html:34
+#: .\order_management\templates\order_management\orders_settlement.html:39
+#: .\order_management\templates\order_management\regions_order_management.html:30
+msgid "Address"
+msgstr "Adres"
+
+#: .\order_management\templates\order_management\employees_order_management.html:27
+#: .\order_management\templates\order_management\employees_order_management_list.html:10
+#: .\order_management\templates\order_management\main_order_management.html:67
+#: .\order_management\templates\order_management\my_orders_management.html:62
+#: .\order_management\templates\order_management\regions_order_management.html:31
+#: .\orders\models.py:129
+msgid "Short Description"
+msgstr "Krótki opis"
+
+#: .\order_management\templates\order_management\employees_order_management.html:30
+#: .\order_management\templates\order_management\employees_order_management_list.html:13
+#: .\order_management\templates\order_management\main_order_management.html:70
+#: .\order_management\templates\order_management\regions_order_management.html:34
+#: .\orders\models.py:122
+msgid "Region"
+msgstr "Region"
+
+#: .\order_management\templates\order_management\employees_order_management.html:31
+#: .\order_management\templates\order_management\employees_order_management_list.html:14
+#: .\order_management\templates\order_management\main_order_management.html:71
+#: .\order_management\templates\order_management\my_orders_management.html:65
+#: .\order_management\templates\order_management\regions_order_management.html:35
+#: .\orders\models.py:132 .\orders\templates\orders\order_details.html:128
+msgid "Priority"
+msgstr "Priorytet"
+
+#: .\order_management\templates\order_management\employees_order_management.html:32
+#: .\order_management\templates\order_management\employees_order_management_list.html:15
+#: .\order_management\templates\order_management\main_order_management.html:72
+#: .\order_management\templates\order_management\regions_order_management.html:36
+#: .\orders\forms.py:56 .\orders\models.py:103
+msgid "Executor"
+msgstr "Wykonawca"
+
+#: .\order_management\templates\order_management\employees_order_management.html:56
+#: .\order_management\templates\order_management\employees_order_management.html:59
+#: .\order_management\templates\order_management\employees_order_management_list.html:39
+#: .\order_management\templates\order_management\employees_order_management_list.html:42
+#: .\order_management\templates\order_management\main_order_management.html:95
+#: .\order_management\templates\order_management\main_order_management.html:97
+#: .\order_management\templates\order_management\regions_order_management.html:59
+#: .\order_management\templates\order_management\regions_order_management.html:62
+msgid "No Region"
+msgstr "Brak regionu"
+
+#: .\order_management\templates\order_management\employees_order_management.html:85
+#: .\order_management\templates\order_management\employees_order_management.html:88
+#: .\order_management\templates\order_management\employees_order_management_list.html:68
+#: .\order_management\templates\order_management\employees_order_management_list.html:71
+#: .\order_management\templates\order_management\main_order_management.html:123
+#: .\order_management\templates\order_management\main_order_management.html:126
+#: .\order_management\templates\order_management\regions_order_management.html:88
+#: .\order_management\templates\order_management\regions_order_management.html:91
+msgid "No Executor"
+msgstr "Brak wykonawcy"
+
+#: .\order_management\templates\order_management\employees_order_management.html:117
+#: .\order_management\templates\order_management\employees_order_management_list.html:100
+#: .\order_management\templates\order_management\main_order_management.html:138
+#: .\order_management\templates\order_management\my_orders_management.html:94
+#: .\order_management\templates\order_management\regions_order_management.html:103
+#: .\orders\templates\orders\order_details.html:118
+#: .\orders\templates\orders\order_update.html:129
+msgid "Created At"
+msgstr "Utworzono"
+
+#: .\order_management\templates\order_management\employees_order_management.html:118
+#: .\order_management\templates\order_management\employees_order_management_list.html:101
+#: .\order_management\templates\order_management\main_order_management.html:139
+#: .\order_management\templates\order_management\my_orders_management.html:95
+#: .\order_management\templates\order_management\regions_order_management.html:104
+#: .\orders\templates\orders\order_details.html:122
+#: .\orders\templates\orders\order_update.html:133
+#: .\orders\templates\orders\orders_list.html:28
+msgid "Updated At"
+msgstr "Zaktualizowno"
+
+#: .\order_management\templates\order_management\employees_order_management.html:119
+#: .\order_management\templates\order_management\employees_order_management_list.html:102
+#: .\order_management\templates\order_management\main_order_management.html:140
+#: .\order_management\templates\order_management\my_orders_management.html:96
+#: .\order_management\templates\order_management\orders_settlement.html:82
+#: .\order_management\templates\order_management\regions_order_management.html:105
+#: .\orders\models.py:95 .\orders\templates\orders\order_details.html:149
+#: .\orders\templates\orders\order_update.html:152
+msgid "Order Intake"
+msgstr "Zlecenie przyjęte przez"
+
+#: .\order_management\templates\order_management\employees_order_management.html:120
+#: .\order_management\templates\order_management\employees_order_management_list.html:103
+#: .\order_management\templates\order_management\main_order_management.html:141
+#: .\order_management\templates\order_management\my_orders_management.html:97
+#: .\order_management\templates\order_management\orders_settlement.html:83
+#: .\order_management\templates\order_management\regions_order_management.html:106
+#: .\orders\models.py:136
+msgid "Order Type"
+msgstr "Typ zlecenia"
+
+#: .\order_management\templates\order_management\employees_order_management.html:121
+#: .\order_management\templates\order_management\employees_order_management_list.html:104
+#: .\order_management\templates\order_management\main_order_management.html:142
+#: .\order_management\templates\order_management\my_orders_management.html:98
+#: .\order_management\templates\order_management\orders_settlement.html:84
+#: .\order_management\templates\order_management\regions_order_management.html:107
+#: .\orders\models.py:143
+msgid "Payment Method"
+msgstr "Metoda płatności"
+
+#: .\order_management\templates\order_management\employees_order_management.html:124
+#: .\order_management\templates\order_management\employees_order_management_list.html:107
+#: .\order_management\templates\order_management\main_order_management.html:145
+#: .\order_management\templates\order_management\my_orders_management.html:101
+#: .\order_management\templates\order_management\regions_order_management.html:110
+msgid "Additional Information"
+msgstr "Dodatkowe informacje"
+
+#: .\order_management\templates\order_management\employees_order_management.html:125
+#: .\order_management\templates\order_management\employees_order_management_list.html:108
+#: .\order_management\templates\order_management\main_order_management.html:146
+#: .\order_management\templates\order_management\my_orders_management.html:102
+#: .\order_management\templates\order_management\regions_order_management.html:111
+msgid "Order Description"
+msgstr "Opis zlecenia"
+
+#: .\order_management\templates\order_management\main_order_management.html:11
+#: .\templates\base.html:121
+msgid "Order Management"
+msgstr "Zarządzanie zleceniami"
+
+#: .\order_management\templates\order_management\main_order_management.html:14
+msgid "Search by Customer"
+msgstr "Szukaj według kontrahenta"
+
+#: .\order_management\templates\order_management\main_order_management.html:23
+#: .\order_management\templates\order_management\my_orders_management.html:23
+msgid "Filter By Region"
+msgstr "Filtruj według regionów"
+
+#: .\order_management\templates\order_management\main_order_management.html:26
+#: .\order_management\templates\order_management\main_order_management.html:35
+#: .\order_management\templates\order_management\my_orders_management.html:26
+#: .\order_management\templates\order_management\my_orders_management.html:37
+#: .\order_management\templates\order_management\my_orders_management.html:50
+#: .\order_management\templates\order_management\regions_order_management.html:20
+msgid "No Region Assigned"
+msgstr "Brak przypisanego regionu"
+
+#: .\order_management\templates\order_management\main_order_management.html:29
+#: .\order_management\templates\order_management\main_order_management.html:34
+#: .\order_management\templates\order_management\main_order_management.html:44
+#: .\order_management\templates\order_management\main_order_management.html:53
+#: .\order_management\templates\order_management\my_orders_management.html:29
+#: .\order_management\templates\order_management\my_orders_management.html:34
+#: .\orders\templates\orders\order_update.html:404
+#: .\orders\templates\orders\order_update.html:413
+#: .\services\templates\services\services_list.html:8
+msgid "Display All"
+msgstr "Wyświetl wszystko"
+
+#: .\order_management\templates\order_management\main_order_management.html:42
+msgid "Filter By Priority"
+msgstr "Filtruj według priorytetów"
+
+#: .\order_management\templates\order_management\main_order_management.html:51
+msgid "Filter By Employee"
+msgstr "Filtruj według pracowników"
+
+#: .\order_management\templates\order_management\my_orders_management.html:12
+#: .\templates\base.html:128
+msgid "My Orders"
+msgstr "Moje zlecenia"
+
+#: .\order_management\templates\order_management\orders_settlement.html:19
+#: .\orders\forms.py:42 .\orders\models.py:120
+#: .\orders\templates\orders\order_details.html:44
+#: .\orders\templates\orders\order_update.html:49
+msgid "Payer"
+msgstr "Płatnik"
+
+#: .\order_management\templates\order_management\orders_settlement.html:20
+#: .\orders\models.py:131
+msgid "Additional Info"
+msgstr "Dodatkowe informacje"
+
+#: .\order_management\templates\order_management\orders_settlement.html:23
+#: .\orders\models.py:123
+msgid "Invoice Number"
+msgstr "Numer faktury"
+
+#: .\order_management\templates\order_management\orders_settlement.html:42
+msgid "The Same Data as Customer"
+msgstr "Takie same dane jak kontrahenta"
+
+#: .\order_management\templates\order_management\orders_settlement.html:52
+msgid "S/N"
+msgstr "N/S"
+
+#: .\order_management\templates\order_management\orders_settlement.html:73
+msgid "Settle"
+msgstr "Rozlicz"
+
+#: .\order_management\templates\order_management\orders_settlement.html:80
+#: .\orders\templates\orders\order_details.html:21
+#: .\orders\templates\orders\order_update.html:23
+msgid "Order Details"
+msgstr "Szczególy zlecenia"
+
+#: .\order_management\templates\order_management\orders_settlement.html:86
+#: .\orders\templates\orders\order_details.html:18
+#: .\orders\templates\orders\order_update.html:20
+msgid "Customer Details"
+msgstr "Szczegóły kontrahenta"
+
+#: .\order_management\templates\order_management\orders_settlement.html:98
+msgid "Customer Info"
+msgstr "Informacje o kontrahencie"
+
+#: .\order_management\templates\order_management\orders_settlement.html:103
+msgid "Payer Details"
+msgstr "Płatnik"
+
+#: .\order_management\templates\order_management\orders_settlement.html:115
+msgid "Payer Info"
+msgstr "Informacje o płatniku"
+
+#: .\order_management\templates\order_management\orders_settlement.html:125
+#: .\orders\models.py:66
+msgid "Service"
+msgstr "Usługa"
+
+#: .\order_management\templates\order_management\orders_settlement.html:126
+#: .\orders\models.py:69 .\orders\templates\orders\order_details.html:211
+#: .\orders\templates\orders\order_update.html:219
+msgid "Quantity"
+msgstr "Ilość"
+
+#: .\order_management\templates\order_management\orders_settlement.html:127
+#: .\orders\models.py:73 .\services\templates\services\services_list.html:32
+msgid "Net Price"
+msgstr "Cena netto"
+
+#: .\order_management\templates\order_management\orders_settlement.html:142
+msgid "Total"
+msgstr "Łącznie"
+
+#: .\order_management\templates\order_management\orders_settlement.html:143
+#: .\orders\templates\orders\order_details.html:229
+#: .\orders\templates\orders\order_update.html:242
+msgid "NET PLN"
+msgstr "zł netto"
+
+#: .\orders\forms.py:19
+msgid "Customer ..."
+msgstr "Kontrahent ..."
+
+#: .\orders\forms.py:28 .\orders\models.py:112
+msgid "Additional Address"
+msgstr "Dodatkowy adres"
+
+#: .\orders\forms.py:33
+msgid "Service Address ... If empty, use billing address"
+msgstr "Adres zlecenia ... Jeżeli pusty skorzystaj z adresu rozliczenia"
+
+#: .\orders\forms.py:47
+msgid "Payer ..."
+msgstr "Płatnik ..."
+
+#: .\orders\forms.py:61
+msgid "Executor ..."
+msgstr "Wykonawca ..."
+
+#: .\orders\forms.py:74
+msgid "Device ..."
+msgstr "Urządzenie ..."
+
+#: .\orders\models.py:21
+msgid "The maximum file size that can be uploaded is 40MB"
+msgstr "Maksymalny rozmiar pliku, jaki można przesłać to 40 MB"
+
+#: .\orders\models.py:29
+msgid "New"
+msgstr "Nowe"
+
+#: .\orders\models.py:30
+msgid "In Progress"
+msgstr "W trakcie"
+
+#: .\orders\models.py:31
+msgid "Canceled"
+msgstr "Anulowano"
+
+#: .\orders\models.py:32
+msgid "Settled"
+msgstr "Rozliczono"
+
+#: .\orders\models.py:33
+msgid "Completed"
+msgstr "Zrealizowano"
+
+#: .\orders\models.py:34
+msgid "Shipped"
+msgstr "Wysłano"
+
+#: .\orders\models.py:35
+msgid "Awaiting Delivery"
+msgstr "Oczekuje na dostawę"
+
+#: .\orders\models.py:36
+msgid "Awaiting Payment"
+msgstr "Oczekuje na płatność"
+
+#: .\orders\models.py:37
+msgid "Awaiting Pickup"
+msgstr "Oczekuje na odbiór"
+
+#: .\orders\models.py:41
+msgid "Free"
+msgstr "Bezpłatnie"
+
+#: .\orders\models.py:42
+msgid "Paid"
+msgstr "Płatnie"
+
+#: .\orders\models.py:43
+msgid "Warranty"
+msgstr "Gwarancja"
+
+#: .\orders\models.py:44
+msgid "Complaint"
+msgstr "Reklamacja"
+
+#: .\orders\models.py:45
+msgid "Lease"
+msgstr "Dzierżawa"
+
+#: .\orders\models.py:46
+msgid "Free - To Confirm"
+msgstr "Bezpłatnie - Do potwierdzenia"
+
+#: .\orders\models.py:47
+msgid "Paid - To Confirm"
+msgstr "Płatnie - Do potwierdzenia"
+
+#: .\orders\models.py:48
+msgid "Warranty - To Confirm"
+msgstr "Gwarancja - Do potwierdzenia"
+
+#: .\orders\models.py:49
+msgid "Complaint - To Confirm"
+msgstr "Reklamacja - Do potwierdzenia"
+
+#: .\orders\models.py:50
+msgid "Lease - To Confirm"
+msgstr "Dzierżawa - Do potwierdzenia"
+
+#: .\orders\models.py:54
+msgid "Standard"
+msgstr "Normalny"
+
+#: .\orders\models.py:55
+msgid "Urgent"
+msgstr "Pilny"
+
+#: .\orders\models.py:56
+msgid "Ad Hoc"
+msgstr "Przy okazji"
+
+#: .\orders\models.py:60
+msgid "Pro Invoice"
+msgstr "Pro forma"
+
+#: .\orders\models.py:61
+msgid "Bank Transfer"
+msgstr "Przelew"
+
+#: .\orders\models.py:73
+msgid "Qty"
+msgstr "Ilość"
+
+#: .\orders\models.py:105 .\orders\templates\orders\order_details.html:153
+#: .\orders\templates\orders\order_update.html:156
+msgid "Approver"
+msgstr "Zatwierdzono przez"
+
+#: .\orders\models.py:133
+msgid "Device Name"
+msgstr "Nazwa urządzenia"
+
+#: .\orders\models.py:141 .\orders\templates\orders\order_details.html:204
+#: .\orders\templates\orders\order_update.html:209
+#: .\services\templates\services\services_list.html:6 .\templates\base.html:140
+msgid "Services"
+msgstr "Usługi"
+
+#: .\orders\models.py:147 .\orders\templates\orders\orders_list.html:27
+msgid "Created at"
+msgstr "Utworzono"
+
+#: .\orders\models.py:148
+msgid "Updated at"
+msgstr "Zaktualizowno"
+
+#: .\orders\models.py:149
+msgid "Signer Name"
+msgstr "Nazwa odbiorcy"
+
+#: .\orders\models.py:150
+msgid "Signature"
+msgstr "Podpis"
+
+#: .\orders\models.py:151
+msgid "Sort Number"
+msgstr "Numer sortowania"
+
+#: .\orders\models.py:155
+msgid "Order ID"
+msgstr "ID zlecenia"
+
+#: .\orders\models.py:207
+msgid "Order"
+msgstr "Zlecenie"
+
+#: .\orders\models.py:208
+msgid "Image"
+msgstr "Obraz"
+
+#: .\orders\models.py:209
+msgid "File"
+msgstr "Plik"
+
+#: .\orders\templates\orders\attachments_list.html:12
+#: .\orders\templates\orders\order_details.html:247
+#: .\orders\templates\orders\order_update.html:261
+msgid "View"
+msgstr "Zobacz"
+
+#: .\orders\templates\orders\attachments_list.html:13
+#: .\orders\templates\orders\order_update.html:234
+#: .\orders\templates\orders\order_update.html:262
+msgid "Delete"
+msgstr "Usuń"
+
+#: .\orders\templates\orders\order_details.html:8
+msgid "Service Order Details"
+msgstr "Szczegóły zlecenia serwisowego"
+
+#: .\orders\templates\orders\order_details.html:11
+#: .\orders\templates\orders\order_update.html:11
+msgid "Service ID"
+msgstr "ID zlecenia"
+
+#: .\orders\templates\orders\order_details.html:24
+#: .\orders\templates\orders\order_details.html:179
+#: .\orders\templates\orders\order_update.html:26
+#: .\orders\templates\orders\order_update.html:181
+#: .\services\templates\services\service_details.html:6
+msgid "Service Details"
+msgstr "Szczegóły Zlecenia"
+
+#: .\orders\templates\orders\order_details.html:27
+#: .\orders\templates\orders\order_update.html:29
+msgid "Attachments"
+msgstr "Załączniki"
+
+#: .\orders\templates\orders\order_details.html:71
+#: .\orders\templates\orders\order_update.html:79
+msgid "Service Address"
+msgstr "Adres zlecenia"
+
+#: .\orders\templates\orders\order_details.html:182
+#: .\orders\templates\orders\order_update.html:184
+msgid "Services Details"
+msgstr "Szczegóły zlecenia"
+
+#: .\orders\templates\orders\order_details.html:227
+#: .\orders\templates\orders\order_update.html:240
+msgid "Summary"
+msgstr "Łącznie"
+
+#: .\orders\templates\orders\order_update.html:8
+msgid "Service Order Update"
+msgstr "Edytuj zlecenie serwisowe"
+
+#: .\orders\templates\orders\order_update.html:211
+#: .\services\templates\services\brands_list.html:9
+#: .\services\templates\services\services_list.html:17
+msgid "Add New "
+msgstr "Dodaj nową"
+
+#: .\orders\templates\orders\order_update.html:268
+msgid "File size is too large. Maximum allowed size is 40 MB"
+msgstr "Maksymalny rozmiar pliku, jaki można przesłać to 40 MB"
+
+#: .\orders\templates\orders\order_update.html:273
+msgid "Select Image or File"
+msgstr "Wybierz obraz albo plik"
+
+#: .\orders\templates\orders\order_update.html:279
+msgid "Add More"
+msgstr "Dodaj więcej"
+
+#: .\orders\templates\orders\order_update.html:297
+#: .\orders\templates\orders\order_update.html:348
+msgid "Create New Customer"
+msgstr "Dodaj nowego kontrahenta"
+
+#: .\orders\templates\orders\order_update.html:322
+msgid "Create New Address"
+msgstr "Dodaj nowy adres"
+
+#: .\orders\templates\orders\order_update.html:372
+msgid "Create New Device"
+msgstr "Dodaj nowe urządzenie"
+
+#: .\orders\templates\orders\order_update.html:396
+msgid "Add New Service"
+msgstr "Dodaj nową usługę"
+
+#: .\orders\templates\orders\order_update.html:402
+msgid "Filter By Brand"
+msgstr "Filtruj według marek"
+
+#: .\orders\templates\orders\order_update.html:411
+msgid "Filter By Model"
+msgstr "Filtruj według modeli"
+
+#: .\orders\templates\orders\orders_list.html:7 .\templates\base.html:134
+msgid "Service Orders"
+msgstr "Zlecenia serwisowe"
+
+#: .\orders\templates\orders\orders_list.html:10
+msgid "Search by ID / Customer / Device Serial Number / Invoice Number"
+msgstr "Szukaj według ID / kontrahenta / numeru seryjnego / numeru faktury"
+
+#: .\services\models.py:26
+msgid "Device Brand"
+msgstr "Marka urządzenia"
+
+#: .\services\models.py:33
+msgid "Device Model"
+msgstr "Model urządzenia"
+
+#: .\services\templates\services\brand_details.html:6
+msgid "Brand Details"
+msgstr "Szczegóły marki"
+
+#: .\services\templates\services\brand_update.html:6
+msgid "Brand Update"
+msgstr "Edycja marki"
+
+#: .\services\templates\services\brands_list.html:6
+msgid "Brands"
+msgstr "Marki"
+
+#: .\services\templates\services\model_details.html:6
+msgid "Model Details"
+msgstr "Szczegóły modelu"
+
+#: .\services\templates\services\model_update.html:6
+msgid "Model Update"
+msgstr "Edycja modelu"
+
+#: .\services\templates\services\models_list.html:6
+msgid "Models"
+msgstr "Modele"
+
+#: .\services\templates\services\service_base.html:8
+msgid "Service Options"
+msgstr "Opcje usług"
+
+#: .\services\templates\services\service_base.html:14
+msgid "Brand settings"
+msgstr "Ustawietnia marek"
+
+#: .\services\templates\services\service_base.html:20
+msgid "Model settings"
+msgstr "Ustawienia modeli"
+
+#: .\services\templates\services\service_update.html:6
+msgid "Service Update"
+msgstr "Edycja usługi"
+
+#: .\templates\base.html:163 .\templates\base.html:183
+msgid "Settings"
+msgstr "Ustawienia"
+
+#: .\templates\base.html:171
+msgid "Sign out"
+msgstr "Wyloguj"
+
+#: .\templates\base.html:189
+msgid "Select Language"
+msgstr "Wybierz język"
+
+#~ msgid "Transfer Payment"
+#~ msgstr "Przelew"
