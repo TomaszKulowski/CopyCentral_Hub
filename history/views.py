@@ -24,8 +24,6 @@ class HistoryList(EmployeeRequiredMixin, View):
             if index < history_queryset.count() - 1:
                 history_delta = entry.diff_against(history_queryset[index + 1])
                 changed_fields = history_delta.changed_fields
-                if 'sort_number' in changed_fields:
-                    changed_fields.remove('sort_number')
 
                 if not changed_fields:
                     continue
