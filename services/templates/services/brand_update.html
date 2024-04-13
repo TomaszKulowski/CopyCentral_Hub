@@ -2,20 +2,30 @@
 {% load i18n %}
 
 {% block content %}
-  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h2 class="h2">{% blocktrans %}Brand Update{% endblocktrans %}</h2>
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 mb-3">
+    <h2 class="h2"><a href="{% url 'services:brands_list' %}" class="text-decoration-none link-dark">{% blocktrans %}Brands{% endblocktrans %}</a></h2>
   </div>
   <form method="post">
-    {% csrf_token %}
-    {{ form.as_div }}
-    <br>
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-top">
-      <h1 class="h2"></h1>
-      <div class="btn-toolbar mb-2 mb-md-0">
-        <div class="btn-group me-2">
-          <button class="btn btn-sm btn-outline-secondary" type="submit">{% blocktrans %}Save{% endblocktrans %}</button>
+    <div class="container border">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2 class="h2">{% blocktrans %}Brand Update{% endblocktrans %}</h2>
+          <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group me-2">
+              <button class="btn btn-sm btn-outline-secondary" type="submit">{% blocktrans %}Save{% endblocktrans %}</button>
+            </div>
         </div>
       </div>
-    </div>
-  </form>
+      {% csrf_token %}
+      {{ form.as_div }}
+      <br>
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-top">
+        <h1 class="h2"></h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group me-2">
+            <button class="btn btn-sm btn-outline-secondary" type="submit">{% blocktrans %}Save{% endblocktrans %}</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 {% endblock %}

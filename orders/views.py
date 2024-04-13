@@ -68,15 +68,17 @@ class AddressAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetVie
             return AdditionalAddress.objects.none()
 
         customer_id = loads(self.request.GET.get('forward')).get('customer')
-        qs = AdditionalAddress.objects.filter(customer_id=customer_id, is_active=True)
+        if customer_id:
+            qs = AdditionalAddress.objects.filter(customer_id=customer_id, is_active=True)
 
-        if self.q:
-            qs = qs.filter(
-                Q(city__icontains=self.q) |
-                Q(street__icontains=self.q)
-            )
+            if self.q:
+                qs = qs.filter(
+                    Q(city__icontains=self.q) |
+                    Q(street__icontains=self.q)
+                )
 
-        return qs
+            return qs
+        return AdditionalAddress.objects.none()
 
 
 class DeviceAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView):
@@ -202,6 +204,8 @@ class OrderUpdate(EmployeeRequiredMixin, View):
         if customer_id:
             customer_instance = get_object_or_404(Customer, pk=customer_id)
             order_instance.customer = customer_instance
+            if not order_instance.contact:
+                order_instance.contact = customer_instance.telephone
         if payer_id:
             payer_instance = get_object_or_404(Customer, pk=payer_id)
             order_instance.payer = payer_instance
@@ -247,6 +251,9 @@ class OrderUpdate(EmployeeRequiredMixin, View):
         add_service = request.POST.get('add_service')
 
         order_instance = get_object_or_404(self.model.objects.select_related(), pk=kwargs.get('pk'))
+
+        if not order_instance.contact and order_instance.customer:
+            order_instance.contact = order_instance.customer.telephone
 
         if add_service:
             service_instance = get_object_or_404(Service, pk=request.POST.get('service'))
@@ -463,7 +470,10 @@ class ServiceUpdate(EmployeeRequiredMixin, UpdateView):
 
 class ServiceDelete(EmployeeRequiredMixin, View):
     def post(self, request, *args, **kwargs):
-        get_object_or_404(OrderServices, pk=request.POST.get('pk')).delete()
+        service = get_object_or_404(OrderServices, pk=request.POST.get('pk'))
+        order = Order.objects.filter(services=service)
+        if order:
+            order[0].services.remove(service)
 
         return JsonResponse({'success': True})
 

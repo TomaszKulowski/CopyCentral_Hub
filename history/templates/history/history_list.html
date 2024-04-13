@@ -42,7 +42,7 @@
                 {% endif %}
               {% endfor %}
             </td>
-            <td><button class="btn btn-sm btn-outline-secondary" onclick="toggleDetails({{ entry.0 }})">{% blocktrans %}Details{% endblocktrans %}</button></td>
+            <td><button class="btn btn-sm btn-outline-secondary" onclick="toggleDetails('row{{ entry.0 }}')">{% blocktrans %}Details{% endblocktrans %}</button></td>
           </tr>
           <tr></tr>
           <tr id="row{{ entry.0 }}" class="collapse">

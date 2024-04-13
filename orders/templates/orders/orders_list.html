@@ -20,12 +20,13 @@
       <thead class="table-dark">
         <tr>
           <th scope="col" width=5%>ID</th>
-          <th scope="col" width=15%>{% blocktrans %}Customer{% endblocktrans %}</th>
+          <th scope="col" width=20%>{% blocktrans %}Customer{% endblocktrans %}</th>
           <th scope="col" width=10%>{% blocktrans %}City{% endblocktrans %}</th>
-          <th scope="col" width=15%>{% blocktrans %}Device{% endblocktrans %}</th>
+          <th scope="col" width=20%>{% blocktrans %}Device{% endblocktrans %}</th>
           <th scope="col" width=10%>{% blocktrans %}Status{% endblocktrans %}</th>
           <th scope="col" width=15%>{% blocktrans %}Created at{% endblocktrans %}</th>
           <th scope="col" width=15%>{% blocktrans %}Updated At{% endblocktrans %}</th>
+          <th scope="col" width=8%></th>
         </tr>
       </thead>
       <tbody id="table-body">
@@ -49,6 +50,9 @@
           <td>{{ order.get_status_display }}</td>
           <td>{{ order.created_at }}</td>
           <td>{{ order.updated_at }}</td>
+          <td class="text-right">
+            <a href="{% url 'orders:order_details' order.id %}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Details{% endblocktrans %}</a>
+          </td>
         </tr>
         {% endfor %}
       </tbody>
