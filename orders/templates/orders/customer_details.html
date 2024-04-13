@@ -1,17 +1,19 @@
+{% load i18n %}
+
 <div id="customer-details">
-  <span>Name:</span>
+  <span>{% blocktrans %}Name{% endblocktrans %}:</span>
   <textarea class="form-control" rows="2" disabled>{{ customer.name }}</textarea>
-  <span>Tax:</span>
+  <span>{% blocktrans %}Tax{% endblocktrans %}:</span>
   <input class="form-control" disabled value="{{ customer.tax }}">
-  <span>Billing Country:</span>
+  <span>{% blocktrans %}Billing Country{% endblocktrans %}:</span>
   <input class="form-control" disabled value="{{ customer.billing_country }}">
-  <span>Billing Postal Code:</span>
+  <span>{% blocktrans %}Billing Postal Code{% endblocktrans %}:</span>
   <input class="form-control" disabled value="{{ customer.billing_postal_code }}">
-  <span>Billing City:</span>
+  <span>{% blocktrans %}Billing City{% endblocktrans %}:</span>
   <input class="form-control" disabled value="{{ customer.billing_city }}">
-  <span>Billing Street:</span>
+  <span>{% blocktrans %}Billing Street{% endblocktrans %}:</span>
   <input class="form-control" disabled
     value="{{ customer.billing_street }} {{ customer.billing_number }}">
-  <span>Telephone:</span>
+  <span>{% blocktrans %}Telephone{% endblocktrans %}:</span>
   <input class="form-control" disabled value="{{ customer.telephone }}">
 </div>

@@ -1,42 +1,43 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from simple_history.models import HistoricalRecords
 
 
 class Type(models.IntegerChoices):
-    MONO = 0, 'Monochrome'
-    COLOR = 1, 'Color'
+    MONO = 0, _('Monochrome')
+    COLOR = 1, _('Color')
 
 
 class Format(models.IntegerChoices):
-    A4 = 0, 'A4'
-    A3 = 1, 'A3'
+    A4 = 0, _('A4')
+    A3 = 1, _('A3')
 
 
 class Status(models.IntegerChoices):
-    AVAILABLE = 0, 'Available'
-    UNAVAILABLE = 1, 'Unavailable'
-    RESERVED = 2, 'Reserved'
-    LEASED = 3, 'Leased'
-    SOLD = 4, 'Sold'
-    REPLACEMENT = 5, 'Replacement'
-    IN_DELIVERY_INVISIBLE = 6, 'In delivery INVISIBLE'
-    IN_DELIVERY = 7, 'In delivery'
-    SERVICED = 8, 'Serviced'
+    AVAILABLE = 0, _('Available')
+    UNAVAILABLE = 1, _('Unavailable')
+    RESERVED = 2, _('Reserved')
+    LEASED = 3, _('Leased')
+    SOLD = 4, _('Sold')
+    REPLACEMENT = 5, _('Replacement')
+    IN_DELIVERY_INVISIBLE = 6, _('In delivery INVISIBLE')
+    IN_DELIVERY = 7, _('In delivery')
+    SERVICED = 8, _('Serviced')
 
 
 class Device(models.Model):
-    brand = models.CharField(max_length=30)
-    model = models.CharField(max_length=50)
-    serial_number = models.CharField('Serial Number', max_length=40, unique=True, blank=True, null=True)
-    type = models.SmallIntegerField(choices=Type.choices, blank=True, null=True)
-    format = models.SmallIntegerField(choices=Format.choices, blank=True, null=True)
-    total_counter = models.IntegerField(blank=True, null=True)
-    mono_counter = models.IntegerField(blank=True, null=True)
-    color_counter = models.IntegerField(blank=True, null=True)
-    description = models.TextField(max_length=255, blank=True, null=True)
-    status = models.SmallIntegerField(choices=Status.choices, blank=True, null=True)
-    price_net = models.FloatField(blank=True, null=True)
+    brand = models.CharField(_('Brand'), max_length=30)
+    model = models.CharField(_('Model'), max_length=50)
+    serial_number = models.CharField(_('Serial Number'), max_length=40, unique=True, blank=True, null=True)
+    type = models.SmallIntegerField(_('Type'), choices=Type.choices, blank=True, null=True)
+    format = models.SmallIntegerField(_('Format'), choices=Format.choices, blank=True, null=True)
+    total_counter = models.IntegerField(_('Total Counter'), blank=True, null=True)
+    mono_counter = models.IntegerField(_('Mono Counter'), blank=True, null=True)
+    color_counter = models.IntegerField(_('Color Counter'), blank=True, null=True)
+    description = models.TextField(_('Description'), max_length=255, blank=True, null=True)
+    status = models.SmallIntegerField(_('Status'), choices=Status.choices, blank=True, null=True)
+    price_net = models.FloatField(_('Price Net'), blank=True, null=True)
     history = HistoricalRecords()
 
     def __str__(self):

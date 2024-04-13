@@ -1,11 +1,12 @@
 {% extends "services/service_base.html" %}
+{% load i18n %}
 
 {% block content %}
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Brand Details</h1>
+    <h2 class="h2">{% blocktrans %}Brand Details{% endblocktrans %}</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
-        <a href="{% url 'services:brand_update' object.id %}"  class="btn btn-sm btn-outline-secondary">Update</a>
+        <a href="{% url 'services:brand_update' object.id %}"  class="btn btn-sm btn-outline-secondary">{% blocktrans %}Update{% endblocktrans %}</a>
       </div>
     </div>
   </div>

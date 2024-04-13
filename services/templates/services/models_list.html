@@ -1,11 +1,12 @@
 {% extends "services/service_base.html" %}
+{% load i18n %}
 
 {% block content %}
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Models</h1>
+    <h2 class="h2">{% blocktrans %}Models{% endblocktrans %}</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
-        <a href="{% url 'services:model_create' %}"  class="btn btn-sm btn-outline-secondary">Add New</a>
+        <a href="{% url 'services:model_create' %}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Add New{% endblocktrans %}</a>
       </div>
     </div>
   </div>
@@ -13,7 +14,7 @@
     <table class="table table-striped table-sm">
       <thead class="table-dark">
         <tr>
-          <th scope="col" width=30%>Name</th>
+          <th scope="col" width=30%>{% blocktrans %}Name{% endblocktrans %}</th>
         </tr>
       </thead>
       <tbody>

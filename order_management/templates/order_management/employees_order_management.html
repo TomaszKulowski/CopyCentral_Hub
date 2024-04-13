@@ -1,5 +1,6 @@
 {% extends "order_management/base_order_management.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
   <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
@@ -7,10 +8,10 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="{% static 'order_management/scripts/base_scripts.js' %}"></script>
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Employees Orders</h1>
+    <h2 class="h2">{% blocktrans %}Employees Orders{% endblocktrans %}</h2>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
-        <a href="{% url 'orders:order_create' %}" class="btn btn-sm btn-outline-secondary">Add New Order</a>
+        <a href="{% url 'orders:order_create' %}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Add New Order{% endblocktrans %}</a>
       </div>
     </div>
   </div>
@@ -21,14 +22,14 @@
         <thead class="table-dark">
           <tr>
             <th scope="col" width=5%>#ID</th>
-            <th scope="col" width=20%>Customer</th>
-            <th scope="col" width=10%>Address</th>
-            <th scope="col" width=10%>Short Description</th>
-            <th scope="col" width=10%>Device</th>
-            <th scope="col" width=8%>Status</th>
-            <th scope="col" width=8%>Region</th>
-            <th scope="col" width=8%>Priority</th>
-            <th scope="col" width=14%>Executor</th>
+            <th scope="col" width=20%>{% blocktrans %}Customer{% endblocktrans %}</th>
+            <th scope="col" width=10%>{% blocktrans %}Address{% endblocktrans %}</th>
+            <th scope="col" width=10%>{% blocktrans %}Short Description{% endblocktrans %}</th>
+            <th scope="col" width=10%>{% blocktrans %}Device{% endblocktrans %}</th>
+            <th scope="col" width=8%>{% blocktrans %}Status{% endblocktrans %}</th>
+            <th scope="col" width=8%>{% blocktrans %}Region{% endblocktrans %}</th>
+            <th scope="col" width=8%>{% blocktrans %}Priority{% endblocktrans %}</th>
+            <th scope="col" width=14%>{% blocktrans %}Executor{% endblocktrans %}</th>
             <th scope="col" width=5%></th>
           </tr>
         </thead>
@@ -52,10 +53,10 @@
                     {% if order_details.region__name %}
                       {{ order_details.region__name }}
                     {% else %}
-                      No Region
+                      {% blocktrans %}No Region{% endblocktrans %}
                     {% endif %}
                   </option>
-                  <option value="-1">No Region</option>
+                  <option value="-1">{% blocktrans %}No Region{% endblocktrans %}</option>
                   {% for region in regions %}
                     <option value="{{ region.id }}">{{ region.name }}</option>
                   {% endfor %}
@@ -81,10 +82,10 @@
                     {% if order_details.executor_name != ' ' %}
                       {{ order_details.executor_name }}
                     {% else %}
-                      No Executor
+                      {% blocktrans %}No Executor{% endblocktrans %}
                     {% endif %}
                   </option>
-                  <option value="-1">No Executor</option>
+                  <option value="-1">{% blocktrans %}No Executor{% endblocktrans %}</option>
                   {% for employee in employees %}
                     <option value="{{ employee.id }}">{{ employee.full_name }}</option>
                   {% endfor %}
@@ -113,15 +114,15 @@
             <tr id="row{{ order_details.id }}" class="collapse">
               <td colspan="4">
                 <ul>
-                  <li><b>Created At:</b> {{ order_details.created_at }}</li>
-                  <li><b>Updated At:</b> {{ order_details.updated_at }}</li>
-                  <li><b>Order Intake:</b> {{ order_details.order_intake_name }}</li>
-                  <li><b>Order Type:</b> {{ order_details.order_type }}</li>
-                  <li><b>Payment Method:</b> {{ order_details.payment_method }}</li>
+                  <li><b>{% blocktrans %}Created At{% endblocktrans %}:</b> {{ order_details.created_at }}</li>
+                  <li><b>{% blocktrans %}Updated At{% endblocktrans %}:</b> {{ order_details.updated_at }}</li>
+                  <li><b>{% blocktrans %}Order Intake{% endblocktrans %}:</b> {{ order_details.order_intake_name }}</li>
+                  <li><b>{% blocktrans %}Order Type{% endblocktrans %}:</b> {{ order_details.order_type }}</li>
+                  <li><b>{% blocktrans %}Payment Method{% endblocktrans %}:</b> {{ order_details.payment_method }}</li>
                 </ul>
               </td>
-              <td colspan="3"><b>Additional Information:</b><br>{{ order_details.additional_info_name }}</td>
-              <td colspan="3"><b>Order Description:</b><br>{{ order_details.description_name }}</td>
+              <td colspan="3"><b>{% blocktrans %}Additional Information{% endblocktrans %}:</b><br>{{ order_details.additional_info_name }}</td>
+              <td colspan="3"><b>{% blocktrans %}Order Description{% endblocktrans %}:</b><br>{{ order_details.description_name }}</td>
             </tr>
           {% endfor %}
         </tbody>

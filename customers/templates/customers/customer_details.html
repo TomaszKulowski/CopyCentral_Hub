@@ -1,14 +1,15 @@
 {% extends "customers/customers_base.html" %}
+{% load i18n %}
 
 {% block sidebar %}
   <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-body-secondary text-uppercase">
-    <span>Customer Options</span>
+    <span>{% blocktrans %}Customer Options{% endblocktrans %}</span>
   </h6>
   <ul class="nav flex-column mb-auto">
     <li class="nav-item">
       <a class="nav-link d-flex align-items-center gap-2" href="{% url 'customers:addresses_list' customer.id %}">
         <svg class="bi"><use xlink:href="#gear-wide-connected"/></svg>
-        Additional addresses settings
+        {% blocktrans %}Additional addresses settings{% endblocktrans %}
       </a>
     </li>
   </ul>
@@ -19,8 +20,8 @@
     <h1 class="h2">Customer Details</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
-        <a href="{% url 'history:list' %}?model=customers&model_id={{ customer.id }}" class="btn btn-sm btn-outline-secondary">Update History</a>&nbsp;
-        <a href="{% url 'customers:customer_update' customer.id %}"  class="btn btn-sm btn-outline-secondary">Update</a>
+        <a href="{% url 'history:list' %}?model=customers&model_id={{ customer.id }}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Update History{% endblocktrans %}</a>&nbsp;
+        <a href="{% url 'customers:customer_update' customer.id %}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Update{% endblocktrans %}</a>
       </div>
     </div>
   </div>
