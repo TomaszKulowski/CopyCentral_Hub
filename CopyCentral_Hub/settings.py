@@ -15,6 +15,7 @@ import os
 from os import getenv
 from pathlib import Path
 
+from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
 
 
@@ -168,3 +169,24 @@ INTERNAL_IPS = [
 
 JSIGNATURE_WIDTH = 350
 JSIGNATURE_HEIGHT = 400
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = getenv('SMTP_SERVER')
+EMAIL_PORT = getenv('SMTP_PORT')
+EMAIL_HOST_USER = getenv('HOST_EMAIL')
+EMAIL_HOST_PASSWORD = getenv('HOST_PASSWORD')
+EMAIL_USE_SSL = getenv('SSL')
+EMAIL_USE_TLS = getenv('TLS')
+DEFAULT_FROM_EMAIL = getenv('DEFAULT_FROM_EMAIL')
+REPLY_TO = getenv('REPLY_TO')
+
+EMAIL_REPORT_TITLE = _('Order Report')
+EMAIL_REPORT_BODY = _("""
+Dear Sir/Madam,
+
+Please find attached the report for order number #order_number.
+
+Best regards,
+#employee
+""")

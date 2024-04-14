@@ -34,10 +34,27 @@ class Customer(models.Model):
     history = HistoricalRecords()
 
     def __str__(self):
-        return f'{self.name}; ' + _('Tax') + f': {self.tax}'
+        if self.name and self.tax:
+            return f'{self.name}; ' + _('Tax') + f': {self.tax}'
+        return self.name
 
     def get_address(self):
-        return f'{self.billing_city} - {self.billing_postal_code}, {self.billing_street} {self.billing_number}'
+        address = ''
+        fields = [self.billing_city, self.billing_postal_code, self.billing_street, self.billing_number]
+        for field in fields:
+            if field:
+                if field == self.billing_city:
+                    address += self.billing_city
+                    address += ' - '
+                if field == self.billing_postal_code:
+                    address += self.billing_postal_code
+                    address += ', '
+                if self.billing_street:
+                    address += self.billing_street
+                    address += ' '
+                if self.billing_number:
+                    address += self.billing_number
+        return address
 
 
 class AdditionalAddress(models.Model):
@@ -51,4 +68,4 @@ class AdditionalAddress(models.Model):
     is_active = models.BooleanField(_('Is Active'), default=True)
 
     def __str__(self):
-        return f'{self.city}, {self.street} {self.number}'
+        return f'{self.city} - {self.postal_code}, {self.street} {self.number}'

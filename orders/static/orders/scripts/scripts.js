@@ -422,3 +422,69 @@ function checkFileSize(input) {
         }
     }
 }
+
+
+function getReportt(orderId) {
+alert('dsada')
+    var detailsRow = document.getElementById('row' + orderId);
+    detailsRow.classList.toggle('show');
+}
+
+
+function getReport(orderId){
+    var endpointURL = "/orders/api/" + orderId + "/get_report/";
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', endpointURL, true);
+    xhr.responseType = 'blob';
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var filename = xhr.getResponseHeader('Content-Disposition').split('filename=')[1];
+            var blob = new Blob([xhr.response], { type: 'application/pdf' });
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+    };
+
+    xhr.send();
+}
+
+
+function sendReport(orderId) {
+    var email = document.getElementById('emailInput').value;
+
+    if (email.trim() === '') {
+        alert('Please enter your email address.');
+        return;
+    }
+    var endpointURL = "/orders/api/" + orderId + "/send_report/?email_to=" + encodeURIComponent(email);
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', endpointURL, true);
+    xhr.send();
+}
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("reportForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        var orderId = document.getElementById("orderId").value;
+        var email = document.getElementById("emailInput").value;
+
+        sendReport(orderId, email);
+    });
+});
+
+function sendReport(orderId, email) {
+    var endpointURL = "/orders/api/" + orderId + "/send_report/?email_to=" + encodeURIComponent(email);
+    $('#sendReportModal').modal('hide')
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', endpointURL, true);
+    xhr.send();
+}

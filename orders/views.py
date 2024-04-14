@@ -1,8 +1,11 @@
 import os
 
+from concurrent.futures import ThreadPoolExecutor
 from json import loads
 
 from dal import autocomplete
+from django.conf import settings
+from django.core.mail import EmailMessage
 from django.db.models import Q
 from django.forms import ModelForm
 from django.http import FileResponse, HttpResponseRedirect, HttpResponse, JsonResponse
@@ -14,6 +17,7 @@ from sorl.thumbnail import get_thumbnail
 
 from .forms import OrderForm, OrderServicesForm, AttachmentForm, AttachmentFormSet
 from .models import Attachment, Order, Region, PriorityChoices, OrderServices
+from .utils import get_report
 from CopyCentral_Hub.mixins import EmployeeRequiredMixin
 from customers.forms import CustomerForm, AdditionalAddressForm
 from customers.models import Customer, AdditionalAddress
@@ -523,3 +527,52 @@ class SortNumberUpdateApiView(EmployeesOrdersList):
         context['table_id'] = table_id
 
         return render(request, 'order_management/employees_order_management_list.html', context=context)
+
+
+class GetReportApiView(EmployeeRequiredMixin, View):
+    def get(self, request, order_id):
+        order = Order.objects.get(pk=order_id)
+        executor = ThreadPoolExecutor()
+        language = request.COOKIES.get(settings.LANGUAGE_COOKIE_NAME)
+
+        employee = f'{self.request.user.first_name} {self.request.user.last_name}'
+        future = executor.submit(get_report, order, employee, language)
+        report_path = future.result()
+        report_file_name = os.path.basename(report_path)
+
+        response = FileResponse(open(report_path, 'rb'), content_type='application/pdf')
+
+        response['Content-Disposition'] = f'attachment; filename={report_file_name}'
+
+        return response
+
+
+class SendReportApiView(EmployeeRequiredMixin, View):
+    def get(self, request, order_id):
+        language = request.COOKIES.get(settings.LANGUAGE_COOKIE_NAME)
+        order = Order.objects.get(pk=order_id)
+        email_to = request.GET.get('email_to')
+        employee = f'{self.request.user.first_name} {self.request.user.last_name}'
+
+        executor = ThreadPoolExecutor()
+        future = executor.submit(get_report, order, employee, language)
+        report_path = future.result()
+        report_file_name = os.path.basename(report_path)
+
+        email_body = settings.EMAIL_REPORT_BODY
+        email_body = email_body.replace('#order_number', str(order.id))
+        email_body = email_body.replace('#employee', employee)
+
+        email = EmailMessage(
+            settings.EMAIL_REPORT_TITLE,
+            email_body,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[email_to],
+            reply_to=[settings.REPLY_TO],
+        )
+        with open(report_path, 'rb') as file:
+            email.attach(report_file_name, file.read(), 'application/pdf')
+
+        email.send()
+
+        return JsonResponse({'status': 200})

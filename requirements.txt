@@ -5,3 +5,5 @@ django-extensions
 django-debug-toolbar
 django-jsignature
 django-simple-history
+docx2pdf
+docx-mailmerge
