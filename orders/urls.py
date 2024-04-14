@@ -4,7 +4,9 @@ from .views import CustomerAutocomplete, ExecutorAutocomplete, AddressAutocomple
     AttachmentDetails, AttachmentDelete, OrderUpdateAPIView, SortNumberUpdateApiView,\
     OrderList, OrderDetails, OrderUpdate, \
     AddressCreateModal, AddressDetails, CustomerCreateModal, CustomerDetails, DeviceCreateModal,\
-    ServicesList, ServicesFiler, ServiceDetails, ServiceUpdate, ServiceDelete
+    ServicesList, ServicesFiler, ServiceDetails, ServiceUpdate, ServiceDelete,\
+    GetReportApiView, SendReportApiView
+
 
 app_name = 'orders'
 
@@ -38,4 +40,6 @@ urlpatterns = [
 
     path('api/<int:order_id>/order_update/', OrderUpdateAPIView.as_view(), name='order_update_api'),
     path('api/<int:order_id>/sort_number_update/', SortNumberUpdateApiView.as_view(), name='sort_number_update_api'),
+    path('api/<int:order_id>/get_report/', GetReportApiView.as_view(), name='get_report_api'),
+    path('api/<int:order_id>/send_report/', SendReportApiView.as_view(), name='send_report_api'),
 ]

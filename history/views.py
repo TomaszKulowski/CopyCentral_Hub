@@ -9,6 +9,9 @@ from CopyCentral_Hub.mixins import EmployeeRequiredMixin
 from orders.models import OrderServices
 
 
+LABELS = ['payment', 'type', 'format', 'status', 'priority', 'order_type', 'payment_method']
+
+
 class HistoryList(EmployeeRequiredMixin, View):
     template_name = 'history/history_list.html'
     paginate_by = 10
@@ -93,8 +96,12 @@ class HistoryList(EmployeeRequiredMixin, View):
                             history_entry.update(changes)
                             continue
 
-                    new_record = getattr(history_delta.new_record, field_name)
-                    old_record = getattr(history_delta.old_record, field_name)
+                    if field_name in LABELS:
+                        new_record = getattr(history_delta.new_record, f'get_{field_name}_display')()
+                        old_record = getattr(history_delta.old_record, f'get_{field_name}_display')()
+                    else:
+                        new_record = getattr(history_delta.new_record, field_name)
+                        old_record = getattr(history_delta.old_record, field_name)
 
                     changes = {field_name_label: [new_record, old_record]}
                     history_entry.update(changes)

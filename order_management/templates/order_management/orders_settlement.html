@@ -142,7 +142,7 @@
                     <tbody>
                       {% for service in order.services.all %}
                         <tr>
-                          <td>{{ forloop.counter }}</td>
+                          <td><b>{{ forloop.counter }}</b></td>
                           <td>{{ service.name }}</td>
                           <td>{{ service.quantity }}</td>
                           <td>{{ service.price_net }}</td>
