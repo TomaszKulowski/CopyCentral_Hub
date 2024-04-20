@@ -1,0 +1,25 @@
+{% load i18n %}
+
+<tbody id="service-table-body">
+  {% for service in services %}
+  <tr>
+    <td hidden="hidden">{{ service.id }}</td>
+    <td hidden="hidden">{{ service.from_session }}</td>
+    <td>{{ service.name|title }}</td>
+    <td>{{ service.quantity }}</td>
+    <td>{{ service.price_net }}</td>
+    <td>
+      <div class="btn-group me-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary" id="service-edit">{% blocktrans %}Update{% endblocktrans %}</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary service-delete-btn" data-service-id="{{ service.id }}">{% blocktrans %}Delete{% endblocktrans %}</button>
+      </div>
+    </td>
+  </tr>
+  {% endfor %}
+  <tr id="summary-row">
+    <td colspan="2"><b>{% blocktrans %}Summary{% endblocktrans %}:</b></td>
+    <td id="total_summary" style="font-weight: bold;">{{ total_summary }}</td>
+    <td><b>{% blocktrans %}NET PLN{% endblocktrans %}</b></td>
+    <td></td>
+  </tr>
+</tbody>

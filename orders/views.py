@@ -1,13 +1,13 @@
 import os
 
 from concurrent.futures import ThreadPoolExecutor
-from json import loads
 
 from dal import autocomplete
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.db.models import Q
 from django.forms import ModelForm
+from django.forms.models import model_to_dict
 from django.http import FileResponse, HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
@@ -15,8 +15,8 @@ from django.views import View
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from sorl.thumbnail import get_thumbnail
 
-from .forms import OrderForm, OrderServicesForm, AttachmentForm, AttachmentFormSet
-from .models import Attachment, Order, Region, PriorityChoices, OrderServices
+from .forms import OrderForm, OrderServiceForm, AttachmentForm, AttachmentFormSet
+from .models import Attachment, Order, Region, PriorityChoices, OrderService
 from .utils import get_report
 from CopyCentral_Hub.mixins import EmployeeRequiredMixin
 from customers.forms import CustomerForm, AdditionalAddressForm
@@ -27,6 +27,29 @@ from employees.models import Employee
 from order_management.views import EmployeesOrdersList, OrderListViewBase
 from orders.utils import map_choices_int_to_str
 from services.models import Brand, Model, Service
+
+
+def get_services(request):
+    result = []
+    for key, value in request.session.items():
+        if key.isdigit():
+            service_id = value['service']
+            if service_id:
+                service_instance = get_object_or_404(Service, pk=int(value['service']))
+            else:
+                service_instance = None
+
+            order_service = OrderService(
+                id=int(key),
+                service=service_instance,
+                name=value['name'],
+                price_net=float(value['price_net']),
+                quantity=int(value['quantity']),
+                from_session=True,
+            )
+            result.append(order_service)
+
+    return result
 
 
 class CustomerAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView):
@@ -71,7 +94,7 @@ class AddressAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetVie
         if not self.request.user.is_authenticated:
             return AdditionalAddress.objects.none()
 
-        customer_id = loads(self.request.GET.get('forward')).get('customer')
+        customer_id = self.request.session.get('customer_id')
         if customer_id:
             qs = AdditionalAddress.objects.filter(customer_id=customer_id, is_active=True)
 
@@ -95,6 +118,32 @@ class DeviceAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView
         if self.q:
             qs = qs.filter(
                 Q(serial_number__icontains=self.q)
+            )
+
+        return qs
+
+
+class ServiceAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Service.objects.none()
+
+        qs = Service.objects.all()
+
+        service_filter_by_brand_id = self.request.session.get('service_filter_by_brand', '')
+        service_filter_by_model_id = self.request.session.get('service_filter_by_model', '')
+
+        if service_filter_by_brand_id and service_filter_by_brand_id != 'All':
+            qs = qs.filter(device_brand__id=service_filter_by_brand_id)
+        if service_filter_by_model_id and service_filter_by_model_id != 'All':
+            qs = qs.filter(device_model__id=service_filter_by_model_id)
+
+        if self.q:
+            qs = qs.filter(
+                Q(device_brand__name__icontains=self.q) |
+                Q(device_model__name__icontains=self.q) |
+                Q(name__icontains=self.q) |
+                Q(description__icontains=self.q)
             )
 
         return qs
@@ -200,7 +249,7 @@ class OrderUpdate(EmployeeRequiredMixin, View):
     customer_form_class = CustomerForm
     address_form_class = AdditionalAddressForm
     device_form_class = DeviceForm
-    service_form_class = OrderServicesForm
+    order_service_form_class = OrderServiceForm
     attachment_formset = AttachmentFormSet
 
     def get_context_data(self, **kwargs):
@@ -209,51 +258,83 @@ class OrderUpdate(EmployeeRequiredMixin, View):
         payer_id = kwargs.get('payer_id')
         address_id = kwargs.get('address_id')
         device_id = kwargs.get('device_id')
+        attachments = None
 
         if order_id:
             order_instance = get_object_or_404(self.model.objects.select_related(), pk=order_id)
+            self.request.session['customer_id'] = order_instance.customer.id
+            atts = order_instance.attachment_set.all()
+            attachments = {}
+            for att in atts:
+                if att.image:
+                    attachments[att.id] = {'image': get_thumbnail(att.image.name, '300x300', crop='center', quality=20)}
+                else:
+                    attachments[att.id] = {'filename': os.path.basename(att.file.name)}
+
         else:
-            order_instance = self.model.objects.create(user_intake=self.request.user.employee.first())
+            order_instance = None
 
         if customer_id:
             customer_instance = get_object_or_404(Customer, pk=customer_id)
-            order_instance.customer = customer_instance
-            if not order_instance.contact:
-                order_instance.contact = customer_instance.telephone
+            if order_instance:
+                order_instance.customer = customer_instance
+                if not order_instance.contact:
+                    order_instance.contact = customer_instance.telephone
+
+        else:
+            customer_instance = None
+
         if payer_id:
             payer_instance = get_object_or_404(Customer, pk=payer_id)
-            order_instance.payer = payer_instance
+            if order_instance:
+                order_instance.payer = payer_instance
+        else:
+            payer_instance = None
+
         if address_id == 'null':
-            order_instance.additional_address = None
+            if order_instance:
+                order_instance.additional_address = None
         if address_id:
             address_instance = get_object_or_404(AdditionalAddress, pk=address_id)
-            order_instance.additional_address = address_instance
+            if order_instance:
+                order_instance.additional_address = address_instance
+        else:
+            address_instance = None
+
         if device_id:
             device_instance = get_object_or_404(Device, pk=device_id)
-            order_instance.device = device_instance
+            if order_instance:
+                order_instance.device = device_instance
+        else:
+            device_instance = None
 
-        atts = order_instance.attachment_set.all()
-        attachments = {}
-        for att in atts:
-            if att.image:
-                attachments[att.id] = {'image': get_thumbnail(att.image.name, '300x300', crop='center', quality=20)}
-            else:
-                attachments[att.id] = {'filename': os.path.basename(att.file.name)}
+        if order_instance:
+            customer_instance = get_object_or_404(Customer, pk=order_instance.customer.id)
+            order_form = self.order_form_class(instance=order_instance)
+            order_services = order_instance.services.all()
+        else:
+            order_services = []
+            initial_data = {
+                'customer': customer_instance,
+                'payer': payer_instance,
+                'additional_address': address_instance,
+                'device': device_instance,
+            }
+            order_form = self.order_form_class(initial=initial_data)
 
-        order_form = self.order_form_class(instance=order_instance)
-
-        order_services = order_instance.services.all()
         total_summary = sum(service.quantity * service.price_net for service in order_services)
 
         context = {
             'order_instance': order_instance,
+            'customer_instance': customer_instance,
             'order_form': order_form,
             'customer_form': self.customer_form_class(),
             'address_form': self.address_form_class(),
             'device_form': self.device_form_class(),
-            'service_form': self.service_form_class(),
+            'order_service_form': self.order_service_form_class(),
             'attachment_formset': self.attachment_formset(queryset=Attachment.objects.none()),
             'attachments': attachments,
+            'order_services': order_services,
             'total_summary': total_summary,
             'brands': Brand.objects.all(),
             'models': Model.objects.all(),
@@ -262,32 +343,14 @@ class OrderUpdate(EmployeeRequiredMixin, View):
         return context
 
     def post(self, request, *args, **kwargs):
-        add_service = request.POST.get('add_service')
-
-        order_instance = get_object_or_404(self.model.objects.select_related(), pk=kwargs.get('pk'))
+        if kwargs.get('pk'):
+            order_instance = self.model.objects.select_related().filter(pk=kwargs.get('pk')).first()
+        else:
+            order_instance = self.model()
+            order_instance.user_intake = self.request.user.employee.first()
 
         if not order_instance.contact and order_instance.customer:
             order_instance.contact = order_instance.customer.telephone
-
-        if add_service:
-            service_instance = get_object_or_404(Service, pk=request.POST.get('service'))
-            order_service_id = request.POST.get('order_service_id')
-
-            if order_service_id:
-                order_service_instance = get_object_or_404(OrderServices, pk=order_service_id)
-                order_service_instance.service = service_instance
-                order_service_instance.name = request.POST.get('name')
-                order_service_instance.price_net = request.POST.get('price_net')
-                order_service_instance.quantity = request.POST.get('quantity')
-                order_service_instance.save()
-            else:
-                order_service_instance = OrderServices.objects.create(
-                    service=service_instance,
-                    name=request.POST.get('name'),
-                    price_net=request.POST.get('price_net'),
-                    quantity=request.POST.get('quantity'),
-                )
-                order_instance.services.add(order_service_instance),0
 
         request_data = request.POST.copy()
         address_id = request_data.pop('additional_address', None)
@@ -308,6 +371,7 @@ class OrderUpdate(EmployeeRequiredMixin, View):
             if address_id:
                 address_instance = get_object_or_404(AdditionalAddress, pk=address_id)
                 customer_id = request_data.get('customer')
+                self.request.session['customer_id'] = customer_id
                 customer_instance = get_object_or_404(Customer, pk=customer_id)
                 if address_instance in customer_instance.additionaladdress_set.all():
                     order_instance.additional_address = address_instance
@@ -318,13 +382,27 @@ class OrderUpdate(EmployeeRequiredMixin, View):
 
             order_instance.save()
 
-            return HttpResponseRedirect(reverse_lazy('orders:order_details', kwargs={'pk': kwargs.get('pk')}))
+            services_list = get_services(request)
+            if services_list:
+                for service in services_list:
+                    service.id = None
+                    service.save()
+                    order_instance.services.add(service)
+
+            return HttpResponseRedirect(reverse_lazy('orders:order_details', kwargs={'pk': order_instance.id}))
 
         else:
             context = self.get_context_data(**kwargs)
             return render(request, self.template_name, context)
 
     def get(self, request, *args, **kwargs):
+        self.request.session.pop('service_filter_by_brand', None)
+        self.request.session.pop('service_filter_by_model', None)
+
+        services = get_services(request)
+        for service in services:
+            del request.session[str(service.id)]
+
         return render(
             request,
             self.template_name,
@@ -351,9 +429,13 @@ class OrderDetails(OrderUpdate):
         return context
 
 
-class CustomerDetails(EmployeeRequiredMixin, DetailView):
-    model = Customer
-    template_name = 'orders/customer_details.html'
+class CustomerDetails(EmployeeRequiredMixin, View):
+    def get(self, request, pk):
+        customer = get_object_or_404(Customer, pk=pk)
+        order_form = OrderForm
+        context = {'customer': customer, 'order_form': order_form}
+
+        return render(request, 'orders/customer_details.html', context=context)
 
 
 class CustomerCreateModal(EmployeeRequiredMixin, CreateView):
@@ -364,7 +446,7 @@ class CustomerCreateModal(EmployeeRequiredMixin, CreateView):
         customer_instance = form.save()
         customer_id = customer_instance.id
 
-        return JsonResponse({'success': True, 'customer_id': customer_id})
+        return JsonResponse({'status': 201, 'customer_id': customer_id})
 
 
 class AddressDetails(EmployeeRequiredMixin, DetailView):
@@ -372,15 +454,21 @@ class AddressDetails(EmployeeRequiredMixin, DetailView):
     template_name = 'orders/address_details.html'
 
 
-class AddressCreateModal(EmployeeRequiredMixin, CreateView):
-    model = AdditionalAddress
-    form_class = AdditionalAddressForm
+class AddressForm(EmployeeRequiredMixin, View):
+    def get(self, request, customer_id):
+        self.request.session['customer_id'] = customer_id
+        order_form = OrderForm()
+        context = {'order_form': order_form}
 
-    def form_valid(self, form):
-        address_instance = form.save()
-        address_id = address_instance.id
+        return render(request, 'orders/address_form.html', context=context)
 
-        return JsonResponse({'success': True, 'address_id': address_id})
+
+class AddressCreateModal(EmployeeRequiredMixin, View):
+    def post(self, request):
+        address_form = AdditionalAddressForm(request.POST)
+        if address_form.is_valid():
+            address_instance = address_form.save()
+        return JsonResponse({'status': 201, 'address_id': address_instance.id})
 
 
 class DeviceCreateModal(EmployeeRequiredMixin, CreateView):
@@ -391,7 +479,7 @@ class DeviceCreateModal(EmployeeRequiredMixin, CreateView):
         device_instance = form.save()
         device_id = device_instance.id
 
-        return JsonResponse({'success': True, 'device_id': device_id})
+        return JsonResponse({'status': 201, 'device_id': device_id})
 
 
 class ServicesFiler(EmployeeRequiredMixin, ListView):
@@ -411,6 +499,9 @@ class ServicesFiler(EmployeeRequiredMixin, ListView):
         return filtered_services
 
     def render_to_response(self, context, **response_kwargs):
+        self.request.session['service_filter_by_brand'] = self.request.GET.get('brand_id')
+        self.request.session['service_filter_by_model'] = self.request.GET.get('model_id')
+
         options = []
         for service in context['object_list']:
             options.append({
@@ -440,56 +531,117 @@ class ServiceDetails(EmployeeRequiredMixin, DetailView):
         return self.render_to_response(context)
 
 
-class ServicesList(EmployeeRequiredMixin, ListView):
+class OrderServicesList(EmployeeRequiredMixin, ListView):
     def get(self, request):
         order_id = request.GET.get('order_id')
-        order = get_object_or_404(Order, pk=order_id)
-        services = order.services.all()
+        services_data = get_services(request)
 
-        services_data = []
-        for service in services:
-            service_data = {
-                'id': service.id,
-                'name': service.name.title(),
-                'price_net': service.price_net,
-                'quantity': service.quantity,
-            }
-            services_data.append(service_data)
+        if order_id:
+            order = get_object_or_404(Order, pk=order_id)
+            services_data += list(order.services.all())
 
-        return JsonResponse({'services': services_data})
-
-
-class ServiceUpdate(EmployeeRequiredMixin, UpdateView):
-    model = OrderServices
-    fields = ['service', 'name', 'price_net', 'quantity']
-
-    def get_object(self, queryset=None):
-        service_id = self.request.GET.get('service_id')
-        if service_id and service_id != 'undefined':
-            return get_object_or_404(OrderServices, pk=service_id)
-        else:
-            return None
-
-    def render_to_response(self, context, **response_kwargs):
-        context_dict = {
-            'id': context['object'].id,
-            'service': context['object'].service.id,
-            'name': context['object'].name,
-            'price_net': context['object'].price_net,
-            'quantity': context['object'].quantity,
+        total_summary = sum(service.quantity * service.price_net for service in services_data)
+        context = {
+            'services': services_data,
+            'total_summary': total_summary,
         }
 
-        return JsonResponse(context_dict)
+        return render(request, 'orders/order_services_list.html', context=context)
 
 
-class ServiceDelete(EmployeeRequiredMixin, View):
+class OrderServiceCreate(EmployeeRequiredMixin, CreateView):
+    model = OrderService
+    form_class = OrderServiceForm
+
+    def form_invalid(self, form):
+        return JsonResponse({'status': 400})
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        service_ids = [int(key) for key in self.request.session.keys() if key.isdigit()]
+
+        if service_ids:
+            next_service_id = max(service_ids) + 1
+        else:
+            next_service_id = 1
+
+        obj.id = next_service_id
+        self.request.session[str(next_service_id)] = model_to_dict(obj)
+
+        return JsonResponse({'status': 201})
+
+
+class OrderServiceDetails(EmployeeRequiredMixin, View):
+    def get(self, request, pk):
+        if request.GET.get('from_session') == 'True':
+            for service in get_services(request):
+                if service.id == pk:
+                    order_service = service
+        else:
+            order_service = get_object_or_404(OrderService, pk=pk)
+
+        if order_service.service:
+            service_id = order_service.service.id
+        else:
+            service_id = None
+
+        return JsonResponse({
+            'service': service_id,
+            'name': order_service.name,
+            'price_net': order_service.price_net,
+            'quantity': order_service.quantity,
+            'from_session': order_service.from_session,
+        })
+
+
+class OrderServiceUpdate(EmployeeRequiredMixin, UpdateView):
+    model = OrderService
+    form_class = OrderServiceForm
+    success_url = reverse_lazy('home')
+
+    def get_object(self, queryset=None):
+        order_service_id = self.kwargs.get('pk')
+        from_session = self.request.POST.get('from_session')
+
+        if from_session == 'true':
+            obj_temp = self.request.session[str(order_service_id)]
+            if obj_temp['service']:
+                service_instance = get_object_or_404(Service, pk=obj_temp['service'])
+            else:
+                service_instance = None
+            obj_temp['service'] = service_instance
+            obj_temp['from_session'] = 1
+            obj = OrderService(**obj_temp)
+        else:
+            obj = super().get_object(queryset)
+
+        return obj
+
+    def form_valid(self, form):
+        if self.object.from_session:
+            self.request.session[str(self.object.id)] = model_to_dict(self.object)
+            return JsonResponse({'status': 200})
+
+        else:
+            return super().form_valid(form)
+
+
+class OrderServiceDelete(EmployeeRequiredMixin, View):
     def post(self, request, *args, **kwargs):
-        service = get_object_or_404(OrderServices, pk=request.POST.get('pk'))
-        order = Order.objects.filter(services=service)
-        if order:
-            order[0].services.remove(service)
+        order_service_id = request.POST.get('pk')
+        if request.POST.get('order_from_session') == 'True':
+            if str(order_service_id) in [key for key in self.request.session.keys() if key.isdigit()]:
+                del request.session[(str(order_service_id))]
 
-        return JsonResponse({'success': True})
+                return JsonResponse({'status': 204})
+            return JsonResponse({'status': 400})
+
+        order_service = get_object_or_404(OrderService, pk=order_service_id)
+        order = Order.objects.filter(services=order_service)
+        if order:
+            order[0].services.remove(order_service)
+
+        return JsonResponse({'status': 204})
 
 
 class SortNumberUpdateApiView(EmployeesOrdersList):

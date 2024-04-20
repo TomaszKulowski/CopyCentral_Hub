@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views import View
 
 from CopyCentral_Hub.mixins import EmployeeRequiredMixin
-from orders.models import OrderServices
+from orders.models import OrderService
 
 
 LABELS = ['payment', 'type', 'format', 'status', 'priority', 'order_type', 'payment_method']
@@ -82,13 +82,13 @@ class HistoryList(EmployeeRequiredMixin, View):
                             old_value = [item for item in old_record if item not in new_record]
 
                             if new_value:
-                                service_id = new_value[0]['orderservices']
-                                new_service = get_object_or_404(OrderServices, pk=service_id)
+                                service_id = new_value[0]['orderservice']
+                                new_service = get_object_or_404(OrderService, pk=service_id)
                             else:
                                 new_service = '---'
                             if old_value:
-                                service_id = old_value[0]['orderservices']
-                                old_service = get_object_or_404(OrderServices, pk=service_id)
+                                service_id = old_value[0]['orderservice']
+                                old_service = get_object_or_404(OrderService, pk=service_id)
                             else:
                                 old_service = '---'
 

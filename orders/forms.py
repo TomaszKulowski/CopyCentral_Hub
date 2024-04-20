@@ -2,10 +2,11 @@ from dal import autocomplete
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from .models import Order, AdditionalAddress, Attachment, StatusChoices, OrderServices
+from .models import Order, AdditionalAddress, Attachment, StatusChoices, OrderService
 from customers.models import Customer
 from devices.models import Device
 from employees.models import Employee
+from services.models import Service
 
 
 class OrderForm(forms.ModelForm):
@@ -14,11 +15,12 @@ class OrderForm(forms.ModelForm):
         label=_('Customer'),
         widget=autocomplete.ModelSelect2(
             forward=('customer', ),
-            url='orders:customer_autocomplete',
+            url='orders:customer_autocomplete_api',
             attrs={
                 'data-placeholder': _('Customer ...'),
                 'data-ajax--delay': '500',
                 'style': 'width:90%',
+                'id': 'customer-select'
             }
         )
     )
@@ -27,12 +29,12 @@ class OrderForm(forms.ModelForm):
         queryset=AdditionalAddress.objects.all(),
         label=_('Additional Address'),
         widget=autocomplete.ModelSelect2(
-            forward=('customer',),
-            url='orders:address_autocomplete',
+            url='orders:address_autocomplete_api',
             attrs={
                 'data-placeholder': _('Service Address ... If empty, use billing address'),
                 'data-ajax--delay': '500',
                 'style': 'width:90%',
+                'id': 'additional_address-select'
             }
         )
     )
@@ -42,11 +44,12 @@ class OrderForm(forms.ModelForm):
         label=_('Payer'),
         widget=autocomplete.ModelSelect2(
             forward=('payer', ),
-            url='orders:customer_autocomplete',
+            url='orders:customer_autocomplete_api',
             attrs={
                 'data-placeholder': _('Payer ...'),
                 'data-ajax--delay': '500',
                 'style': 'width:90%',
+                'id': 'payer-select',
             }
         )
     )
@@ -56,7 +59,7 @@ class OrderForm(forms.ModelForm):
         label=_('Executor'),
         widget=autocomplete.ModelSelect2(
             forward=('executor', ),
-            url='orders:executor_autocomplete',
+            url='orders:executor_autocomplete_api',
             attrs={
                 'data-placeholder': _('Executor ...'),
                 'data-ajax--delay': '500',
@@ -69,11 +72,12 @@ class OrderForm(forms.ModelForm):
         queryset=Device.objects.all(),
         label=_('Device'),
         widget=autocomplete.ModelSelect2(
-            url='orders:device_autocomplete',
+            url='orders:device_autocomplete_api',
             attrs={
                 'data-placeholder': _('Device ...'),
                 'data-ajax--delay': '500',
                 'style': 'width:90%',
+                'id': 'device-select',
             }
         )
     )
@@ -92,12 +96,15 @@ class OrderForm(forms.ModelForm):
 
         if self.instance.customer:
             self.fields['additional_address'].queryset = AdditionalAddress.objects.filter(
-                customer=self.instance.customer)
-        else:
-            self.fields['additional_address'].queryset = AdditionalAddress.objects.none()
+                customer=self.instance.customer,
+                is_active=True,
+            )
 
         if customer:
-            self.fields['additional_address'].queryset = AdditionalAddress.objects.filter(customer=customer)
+            self.fields['additional_address'].queryset = AdditionalAddress.objects.filter(
+                customer=customer,
+                is_active=True,
+            )
 
         for field in self.fields:
             if field == 'name':
@@ -113,24 +120,41 @@ class OrderForm(forms.ModelForm):
         exclude = ['user_intake', 'approver']
 
 
-class OrderServicesForm(forms.ModelForm):
+class OrderServiceForm(forms.ModelForm):
+    service = forms.ModelChoiceField(
+        required=False,
+        queryset=Service.objects.all(),
+        label=_('Service'),
+        widget=autocomplete.ModelSelect2(
+            url='orders:service_autocomplete_api',
+            attrs={
+                'data-placeholder': _('Service ...'),
+                'data-ajax--delay': '500',
+                'style': 'width:100%',
+                'id': 'id_service_services',
+                "data-dropdown-parent": "#addServiceModal",
+            }
+        )
+    )
+
     def __init__(self, *args, **kwargs):
-        super(OrderServicesForm, self).__init__(*args, **kwargs)
+        super(OrderServiceForm, self).__init__(*args, **kwargs)
 
         for field in self.fields:
-            if field == 'service':
-                self.fields[field].widget.attrs.update({'id': 'id_service_services'})
             if field == 'name':
                 self.fields[field].widget.attrs.update({'id': 'id_service_name'})
             if field == 'price_net':
                 self.fields[field].widget.attrs.update({'id': 'id_service_price_net'})
             if field == 'quantity':
                 self.fields[field].widget.attrs.update({'id': 'id_service_quantity'})
+            if field == 'from_session':
+                self.fields[field].widget = forms.HiddenInput()
+                self.fields[field].widget.attrs.update({'id': 'id_service_from_session'})
 
             self.fields[field].widget.attrs.update({'class': 'form-control'})
 
     class Meta:
-        model = OrderServices
+        model = OrderService
         fields = '__all__'
 
 
