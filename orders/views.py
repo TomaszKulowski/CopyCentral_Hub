@@ -497,7 +497,8 @@ class AddressCreateModal(EmployeeRequiredMixin, View):
         address_form = AdditionalAddressForm(request.POST)
         if address_form.is_valid():
             address_instance = address_form.save()
-        return JsonResponse({'status': 201, 'address_id': address_instance.id})
+            return JsonResponse({'status': 201, 'address_id': address_instance.id})
+        return JsonResponse({'status': 400})
 
 
 class DeviceCreateModal(EmployeeRequiredMixin, CreateView):

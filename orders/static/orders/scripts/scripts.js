@@ -187,7 +187,7 @@ function handleSubmitForm(formId, modalId, submit_type) {
             url: url,
             data: formData,
             success: function(response) {
-                if (response.success) {
+                if (response.status === 201) {
                     var redirect_url;
                     if (submit_type === 'customer') {
                         redirect_url = base_redirect_url + '?customer_id=' + response.customer_id + '&payer_id=' + payerId + '&address_id=' + addressId + '&device_id=' + deviceId;
