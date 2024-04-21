@@ -362,7 +362,7 @@
             {% csrf_token %}
             {{ customer_form.as_p }}
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-top">
-              <h1 class="h2"></h1>
+              <h2 class="h2"></h2>
               <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group me-2">
                   <button class="btn btn-sm btn-outline-secondary" type="submit">{% blocktrans %}Save{% endblocktrans %}</button>
@@ -386,7 +386,7 @@
             {% csrf_token %}
             {{ device_form.as_p }}
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-top">
-              <h1 class="h2"></h1>
+              <h2 class="h2"></h2>
               <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group me-2">
                   <button class="btn btn-sm btn-outline-secondary" type="submit">{% blocktrans %}Save{% endblocktrans %}</button>
@@ -412,7 +412,7 @@
               <select id="filterByBrand" class="form-select d-inline" aria-label="Default select example" style="width: 200px;">
                 <option value="All">{% blocktrans %}Display All{% endblocktrans %}</option>
                 {% for brand in brands %}
-                  <option value="{{ brand.id }}">{{ brand.name }}</option>
+                  <option value="{{ brand.id }}">{{ brand }}</option>
                 {% endfor %}
               </select>
             </div>
