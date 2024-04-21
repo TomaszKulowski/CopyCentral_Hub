@@ -9,7 +9,7 @@ from .forms import SingInForm
 
 class LoginView(View):
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
+        if request.user.is_authenticated and request.user.employee.first():
             return HttpResponseRedirect(reverse('home'))
         return super().dispatch(request, *args, **kwargs)
 

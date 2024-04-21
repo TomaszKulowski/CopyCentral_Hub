@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, render
 from django.views import View
 from django.views.generic import ListView
 
-from CopyCentral_Hub.mixins import EmployeeRequiredMixin
+from CopyCentral_Hub.mixins import EmployeeRequiredMixin, OfficeWorkerRequiredMixin
 from employees.models import Employee
 from orders.forms import OrderForm
 from orders.models import Order, PriorityChoices, Region
@@ -120,13 +120,7 @@ class OrderListViewBase(EmployeeRequiredMixin, ListView):
         return context
 
 
-class OrdersList(OrderListViewBase):
-    template_name = 'order_management/main_order_management.html'
-
-
-class EmployeesOrdersList(OrderListViewBase):
-    template_name = 'order_management/employees_order_management.html'
-
+class EmployeesOrdersListViewBase(OrderListViewBase):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         orders = map_choices_int_to_str(self.get_queryset().order_by('sort_number'))
@@ -148,7 +142,15 @@ class EmployeesOrdersList(OrderListViewBase):
         return context
 
 
-class RegionsOrdersList(OrderListViewBase):
+class OrdersList(OfficeWorkerRequiredMixin, OrderListViewBase):
+    template_name = 'order_management/main_order_management.html'
+
+
+class EmployeesOrdersList(OfficeWorkerRequiredMixin, EmployeesOrdersListViewBase):
+    template_name = 'order_management/employees_order_management.html'
+
+
+class RegionsOrdersList(OfficeWorkerRequiredMixin, OrderListViewBase):
     template_name = 'order_management/regions_order_management.html'
 
     def get_context_data(self, **kwargs):
@@ -173,7 +175,7 @@ class RegionsOrdersList(OrderListViewBase):
         return context
 
 
-class MyOrdersList(EmployeesOrdersList):
+class MyOrdersList(EmployeesOrdersListViewBase):
     template_name = 'order_management/my_orders_management.html'
 
     def get_queryset(self):
@@ -208,7 +210,7 @@ class MyOrdersList(EmployeesOrdersList):
         return context
 
 
-class OrdersSettlement(EmployeeRequiredMixin, View):
+class OrdersSettlement(OfficeWorkerRequiredMixin, View):
     template_name = 'order_management/orders_settlement.html'
     paginate_by = 10
 

@@ -14,3 +14,13 @@ class EmployeeRequiredMixin(AccessMixin):
 
     def handle_no_permission(self):
         return HttpResponseRedirect(reverse('authentication:login'))
+
+
+class OfficeWorkerRequiredMixin(EmployeeRequiredMixin):
+    """
+    Mixin that requires the user to be office worker.
+    """
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.employee.first().department <= 2:
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
