@@ -203,7 +203,7 @@ class OrderUpdateAPIView(EmployeeRequiredMixin, View):
 
         order.save()
 
-        return JsonResponse({'success': 'true'})
+        return JsonResponse({'status': 200, 'success': 'true'})
 
 
 class OrderList(EmployeeRequiredMixin, ListView):
@@ -310,6 +310,8 @@ class OrderUpdate(EmployeeRequiredMixin, View):
 
         else:
             customer_instance = None
+
+        if not customer_id and not order_id:
             self.request.session['customer_id'] = None
 
         if payer_id:

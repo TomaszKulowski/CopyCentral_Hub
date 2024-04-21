@@ -12,9 +12,9 @@ function handleFilterChange() {
 function filterOrders(selectedRegion, selectedPriority, selectedExecutor) {
     var rows = document.querySelectorAll('#order-table tr.clickable');
     rows.forEach(function(row) {
-        var priorityCell = row.querySelector('td:nth-child(8) select');
-        var executorCell = row.querySelector('td:nth-child(9) select');
-        var regionCell = row.querySelector('td:nth-child(7) select');
+        var priorityCell = row.querySelector('td:nth-child(9) select');
+        var executorCell = row.querySelector('td:nth-child(10) select');
+        var regionCell = row.querySelector('td:nth-child(8) select');
 
         var priorityValue = priorityCell ? priorityCell.value : 'All';
         var executorValue = executorCell ? executorCell.value : 'All';

@@ -37,10 +37,8 @@ class DeviceDetails(EmployeeRequiredMixin, UpdateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        forms = {}
-        for key, value in form.fields.items():
-            value.disabled = True
-            forms[key] = value
+        for field in form.fields.values():
+            field.disabled = True
         return form
 
 
