@@ -4,18 +4,22 @@ document.addEventListener("DOMContentLoaded", function () {
         tableBody.addEventListener("click", function(event) {
             var target = event.target.closest("tr");
             if (target) {
-                var url = target.querySelector("td:first-child").textContent;
-                window.location.href = url;
+                var urlElement = target.querySelector("td:first-child a");
+                if (urlElement) {
+                    var url = urlElement.getAttribute("href");
+                    window.location.href = url;
+                }
             }
         });
     }
 
     var searchInput = document.querySelector(".sea");
+    var typingTimer;
     var previousSearchQuery = "";
 
     searchInput.addEventListener("input", function () {
-        clearTimeout(this.typingTimer);
-        this.typingTimer = setTimeout(function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(function () {
             sendSearchRequest();
         }, 300); // Adjust this interval as needed
     });
@@ -40,11 +44,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Append the search parameter only if the searchQuery is not empty
         if (searchQuery !== "") {
-            url += `${encodeURIComponent(searchQuery)}`;
+            url += encodeURIComponent(searchQuery);
         }
 
         fetch(url)
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
             .then(data => {
                 document.getElementById("table-body").innerHTML = data;
                 document.getElementById("paginator").innerHTML = '';
@@ -453,20 +462,6 @@ function getReport(orderId){
 }
 
 
-function sendReport(orderId) {
-    var email = document.getElementById('emailInput').value;
-
-    if (email.trim() === '') {
-        alert('Please enter your email address.');
-        return;
-    }
-    var endpointURL = "/orders/api/" + orderId + "/send_report/?email_to=" + encodeURIComponent(email);
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', endpointURL, true);
-    xhr.send();
-}
-
-
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("reportForm").addEventListener("submit", function (event) {
         event.preventDefault();
@@ -480,7 +475,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function sendReport(orderId, email) {
     var endpointURL = "/orders/api/" + orderId + "/send_report/?email_to=" + encodeURIComponent(email);
-    $('#sendReportModal').modal('hide')
+    $('#sendReportModal').modal('hide');
     var xhr = new XMLHttpRequest();
     xhr.open('GET', endpointURL, true);
     xhr.send();

@@ -4,28 +4,24 @@ document.addEventListener("DOMContentLoaded", function () {
         tableBody.addEventListener("click", function(event) {
             var target = event.target.closest("tr");
             if (target) {
-                var url = target.querySelector("td:first-child").textContent;
-                window.location.href = url;
+                var urlElement = target.querySelector("td:first-child a");
+                if (urlElement) {
+                    var url = urlElement.getAttribute("href");
+                    window.location.href = url;
+                }
             }
         });
     }
 
     var searchInput = document.querySelector(".sea");
+    var typingTimer;
     var previousSearchQuery = "";
 
     searchInput.addEventListener("input", function () {
-        clearTimeout(this.typingTimer);
-        this.typingTimer = setTimeout(function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(function () {
             sendSearchRequest();
         }, 300); // Adjust this interval as needed
-    });
-
-    // Add keydown event listener to the search input
-    searchInput.addEventListener("keydown", function (event) {
-        // Prevent the default action if Enter key is pressed
-        if (event.key === 'Enter') {
-            event.preventDefault();
-        }
     });
 
     function sendSearchRequest() {
@@ -40,11 +36,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Append the search parameter only if the searchQuery is not empty
         if (searchQuery !== "") {
-            url += `${encodeURIComponent(searchQuery)}`;
+            url += encodeURIComponent(searchQuery);
         }
 
         fetch(url)
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
             .then(data => {
                 document.getElementById("devices-table-body").innerHTML = data;
                 document.getElementById("paginator").innerHTML = '';

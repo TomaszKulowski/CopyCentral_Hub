@@ -48,7 +48,6 @@ def get_services(request):
                 from_session=True,
             )
             result.append(order_service)
-
     return result
 
 
@@ -424,7 +423,7 @@ class OrderUpdate(EmployeeRequiredMixin, View):
 
         services = get_services(request)
         for service in services:
-            del request.session[str(service.id)]
+            self.request.session.pop(str(service.id), None)
 
         return render(
             request,
@@ -654,7 +653,7 @@ class OrderServiceDelete(EmployeeRequiredMixin, View):
         order_service_id = request.POST.get('pk')
         if request.POST.get('order_from_session') == 'True':
             if str(order_service_id) in [key for key in self.request.session.keys() if key.isdigit()]:
-                del request.session[(str(order_service_id))]
+                self.request.session.pop(str(order_service_id), None)
 
                 return JsonResponse({'status': 204})
             return JsonResponse({'status': 400})
