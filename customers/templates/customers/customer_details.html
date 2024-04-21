@@ -22,7 +22,8 @@
       <div class="btn-group me-2">
         <button onclick="window.location.href='{% url 'history:list' %}?model=customers&model_id={{ customer.id }}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Update History{% endblocktrans %}</button>&nbsp;
         <button onclick="window.location.href='{% url 'orders:orders_list' %}?customer_id={{ customer.id }}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Order History{% endblocktrans %}</button>&nbsp;
-        <button onclick="window.location.href='{% url 'customers:customer_update' customer.id %}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Update{% endblocktrans %}</button>
+        <button onclick="window.location.href='{% url 'customers:customer_update' customer.id %}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Update{% endblocktrans %}</button>&nbsp;
+        <button onclick="window.location.href='{% url 'orders:order_create' %}?customer_id={{ customer.id }}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Add New Order{% endblocktrans %}</button>
       </div>
     </div>
   </div>
