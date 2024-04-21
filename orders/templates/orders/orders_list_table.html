@@ -5,8 +5,12 @@
     {% for order in page_objs %}
       <tr>
         <td hidden="hidden">{% url "orders:order_details" order.id %}</td>
-        <td><b>#{{ order.id }}</b></td>
-        <td>{{ order.customer.name|title }}</td>
+          <td><a class="text-decoration-none link-dark" href="{% url 'orders:order_details' order.id %}"><b>#{{ order.id }}</b></a></td>
+        {% if order.customer %}
+          <td><a class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order.customer.id %}">{{ order.customer.name|title }}</a></td>
+        {% else %}
+          <td>{{ order.customer.name|title }}</td>
+        {% endif %}
         {% if order.additional_address %}
           <td>{{ order.additional_address.city|title }}</td>
         {% else %}

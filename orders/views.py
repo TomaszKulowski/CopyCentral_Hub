@@ -220,6 +220,14 @@ class OrderList(EmployeeRequiredMixin, ListView):
         orders = super().get_queryset()
         search_query = self.request.GET.get('search', '')
         order_by = self.request.GET.get('order_by', '-id')
+        customer_id = self.request.GET.get('customer_id')
+        device_id = self.request.GET.get('device_id')
+
+        if device_id and device_id != 'None':
+            orders = orders.filter(device__id=device_id)
+
+        if customer_id and customer_id != 'None':
+            orders = orders.filter(customer__id=customer_id)
 
         if search_query:
             orders = orders.filter(
@@ -235,8 +243,23 @@ class OrderList(EmployeeRequiredMixin, ListView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data()
         order_by = self.request.GET.get('order_by', '-id')
+        customer_id = self.request.GET.get('customer_id')
+        device_id = self.request.GET.get('device_id')
+
         context['order_by'] = order_by
         context['page_objs'] = context['page_obj']
+
+        if customer_id and customer_id != 'None':
+            customer = get_object_or_404(Customer.objects.values('id', 'name'), pk=self.request.GET.get('customer_id'))
+            context['customer'] = customer
+
+        if device_id and device_id != 'None':
+            device = get_object_or_404(
+                Device.objects.values('id', 'brand', 'model', 'serial_number'),
+                pk=self.request.GET.get('device_id'),
+            )
+            context['device'] = device
+
         del context['page_obj']
 
         return context

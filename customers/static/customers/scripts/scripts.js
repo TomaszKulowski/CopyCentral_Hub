@@ -31,27 +31,31 @@ document.addEventListener("DOMContentLoaded", function () {
     function sendSearchRequest() {
         var searchQuery = searchInput.value.trim();
 
-        // Check if the searchQuery is different from the previous search
-        if (searchQuery !== previousSearchQuery) {
-            var url = "/customers/?search=";
-
-            // Append the search parameter only if the searchQuery is not empty
-            if (searchQuery !== "") {
-                url += `${encodeURIComponent(searchQuery)}`;
-            }
-
-            fetch(url)
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("table-body").innerHTML = data;
-                    document.getElementById("paginator").innerHTML = '';
-
-                    // Update the previous searchQuery
-                    previousSearchQuery = searchQuery;
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                });
+        // Assign null to previousSearchQuery if searchQuery is empty
+        if (searchQuery === "") {
+            previousSearchQuery = null;
         }
+
+        var url = "/customers/?search=";
+
+        // Append the search parameter only if the searchQuery is not empty
+        if (searchQuery !== "") {
+            url += `${encodeURIComponent(searchQuery)}`;
+        }
+
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("table-body").innerHTML = data;
+                document.getElementById("paginator").innerHTML = '';
+
+                // Update the previous searchQuery only if searchQuery is not empty
+                if (searchQuery !== "") {
+                    previousSearchQuery = searchQuery;
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
     }
 });

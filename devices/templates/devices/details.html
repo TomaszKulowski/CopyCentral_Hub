@@ -7,6 +7,7 @@
     <h1 class="h2">{% blocktrans %}Device Details{% endblocktrans %}</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
       <button onclick="window.location.href='{% url 'history:list' %}?model=devices&model_id={{ device.id }}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Update History{% endblocktrans %}</button>&nbsp;
+      <button onclick="window.location.href='{% url 'orders:orders_list' %}?device_id={{ device.id }}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Order History{% endblocktrans %}</button>&nbsp;
       <button onclick="window.location.href='{% url 'devices:update' device.id %}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Update{% endblocktrans %}</button>
     </div>
   </div>
