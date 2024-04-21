@@ -127,7 +127,9 @@ class ServiceAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetVie
         if not self.request.user.is_authenticated:
             return Service.objects.none()
 
-        qs = Service.objects.all()
+        active_brands = Brand.objects.filter(is_active=True)
+        qs = Service.objects.filter(is_active=True, device_brand__in=active_brands)
+        qs = qs.filter(Q(device_model__isnull=True) | Q(device_model__is_active=True))
 
         service_filter_by_brand_id = self.request.session.get('service_filter_by_brand', '')
         service_filter_by_model_id = self.request.session.get('service_filter_by_model', '')
@@ -358,8 +360,8 @@ class OrderUpdate(EmployeeRequiredMixin, View):
             'attachments': attachments,
             'order_services': order_services,
             'total_summary': total_summary,
-            'brands': Brand.objects.all(),
-            'models': Model.objects.all(),
+            'brands': Brand.objects.filter(is_active=True),
+            'models': Model.objects.filter(is_active=True),
         }
 
         return context

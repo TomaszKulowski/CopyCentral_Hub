@@ -28,7 +28,7 @@
             <td hidden="hidden">{% url "services:model_details" object.id %}</td>
             <td>{{ object.name|title }}</td>
             <td class="text-right">
-              <a href="{% url 'services:brand_details' object.id %}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Details{% endblocktrans %}</a>
+              <a href="{% url 'services:model_details' object.id %}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Details{% endblocktrans %}</a>
             </td>
           </tr>
           {% endfor %}

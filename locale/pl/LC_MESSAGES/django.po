@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-21 13:52+0200\n"
+"POT-Creation-Date: 2024-04-21 16:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -86,40 +86,40 @@ msgstr "Pełne imię albo nazwa firmy"
 #: .\order_management\templates\order_management\orders_settlement.html:101
 #: .\order_management\templates\order_management\orders_settlement.html:118
 #: .\orders\templates\orders\customer_details.html:6
-#: .\orders\templates\orders\order_details.html:62
-#: .\orders\templates\orders\order_details.html:112
+#: .\orders\templates\orders\order_details.html:67
+#: .\orders\templates\orders\order_details.html:117
 #: .\orders\templates\orders\order_update.html:69
 #: .\orders\templates\orders\order_update.html:113
 msgid "Tax"
 msgstr "NIP"
 
 #: .\customers\models.py:24 .\orders\templates\orders\customer_details.html:8
-#: .\orders\templates\orders\order_details.html:64
-#: .\orders\templates\orders\order_details.html:114
+#: .\orders\templates\orders\order_details.html:69
+#: .\orders\templates\orders\order_details.html:119
 #: .\orders\templates\orders\order_update.html:71
 #: .\orders\templates\orders\order_update.html:115
 msgid "Billing Country"
 msgstr "Kraj rozliczenia"
 
 #: .\customers\models.py:25 .\orders\templates\orders\customer_details.html:12
-#: .\orders\templates\orders\order_details.html:68
-#: .\orders\templates\orders\order_details.html:118
+#: .\orders\templates\orders\order_details.html:73
+#: .\orders\templates\orders\order_details.html:123
 #: .\orders\templates\orders\order_update.html:75
 #: .\orders\templates\orders\order_update.html:119
 msgid "Billing City"
 msgstr "Miasto rozliczenia"
 
 #: .\customers\models.py:26 .\orders\templates\orders\customer_details.html:10
-#: .\orders\templates\orders\order_details.html:66
-#: .\orders\templates\orders\order_details.html:116
+#: .\orders\templates\orders\order_details.html:71
+#: .\orders\templates\orders\order_details.html:121
 #: .\orders\templates\orders\order_update.html:73
 #: .\orders\templates\orders\order_update.html:117
 msgid "Billing Postal Code"
 msgstr "Kod pocztowy rozliczenia"
 
 #: .\customers\models.py:27 .\orders\templates\orders\customer_details.html:14
-#: .\orders\templates\orders\order_details.html:70
-#: .\orders\templates\orders\order_details.html:120
+#: .\orders\templates\orders\order_details.html:75
+#: .\orders\templates\orders\order_details.html:125
 #: .\orders\templates\orders\order_update.html:77
 #: .\orders\templates\orders\order_update.html:121
 msgid "Billing Street"
@@ -138,8 +138,8 @@ msgstr "Nr kierunkowy"
 #: .\order_management\templates\order_management\orders_settlement.html:104
 #: .\order_management\templates\order_management\orders_settlement.html:121
 #: .\orders\templates\orders\customer_details.html:17
-#: .\orders\templates\orders\order_details.html:73
-#: .\orders\templates\orders\order_details.html:123
+#: .\orders\templates\orders\order_details.html:78
+#: .\orders\templates\orders\order_details.html:128
 #: .\orders\templates\orders\order_update.html:80
 #: .\orders\templates\orders\order_update.html:124
 msgid "Telephone"
@@ -153,13 +153,13 @@ msgstr "Email"
 
 #: .\customers\models.py:32 .\customers\models.py:67 .\devices\models.py:38
 #: .\orders\models.py:141 .\orders\templates\orders\address_details.html:11
-#: .\orders\templates\orders\order_details.html:97
-#: .\orders\templates\orders\order_update.html:98 .\services\models.py:37
+#: .\orders\templates\orders\order_details.html:102
+#: .\orders\templates\orders\order_update.html:98 .\services\models.py:43
 #: .\services\templates\services\services_list.html:33
 msgid "Description"
 msgstr "Opis"
 
-#: .\customers\models.py:33 .\orders\templates\orders\order_details.html:164
+#: .\customers\models.py:33 .\orders\templates\orders\order_details.html:169
 msgid "Payment"
 msgstr "Płatność"
 
@@ -171,7 +171,7 @@ msgstr "Płatność"
 #: .\order_management\templates\order_management\orders_settlement.html:27
 #: .\order_management\templates\order_management\regions_order_management.html:33
 #: .\orders\forms.py:15 .\orders\models.py:111
-#: .\orders\templates\orders\order_details.html:43
+#: .\orders\templates\orders\order_details.html:48
 #: .\orders\templates\orders\order_update.html:50
 #: .\orders\templates\orders\orders_list.html:44
 msgid "Customer"
@@ -186,14 +186,14 @@ msgstr "Kraj"
 #: .\customers\templates\customers\addresses_list.html:27
 #: .\customers\templates\customers\customers_list.html:23
 #: .\orders\templates\orders\address_details.html:6
-#: .\orders\templates\orders\order_details.html:92
+#: .\orders\templates\orders\order_details.html:97
 #: .\orders\templates\orders\order_update.html:93
 #: .\orders\templates\orders\orders_list.html:45
 msgid "City"
 msgstr "Miasto"
 
 #: .\customers\models.py:64 .\orders\templates\orders\address_details.html:4
-#: .\orders\templates\orders\order_details.html:90
+#: .\orders\templates\orders\order_details.html:95
 #: .\orders\templates\orders\order_update.html:91
 msgid "Postal Code"
 msgstr "Kod pocztowy"
@@ -202,7 +202,7 @@ msgstr "Kod pocztowy"
 #: .\customers\templates\customers\addresses_list.html:29
 #: .\customers\templates\customers\customers_list.html:25
 #: .\orders\templates\orders\address_details.html:8
-#: .\orders\templates\orders\order_details.html:94
+#: .\orders\templates\orders\order_details.html:99
 #: .\orders\templates\orders\order_update.html:95
 msgid "Street"
 msgstr "Ulica"
@@ -212,7 +212,8 @@ msgstr "Ulica"
 msgid "Number"
 msgstr "Numer"
 
-#: .\customers\models.py:68
+#: .\customers\models.py:68 .\services\models.py:8 .\services\models.py:18
+#: .\services\models.py:44
 msgid "Is Active"
 msgstr "Aktywny"
 
@@ -310,12 +311,12 @@ msgstr "Kod pocztowy"
 #: .\history\templates\history\history_list.html:45
 #: .\order_management\templates\order_management\my_orders_management.html:93
 #: .\order_management\templates\order_management\orders_settlement.html:85
-#: .\orders\templates\orders\order_details.html:56
-#: .\orders\templates\orders\order_details.html:81
-#: .\orders\templates\orders\order_details.html:85
-#: .\orders\templates\orders\order_details.html:106
-#: .\orders\templates\orders\order_details.html:212
-#: .\orders\templates\orders\order_details.html:216
+#: .\orders\templates\orders\order_details.html:61
+#: .\orders\templates\orders\order_details.html:86
+#: .\orders\templates\orders\order_details.html:90
+#: .\orders\templates\orders\order_details.html:111
+#: .\orders\templates\orders\order_details.html:217
+#: .\orders\templates\orders\order_details.html:221
 #: .\orders\templates\orders\orders_list.html:87
 #: .\orders\templates\orders\orders_list_table.html:30
 #: .\services\templates\services\brands_list.html:31
@@ -335,6 +336,18 @@ msgstr "Historia zmian"
 #: .\devices\templates\devices\details.html:10
 msgid "Order History"
 msgstr "Historia zleceń"
+
+#: .\customers\templates\customers\customer_details.html:26
+#: .\order_management\templates\order_management\employees_order_management.html:18
+#: .\order_management\templates\order_management\main_order_management.html:17
+#: .\order_management\templates\order_management\my_orders_management.html:15
+#: .\order_management\templates\order_management\regions_order_management.html:18
+#: .\orders\templates\orders\order_details.html:37
+#: .\orders\templates\orders\order_details.html:39
+#: .\orders\templates\orders\orders_list.html:11
+#: .\orders\templates\orders\orders_list.html:30
+msgid "Add New Order"
+msgstr "Dodaj nowe zlecenie"
 
 #: .\customers\templates\customers\customer_update.html:7
 msgid "Customer Update"
@@ -356,13 +369,13 @@ msgstr "Szukaj według nazwy / nipu / miasta / ulicy / nr telefonu"
 #: .\order_management\templates\order_management\orders_settlement.html:73
 #: .\orders\models.py:67 .\orders\models.py:74 .\orders\models.py:82
 #: .\orders\models.py:89 .\orders\templates\orders\customer_details.html:4
-#: .\orders\templates\orders\order_details.html:60
-#: .\orders\templates\orders\order_details.html:110
-#: .\orders\templates\orders\order_details.html:237
+#: .\orders\templates\orders\order_details.html:65
+#: .\orders\templates\orders\order_details.html:115
+#: .\orders\templates\orders\order_details.html:242
 #: .\orders\templates\orders\order_update.html:67
 #: .\orders\templates\orders\order_update.html:111
 #: .\orders\templates\orders\order_update.html:226 .\services\models.py:7
-#: .\services\models.py:14 .\services\models.py:35
+#: .\services\models.py:17 .\services\models.py:41
 #: .\services\templates\services\brands_list.html:21
 #: .\services\templates\services\models_list.html:21
 #: .\services\templates\services\services_list.html:31
@@ -475,8 +488,8 @@ msgid "Status"
 msgstr "Status"
 
 #: .\devices\models.py:40 .\orders\models.py:68
-#: .\orders\templates\orders\order_details.html:239
-#: .\orders\templates\orders\order_update.html:228 .\services\models.py:36
+#: .\orders\templates\orders\order_details.html:244
+#: .\orders\templates\orders\order_update.html:228 .\services\models.py:42
 msgid "Price Net"
 msgstr "Cena netto"
 
@@ -609,15 +622,6 @@ msgstr "Rozliczanie zleceń"
 msgid "Order Management"
 msgstr "Zarządzanie zleceniami"
 
-#: .\order_management\templates\order_management\employees_order_management.html:18
-#: .\order_management\templates\order_management\main_order_management.html:17
-#: .\order_management\templates\order_management\my_orders_management.html:15
-#: .\order_management\templates\order_management\regions_order_management.html:18
-#: .\orders\templates\orders\orders_list.html:11
-#: .\orders\templates\orders\orders_list.html:30
-msgid "Add New Order"
-msgstr "Dodaj nowe zlecenie"
-
 #: .\order_management\templates\order_management\employees_order_management.html:30
 #: .\order_management\templates\order_management\employees_order_management_list.html:9
 #: .\order_management\templates\order_management\main_order_management.html:66
@@ -659,7 +663,7 @@ msgstr "Region"
 #: .\order_management\templates\order_management\main_order_management.html:72
 #: .\order_management\templates\order_management\my_orders_management.html:66
 #: .\order_management\templates\order_management\regions_order_management.html:40
-#: .\orders\models.py:138 .\orders\templates\orders\order_details.html:152
+#: .\orders\models.py:138 .\orders\templates\orders\order_details.html:157
 msgid "Priority"
 msgstr "Priorytet"
 
@@ -698,7 +702,7 @@ msgstr "Brak wykonawcy"
 #: .\order_management\templates\order_management\main_order_management.html:145
 #: .\order_management\templates\order_management\my_orders_management.html:102
 #: .\order_management\templates\order_management\regions_order_management.html:115
-#: .\orders\templates\orders\order_details.html:132
+#: .\orders\templates\orders\order_details.html:137
 #: .\orders\templates\orders\order_update.html:133
 msgid "Created At"
 msgstr "Utworzono"
@@ -708,7 +712,7 @@ msgstr "Utworzono"
 #: .\order_management\templates\order_management\main_order_management.html:146
 #: .\order_management\templates\order_management\my_orders_management.html:103
 #: .\order_management\templates\order_management\regions_order_management.html:116
-#: .\orders\templates\orders\order_details.html:136
+#: .\orders\templates\orders\order_details.html:141
 #: .\orders\templates\orders\order_update.html:137
 #: .\orders\templates\orders\orders_list.html:54
 #: .\orders\templates\orders\orders_list.html:56
@@ -721,7 +725,7 @@ msgstr "Zaktualizowno"
 #: .\order_management\templates\order_management\my_orders_management.html:104
 #: .\order_management\templates\order_management\orders_settlement.html:93
 #: .\order_management\templates\order_management\regions_order_management.html:117
-#: .\orders\models.py:100 .\orders\templates\orders\order_details.html:142
+#: .\orders\models.py:100 .\orders\templates\orders\order_details.html:147
 #: .\orders\templates\orders\order_update.html:143
 msgid "Order Intake"
 msgstr "Zlecenie przyjęte przez"
@@ -811,7 +815,7 @@ msgstr "Brak zleceń do rozliczenia"
 
 #: .\order_management\templates\order_management\orders_settlement.html:28
 #: .\orders\forms.py:44 .\orders\models.py:126
-#: .\orders\templates\orders\order_details.html:46
+#: .\orders\templates\orders\order_details.html:51
 #: .\orders\templates\orders\order_update.html:53
 msgid "Payer"
 msgstr "Płatnik"
@@ -862,7 +866,7 @@ msgid "Service"
 msgstr "Usługa"
 
 #: .\order_management\templates\order_management\orders_settlement.html:138
-#: .\orders\models.py:69 .\orders\templates\orders\order_details.html:238
+#: .\orders\models.py:69 .\orders\templates\orders\order_details.html:243
 #: .\orders\templates\orders\order_update.html:227
 msgid "Quantity"
 msgstr "Ilość"
@@ -877,7 +881,7 @@ msgid "Total"
 msgstr "Łącznie"
 
 #: .\order_management\templates\order_management\orders_settlement.html:155
-#: .\orders\templates\orders\order_details.html:256
+#: .\orders\templates\orders\order_details.html:261
 #: .\orders\templates\orders\order_services_list.html:22
 #: .\orders\templates\orders\order_update.html:251
 msgid "NET PLN"
@@ -1015,7 +1019,7 @@ msgstr "Przelew"
 msgid "Qty"
 msgstr "Ilość"
 
-#: .\orders\models.py:110 .\orders\templates\orders\order_details.html:146
+#: .\orders\models.py:110 .\orders\templates\orders\order_details.html:151
 #: .\orders\templates\orders\order_update.html:147
 msgid "Approver"
 msgstr "Zatwierdzono przez"
@@ -1024,7 +1028,7 @@ msgstr "Zatwierdzono przez"
 msgid "Device Name"
 msgstr "Nazwa urządzenia"
 
-#: .\orders\models.py:147 .\orders\templates\orders\order_details.html:231
+#: .\orders\models.py:147 .\orders\templates\orders\order_details.html:236
 #: .\orders\templates\orders\order_update.html:192
 #: .\orders\templates\orders\order_update.html:217
 #: .\services\templates\services\brands_list.html:6
@@ -1071,7 +1075,7 @@ msgid "File"
 msgstr "Plik"
 
 #: .\orders\templates\orders\attachments_list.html:12
-#: .\orders\templates\orders\order_details.html:274
+#: .\orders\templates\orders\order_details.html:279
 #: .\orders\templates\orders\order_update.html:270
 msgid "View"
 msgstr "Zobacz"
@@ -1093,7 +1097,7 @@ msgid "Service ID"
 msgstr "ID zlecenia"
 
 #: .\orders\templates\orders\order_details.html:24
-#: .\orders\templates\orders\order_details.html:197
+#: .\orders\templates\orders\order_details.html:202
 #: .\services\templates\services\service_details.html:6
 msgid "Service Details"
 msgstr "Szczegóły Zlecenia"
@@ -1108,34 +1112,34 @@ msgid "Get Report"
 msgstr "Pobierz raport"
 
 #: .\orders\templates\orders\order_details.html:33
-#: .\orders\templates\orders\order_details.html:284
+#: .\orders\templates\orders\order_details.html:289
 msgid "Send Report"
 msgstr "Wyślij raport"
 
-#: .\orders\templates\orders\order_details.html:76
+#: .\orders\templates\orders\order_details.html:81
 #: .\orders\templates\orders\order_update.html:83
 msgid "Service Address"
 msgstr "Adres zlecenia"
 
-#: .\orders\templates\orders\order_details.html:200
+#: .\orders\templates\orders\order_details.html:205
 msgid "Services Details"
 msgstr "Szczegóły zlecenia"
 
-#: .\orders\templates\orders\order_details.html:254
+#: .\orders\templates\orders\order_details.html:259
 #: .\orders\templates\orders\order_services_list.html:20
 #: .\orders\templates\orders\order_update.html:249
 msgid "Summary"
 msgstr "Łącznie"
 
-#: .\orders\templates\orders\order_details.html:291
+#: .\orders\templates\orders\order_details.html:296
 msgid "Enter Email Address"
 msgstr "Wprowadź adres emai;"
 
-#: .\orders\templates\orders\order_details.html:292
+#: .\orders\templates\orders\order_details.html:297
 msgid "Enter email"
 msgstr "Wprowadź adres email"
 
-#: .\orders\templates\orders\order_details.html:297
+#: .\orders\templates\orders\order_details.html:302
 msgid "Send"
 msgstr "Wyślij"
 
@@ -1206,13 +1210,21 @@ msgstr "Szukaj według ID / kontrahenta / numeru seryjnego / numeru faktury"
 msgid "report"
 msgstr "raport"
 
-#: .\services\models.py:26
+#: .\services\models.py:32
 msgid "Device Brand"
 msgstr "Marka urządzenia"
 
-#: .\services\models.py:33
+#: .\services\models.py:39
 msgid "Device Model"
 msgstr "Model urządzenia"
+
+#: .\services\models.py:50
+msgid "Basic Services "
+msgstr "Usługi podstawowe "
+
+#: .\services\models.py:54
+msgid "- All Models"
+msgstr "- Wszystkie modele"
 
 #: .\services\templates\services\brand_details.html:6
 #: .\services\templates\services\brand_update.html:6
@@ -1269,6 +1281,9 @@ msgstr "Wyloguj"
 #: .\templates\base.html:189
 msgid "Select Language"
 msgstr "Wybierz język"
+
+#~ msgid "All Models"
+#~ msgstr "Wszystkie modele"
 
 #~ msgid "Brand settings"
 #~ msgstr "Ustawietnia marek"
