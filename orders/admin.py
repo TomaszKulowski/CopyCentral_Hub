@@ -1,9 +1,13 @@
 from django.contrib import admin
 
-# Register your models here.
-from .models import Order
+from .models import Region, ShortDescription
 
 
-@admin.register(Order)
-class OrderAdmin(admin.ModelAdmin):
+@admin.register(Region)
+class RegionAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(ShortDescription)
+class ShortDescriptionAdmin(admin.ModelAdmin):
     pass
