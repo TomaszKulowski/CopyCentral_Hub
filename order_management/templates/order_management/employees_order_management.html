@@ -15,7 +15,7 @@
       <h2 class="h2">{% blocktrans %}Employees Orders{% endblocktrans %}</h2>
       <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group me-2">
-          <a href="{% url 'orders:order_create' %}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Add New Order{% endblocktrans %}</a>
+          <button onclick="window.location.href='{% url 'orders:order_create' %}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Add New Order{% endblocktrans %}</button>
         </div>
       </div>
     </div>
@@ -142,6 +142,7 @@
       </div>
     {% endfor %}
   </div>
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3"></div>
 {% endblock %}
 
 {% block additional_scripts %}

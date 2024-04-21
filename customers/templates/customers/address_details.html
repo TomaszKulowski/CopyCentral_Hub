@@ -15,7 +15,7 @@
       </h2>
       <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group me-2">
-          <a href="{% url 'customers:address_update' customer_pk=customer.id pk=object.id %}"  class="btn btn-sm btn-outline-secondary">{% blocktrans %}Update{% endblocktrans %}</a>
+          <button onclick="window.location.href='{% url 'customers:address_update' customer_pk=customer.id pk=object.id %}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Update{% endblocktrans %}</button>
         </div>
       </div>
     </div>

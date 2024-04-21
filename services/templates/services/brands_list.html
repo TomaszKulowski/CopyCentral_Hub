@@ -10,7 +10,7 @@
       <h2 class="h2">{% blocktrans %}Brands{% endblocktrans %}</h2>
       <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group me-2">
-          <a href="{% url 'services:brand_create' %}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Add New {% endblocktrans %}</a>
+          <button onclick="window.location.href='{% url 'services:brand_create' %}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Add New{% endblocktrans %}</button>
         </div>
       </div>
     </div>

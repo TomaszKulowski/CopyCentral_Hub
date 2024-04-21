@@ -29,10 +29,15 @@
   </ul>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
-        <button onclick="getReport({{ order_instance.id }})" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Get Report{% endblocktrans %}</button>&nbsp;
+        <button onclick="getReport({{ order_instance.id }})" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Get Report{% endblocktrans %}</button>&nbsp;
         <button data-bs-toggle="modal" data-bs-target="#sendReportModal" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Send Report{% endblocktrans %}</button>&nbsp;
-        <a href="{% url 'history:list' %}?model=orders&model_id={{ order_instance.id }}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Update History{% endblocktrans %}</a>&nbsp;
-        <a href="{% url 'orders:order_update' order_instance.id %}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Update{% endblocktrans %}</a>
+        <button onclick="window.location.href='{% url 'history:list' %}?model=orders&model_id={{ order_instance.id }}'" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Update History{% endblocktrans %}</button>&nbsp;
+        <button onclick="window.location.href='{% url 'orders:order_update' order_instance.id %}'" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Update{% endblocktrans %}</button>&nbsp;
+        {% if order_instance.additional_address %}
+          <button onclick="window.location.href='{% url 'orders:order_create' %}?customer_id={{ order_instance.customer.id }}&payer_id={{ order_instance.payer.id }}&address_id={{ order_instance.additional_address.id }}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Add New Order{% endblocktrans %}</button>
+        {% else %}
+          <button onclick="window.location.href='{% url 'orders:order_create' %}?customer_id={{ order_instance.customer.id }}&payer_id={{ order_instance.payer.id }}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Add New Order{% endblocktrans %}</button>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -52,6 +57,9 @@
           <h5>{{ order_form.customer.label }}:</h5>
           <div id="id_customer" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
             {{ order_form.customer }}
+            <button onclick="window.location.href='{% url 'customers:customer_details' order_instance.customer.id %}'" type="button" class="btn btn-sm btn-outline-secondary select-button">
+              {% blocktrans %}Details{% endblocktrans %}
+            </button>
           </div>
           <div id="customer-details">
             <span>{% blocktrans %}Name{% endblocktrans %}:</span>
@@ -73,6 +81,15 @@
           <h5>{% blocktrans %}Service Address{% endblocktrans %}:</h5>
           <div id="id_address" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
             {{ order_form.additional_address }}
+            {% if order_instance.additional_address == None %}
+              <button type="button" disabled="disabled" class="btn btn-sm btn-outline-secondary select-button">
+                {% blocktrans %}Details{% endblocktrans %}
+              </button>
+            {% else %}
+              <button onclick="window.location.href='{% url 'customers:address_details' order_instance.customer.id order_instance.additional_address.id %}'" type="button" class="btn btn-sm btn-outline-secondary select-button">
+                {% blocktrans %}Details{% endblocktrans %}
+              </button>
+            {% endif %}
           </div>
           <div id="address-details">
             <span>{% blocktrans %}Postal Code{% endblocktrans %}:</span>
@@ -90,6 +107,9 @@
           <h5>{{ order_form.payer.label }}:</h5>
           <div id="id_payer" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
             {{ order_form.payer }}
+              <button onclick="window.location.href='{% url 'customers:customer_details' order_instance.payer.id %}'" type="button" class="btn btn-sm btn-outline-secondary select-button">
+                {% blocktrans %}Details{% endblocktrans %}
+              </button>
           </div>
           <div id="payer-details">
             <span>{% blocktrans %}Name{% endblocktrans %}:</span>
@@ -192,6 +212,15 @@
           {{ order_form.device.label }}:
           <div id="id_device" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
             {{ order_form.device }}
+            {% if order_instance.device == None %}
+              <button type="button" disabled="disabled" class="btn btn-sm btn-outline-secondary select-button">
+                {% blocktrans %}Details{% endblocktrans %}
+              </button>
+            {% else %}
+              <button onclick="window.location.href='{% url 'devices:details' order_instance.device.id %}'" type="button" class="btn btn-sm btn-outline-secondary select-button">
+                {% blocktrans %}Details{% endblocktrans %}
+              </button>
+            {% endif %}
           </div>
           {{ order_form.description.label }}:
           {{ order_form.description }}
@@ -259,28 +288,28 @@
         <div class="modal-header">
           <h5 class="modal-title" id="sendReportModalLabel">{% blocktrans %}Send Report{% endblocktrans %}</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form id="reportForm">
+          </div>
+          <div class="modal-body">
+            <form id="reportForm">
               <input type="hidden" id="orderId" name="order_id" value="{{ order_instance.id }}"/>
               <div class="mb-3">
-                  <label for="emailInput" class="form-label">{% blocktrans %}Enter Email Address{% endblocktrans %}</label>
-                  <input type="email" class="form-control" id="emailInput" name="email" placeholder="{% blocktrans %}Enter email{% endblocktrans %}" required>
+                <label for="emailInput" class="form-label">{% blocktrans %}Enter Email Address{% endblocktrans %}</label>
+                <input type="email" class="form-control" id="emailInput" name="email" placeholder="{% blocktrans %}Enter email{% endblocktrans %}" required>
               </div>
               <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-top">
-                  <div class="btn-toolbar mb-2 mb-md-0">
-                      <div class="btn-group me-2">
-                          <button id="sendButton" class="btn btn-sm btn-outline-secondary" type="submit">{% blocktrans %}Send{% endblocktrans %}</button>
-                      </div>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                  <div class="btn-group me-2">
+                    <button id="sendButton" class="btn btn-sm btn-outline-secondary" type="submit">{% blocktrans %}Send{% endblocktrans %}</button>
                   </div>
+                </div>
               </div>
-          </form>
+            </form>
+         </div>
         </div>
       </div>
     </div>
   </div>
- </div>
-
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3"></div>
 {% endblock %}
 
 {% block additional_scripts %}

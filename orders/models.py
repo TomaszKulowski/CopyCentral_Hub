@@ -169,6 +169,16 @@ class Order(models.Model):
         if not self._state.adding:
             old_order_instance = get_object_or_404(Order, pk=self.pk)
             if old_order_instance.executor:
+                if self.status in [0, 1, 6, 7, 8] and not old_order_instance.sort_number:
+                    if self.executor:
+                        max_sort_number = Order.objects.filter(
+                            executor=self.executor
+                        ).aggregate(Max('sort_number'))['sort_number__max']
+                        if max_sort_number:
+                            self.sort_number = max_sort_number + 1
+                        else:
+                            self.sort_number = 1
+
                 if self.status in [2, 3, 4, 5] and old_order_instance.sort_number:
                     self.sort_number = None
                     Order.objects.filter(
