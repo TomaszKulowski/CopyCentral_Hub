@@ -52,7 +52,7 @@
           <h5>{{ order_form.customer.label }}:</h5>
           <div id="id_customer" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
             {{ order_form.customer }}
-            <button type="button" class="btn btn-sm btn-outline-secondary select-button">
+            <button onclick="window.location.href='{% url 'customers:customer_details' order_instance.customer.id %}'" type="button" class="btn btn-sm btn-outline-secondary select-button">
               {% blocktrans %}Details{% endblocktrans %}
             </button>
           </div>
@@ -81,7 +81,7 @@
                 {% blocktrans %}Details{% endblocktrans %}
               </button>
             {% else %}
-              <button type="button" class="btn btn-sm btn-outline-secondary select-button">
+              <button onclick="window.location.href='{% url 'customers:address_details' order_instance.customer.id order_instance.additional_address.id %}'" type="button" class="btn btn-sm btn-outline-secondary select-button">
                 {% blocktrans %}Details{% endblocktrans %}
               </button>
             {% endif %}
@@ -102,7 +102,7 @@
           <h5>{{ order_form.payer.label }}:</h5>
           <div id="id_payer" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
             {{ order_form.payer }}
-              <button type="button" class="btn btn-sm btn-outline-secondary select-button">
+              <button onclick="window.location.href='{% url 'customers:customer_details' order_instance.payer.id %}'" type="button" class="btn btn-sm btn-outline-secondary select-button">
                 {% blocktrans %}Details{% endblocktrans %}
               </button>
           </div>
@@ -212,7 +212,7 @@
                 {% blocktrans %}Details{% endblocktrans %}
               </button>
             {% else %}
-              <button type="button" class="btn btn-sm btn-outline-secondary select-button">
+              <button onclick="window.location.href='{% url 'devices:details' order_instance.device.id %}'" type="button" class="btn btn-sm btn-outline-secondary select-button">
                 {% blocktrans %}Details{% endblocktrans %}
               </button>
             {% endif %}
