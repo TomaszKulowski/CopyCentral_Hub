@@ -20,8 +20,8 @@
     <h2 class="h2">Customer Details</h2>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
-        <a href="{% url 'history:list' %}?model=customers&model_id={{ customer.id }}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Update History{% endblocktrans %}</a>&nbsp;
-        <a href="{% url 'customers:customer_update' customer.id %}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Update{% endblocktrans %}</a>
+        <button onclick="window.location.href='{% url 'history:list' %}?model=customers&model_id={{ customer.id }}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Update History{% endblocktrans %}</button>&nbsp;
+        <button onclick="window.location.href='{% url 'customers:customer_update' customer.id %}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Update{% endblocktrans %}</button>
       </div>
     </div>
   </div>

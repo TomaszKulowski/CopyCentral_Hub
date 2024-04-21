@@ -6,12 +6,12 @@
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">{% blocktrans %}Devices{% endblocktrans %}</h1>
         <form class="" style="width: 40%;">
-      <input type="search" class="form-control form-control-dark sea"
+      <input type="search" class="form-control form-control-dark sea select-button"
              placeholder="{% blocktrans %}Search by Serial Number{% endblocktrans %}" aria-label="Search">
     </form>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
-        <a href="{% url 'devices:create' %}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Add New{% endblocktrans %}</a>
+        <button onclick="window.location.href='{% url 'devices:create' %}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Add New{% endblocktrans %}</button>
       </div>
     </div>
   </div>

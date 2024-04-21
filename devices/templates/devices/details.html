@@ -6,8 +6,8 @@
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">{% blocktrans %}Device Details{% endblocktrans %}</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
-      <a href="{% url 'history:list' %}?model=devices&model_id={{ device.id }}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Update History{% endblocktrans %}</a>&nbsp;
-      <a href="{% url 'devices:update' device.id %}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Update{% endblocktrans %}</a>
+      <button onclick="window.location.href='{% url 'history:list' %}?model=devices&model_id={{ device.id }}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Update History{% endblocktrans %}</button>&nbsp;
+      <button onclick="window.location.href='{% url 'devices:update' device.id %}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Update{% endblocktrans %}</button>
     </div>
   </div>
   {{ form.as_div }}

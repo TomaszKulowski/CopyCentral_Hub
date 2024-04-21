@@ -4,7 +4,7 @@
 {% block content %}
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
     <h2 class="h2">{% blocktrans %}Services{% endblocktrans %}</h2>
-    <select id="selectModel" class="form-select" aria-label="Default select example" style="width: 200px;">
+    <select id="selectModel" class="form-select select-button" aria-label="Default select example" style="width: 200px;">
       <option value="All">{% blocktrans %}Display All{% endblocktrans %}</option>
         {% for brand, models in grouped_data.items %}
           {% for model, services in models.items %}
@@ -14,7 +14,7 @@
     </select>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
-        <a href="{% url 'services:service_create' %}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Add New {% endblocktrans %}</a>
+        <button onclick="window.location.href='{% url 'services:service_create' %}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Add New{% endblocktrans %}</button>
       </div>
     </div>
   </div>

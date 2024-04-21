@@ -35,7 +35,7 @@
     </ul>
       <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group me-2">
-          <button class="btn btn-sm btn-outline-secondary" type="submit">{% blocktrans %}Save{% endblocktrans %}</button>
+          <button class="btn btn-sm btn-outline-secondary select-button" type="submit">{% blocktrans %}Save{% endblocktrans %}</button>
         </div>
       </div>
     </div>
@@ -59,7 +59,7 @@
             <h5>{{ order_form.customer.label }}:</h5>
             <div id="id_customer" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
               {{ order_form.customer }}
-              <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
+              <button type="button" class="btn btn-sm btn-outline-secondary select-button" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
                 {% blocktrans %}Add New{% endblocktrans %}
               </button>
             </div>
@@ -83,7 +83,7 @@
             <h5>{% blocktrans %}Service Address{% endblocktrans %}:</h5>
             <div id="id_address" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
               {{ order_form.additional_address }}
-              <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addAddressModal">
+              <button type="button" class="btn btn-sm btn-outline-secondary select-button" data-bs-toggle="modal" data-bs-target="#addAddressModal">
                 {% blocktrans %}Add New{% endblocktrans %}
               </button>
             </div>
@@ -103,7 +103,7 @@
             <h5>{{ order_form.payer.label }}:</h5>
             <div id="id_payer" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
               {{ order_form.payer }}
-              <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addPayerModal">
+              <button type="button" class="btn btn-sm btn-outline-secondary select-button" data-bs-toggle="modal" data-bs-target="#addPayerModal">
                 {% blocktrans %}Add New{% endblocktrans %}
               </button>
             </div>
@@ -199,7 +199,7 @@
             {{ order_form.device.label }}:
             <div id="id_device" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
               {{ order_form.device }}
-              <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addDeviceModal">
+              <button type="button" class="btn btn-sm btn-outline-secondary select-button" data-bs-toggle="modal" data-bs-target="#addDeviceModal">
                 {% blocktrans %}Add New{% endblocktrans %}
               </button>
             </div>
@@ -293,7 +293,7 @@
         <h2 class="h2"></h2>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group me-2">
-            <button class="btn btn-sm btn-outline-secondary" type="submit">{% blocktrans %}Save{% endblocktrans %}</button>
+            <button class="btn btn-sm btn-outline-secondary select-button" type="submit">{% blocktrans %}Save{% endblocktrans %}</button>
           </div>
         </div>
       </div>

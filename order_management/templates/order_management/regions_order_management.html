@@ -15,7 +15,7 @@
       <h2 class="h2">{% blocktrans %}Regions Orders{% endblocktrans %}</h2>
       <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group me-2">
-          <a href="{% url 'orders:order_create' %}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Add New Order{% endblocktrans %}</a>
+          <button onclick="window.location.href='{% url 'orders:order_create' %}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Add New Order{% endblocktrans %}</button>
         </div>
       </div>
     </div>

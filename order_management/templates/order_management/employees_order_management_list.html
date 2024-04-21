@@ -85,13 +85,13 @@
         </td>
         <td style="text-align: right;">
           <div class="btn-group me-2">
-            {% if order.orders_list|length == 1 %}
+            {% if orders|length == 1 %}
               <button disabled="disabled" class="btn btn-sm btn-outline-secondary move-up"><i class="bi bi-arrow-up-square"></i></button>
               <button disabled="disabled" class="btn btn-sm btn-outline-secondary move-down"><i class="bi bi-arrow-down-square"></i></button>
-            {% elif forloop.counter != order.orders_list|length and forloop.counter != 1 %}
+            {% elif forloop.counter != orders|length and forloop.counter != 1 %}
               <button class="btn btn-sm btn-outline-secondary move-up"><i class="bi bi-arrow-up-square"></i></button>
               <button class="btn btn-sm btn-outline-secondary move-down"><i class="bi bi-arrow-down-square"></i></button>
-            {% elif forloop.counter == order.orders_list|length %}
+            {% elif forloop.counter == orders|length %}
               <button class="btn btn-sm btn-outline-secondary move-up"><i class="bi bi-arrow-up-square"></i></button>
               <button disabled="disabled" class="btn btn-sm btn-outline-secondary move-down"><i class="bi bi-arrow-down-square"></i></button>
             {% elif forloop.counter == 1 %}

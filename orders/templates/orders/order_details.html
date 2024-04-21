@@ -29,10 +29,10 @@
   </ul>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
-        <button onclick="getReport({{ order_instance.id }})" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Get Report{% endblocktrans %}</button>&nbsp;
+        <button onclick="getReport({{ order_instance.id }})" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Get Report{% endblocktrans %}</button>&nbsp;
         <button data-bs-toggle="modal" data-bs-target="#sendReportModal" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Send Report{% endblocktrans %}</button>&nbsp;
-        <a href="{% url 'history:list' %}?model=orders&model_id={{ order_instance.id }}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Update History{% endblocktrans %}</a>&nbsp;
-        <a href="{% url 'orders:order_update' order_instance.id %}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Update{% endblocktrans %}</a>
+        <button onclick="window.location.href='{% url 'history:list' %}?model=orders&model_id={{ order_instance.id }}'" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Update History{% endblocktrans %}</button>&nbsp;
+        <button onclick="window.location.href='{% url 'orders:order_update' order_instance.id %}'" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Update{% endblocktrans %}</button>
       </div>
     </div>
   </div>
@@ -52,6 +52,9 @@
           <h5>{{ order_form.customer.label }}:</h5>
           <div id="id_customer" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
             {{ order_form.customer }}
+            <button type="button" class="btn btn-sm btn-outline-secondary select-button">
+              {% blocktrans %}Details{% endblocktrans %}
+            </button>
           </div>
           <div id="customer-details">
             <span>{% blocktrans %}Name{% endblocktrans %}:</span>
@@ -73,6 +76,15 @@
           <h5>{% blocktrans %}Service Address{% endblocktrans %}:</h5>
           <div id="id_address" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
             {{ order_form.additional_address }}
+            {% if order_instance.additional_address == None %}
+              <button type="button" disabled="disabled" class="btn btn-sm btn-outline-secondary select-button">
+                {% blocktrans %}Details{% endblocktrans %}
+              </button>
+            {% else %}
+              <button type="button" class="btn btn-sm btn-outline-secondary select-button">
+                {% blocktrans %}Details{% endblocktrans %}
+              </button>
+            {% endif %}
           </div>
           <div id="address-details">
             <span>{% blocktrans %}Postal Code{% endblocktrans %}:</span>
@@ -90,6 +102,9 @@
           <h5>{{ order_form.payer.label }}:</h5>
           <div id="id_payer" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
             {{ order_form.payer }}
+              <button type="button" class="btn btn-sm btn-outline-secondary select-button">
+                {% blocktrans %}Details{% endblocktrans %}
+              </button>
           </div>
           <div id="payer-details">
             <span>{% blocktrans %}Name{% endblocktrans %}:</span>
@@ -192,6 +207,15 @@
           {{ order_form.device.label }}:
           <div id="id_device" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
             {{ order_form.device }}
+            {% if order_instance.device == None %}
+              <button type="button" disabled="disabled" class="btn btn-sm btn-outline-secondary select-button">
+                {% blocktrans %}Details{% endblocktrans %}
+              </button>
+            {% else %}
+              <button type="button" class="btn btn-sm btn-outline-secondary select-button">
+                {% blocktrans %}Details{% endblocktrans %}
+              </button>
+            {% endif %}
           </div>
           {{ order_form.description.label }}:
           {{ order_form.description }}
