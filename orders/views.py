@@ -251,7 +251,8 @@ class OrderList(EmployeeRequiredMixin, ListView):
         context['page_objs'] = context['page_obj']
 
         if customer_id and customer_id != 'None':
-            customer = get_object_or_404(Customer.objects.values('id', 'name'), pk=self.request.GET.get('customer_id'))
+            self.request.session['customer_id'] = customer_id
+            customer = get_object_or_404(Customer.objects.values('id', 'name'), pk=customer_id)
             context['customer'] = customer
 
         if device_id and device_id != 'None':
@@ -297,8 +298,10 @@ class OrderUpdate(EmployeeRequiredMixin, View):
 
         else:
             order_instance = None
+            self.request.session['customer_id'] = None
 
         if customer_id:
+            self.request.session['customer_id'] = customer_id
             customer_instance = get_object_or_404(Customer, pk=customer_id)
             if order_instance:
                 order_instance.customer = customer_instance
@@ -307,6 +310,7 @@ class OrderUpdate(EmployeeRequiredMixin, View):
 
         else:
             customer_instance = None
+            self.request.session['customer_id'] = None
 
         if payer_id:
             payer_instance = get_object_or_404(Customer, pk=payer_id)
@@ -456,6 +460,7 @@ class OrderDetails(OrderUpdate):
 class CustomerDetails(EmployeeRequiredMixin, View):
     def get(self, request, pk):
         customer = get_object_or_404(Customer, pk=pk)
+        request.session['customer_id'] = customer.id
         order_form = OrderForm
         context = {'customer': customer, 'order_form': order_form}
 
@@ -492,7 +497,8 @@ class AddressCreateModal(EmployeeRequiredMixin, View):
         address_form = AdditionalAddressForm(request.POST)
         if address_form.is_valid():
             address_instance = address_form.save()
-        return JsonResponse({'status': 201, 'address_id': address_instance.id})
+            return JsonResponse({'status': 201, 'address_id': address_instance.id})
+        return JsonResponse({'status': 400})
 
 
 class DeviceCreateModal(EmployeeRequiredMixin, CreateView):
