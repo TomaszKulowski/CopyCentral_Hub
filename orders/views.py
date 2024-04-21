@@ -203,7 +203,7 @@ class OrderUpdateAPIView(EmployeeRequiredMixin, View):
 
         order.save()
 
-        return JsonResponse({'success': 'true'})
+        return JsonResponse({'status': 200, 'success': 'true'})
 
 
 class OrderList(EmployeeRequiredMixin, ListView):
