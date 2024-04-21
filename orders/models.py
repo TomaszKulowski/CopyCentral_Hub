@@ -62,15 +62,20 @@ class PaymentMethodChoices(models.IntegerChoices):
     CASH = 2, _('Cash')
 
 
-class OrderServices(models.Model):
-    service = models.ForeignKey(Service, on_delete=models.PROTECT, verbose_name=_('Service'))
+class OrderService(models.Model):
+    service = models.ForeignKey(Service, on_delete=models.PROTECT, verbose_name=_('Service'), blank=True, null=True)
     name = models.CharField(_('Name'), max_length=255)
     price_net = models.FloatField(_('Price Net'))
     quantity = models.PositiveSmallIntegerField(_('Quantity'))
+    from_session = models.BooleanField(default=True, blank=True, null=True)
     history = HistoricalRecords()
 
     def __str__(self):
-        return _('Name') + f': {self.name} - ' + _('Net Price') + f': {self.price_net} - ' +_('Qty') + f': {self.quantity}'
+        return _('Name') + f': {self.name} - ' + _('Net Price') + f': {self.price_net} - ' + _('Qty') + f': {self.quantity}'
+
+    def save(self, *args, **kwargs):
+        self.from_session = False
+        super().save(*args, **kwargs)
 
 
 class Region(models.Model):
@@ -139,7 +144,7 @@ class Order(models.Model):
     total_counter = models.PositiveIntegerField(_('Total Counter'), blank=True, null=True)
     mono_counter = models.PositiveIntegerField(_('Mono Counter'), blank=True, null=True)
     color_counter = models.PositiveIntegerField(_('Color Counter'), blank=True, null=True)
-    services = models.ManyToManyField(OrderServices, blank=True, verbose_name=_('Services'))
+    services = models.ManyToManyField(OrderService, blank=True, verbose_name=_('Services'))
     payment_method = models.SmallIntegerField(
         _('Payment Method'),
         choices=PaymentMethodChoices.choices,
@@ -210,7 +215,7 @@ class Order(models.Model):
         if self.customer:
             if not self.contact:
                 customer = get_object_or_404(Customer, pk=self.customer.id)
-                self.contact = self.customer.telephone
+                self.contact = customer.telephone
         super().save(*args, **kwargs)
 
 

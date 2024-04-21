@@ -5,12 +5,16 @@
 {% block content %}
   <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h2 class="h2">{% blocktrans %}Service Order Update{% endblocktrans %}</h2>
-    <div class="btn-toolbar mb-2 mb-md-0">
-      <div class="btn-group me-2">
-        <h1 class="h2">{% blocktrans %}Service ID{% endblocktrans %}: {{ order_instance.id }}</h1>
+    {% if order_instance %}
+      <h2 class="h2">{% blocktrans %}Service Order Update{% endblocktrans %}</h2>
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+          <h2 class="h2">{% blocktrans %}Service ID{% endblocktrans %}: {{ order_instance.id }}</h2>
+        </div>
       </div>
-    </div>
+    {% else %}
+      <h2 class="h2">{% blocktrans %}Service Order Create{% endblocktrans %}</h2>
+    {% endif %}
   </div>
   <form method="post" id="orderForm" enctype="multipart/form-data">
     {% csrf_token %}
@@ -23,7 +27,7 @@
         <button class="nav-link" id="order_details-tab" data-bs-toggle="tab" data-bs-target="#order_details" type="button" role="tab" aria-controls="order_details" aria-selected="false">{% blocktrans %}Order Details{% endblocktrans %}</button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="service_details-tab" data-bs-toggle="tab" data-bs-target="#service_details" type="button" role="tab" aria-controls="service_details" aria-selected="false">{% blocktrans %}Service Details{% endblocktrans %}</button>
+        <button class="nav-link" id="service_details-tab" data-bs-toggle="tab" data-bs-target="#service_details" type="button" role="tab" aria-controls="service_details" aria-selected="false">{% blocktrans %}Service Details {% endblocktrans %}</button>
       </li>
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="attachments-tab" data-bs-toggle="tab" data-bs-target="#attachments" type="button" role="tab" aria-controls="attachments" aria-selected="false">{% blocktrans %}Attachments{% endblocktrans %}</button>
@@ -61,20 +65,20 @@
             </div>
             <div id="customer-details">
               <span>{% blocktrans %}Name{% endblocktrans %}:</span>
-              <textarea class="form-control" rows="2" disabled>{{ order_instance.customer.name }}</textarea>
+              <textarea class="form-control" rows="2" disabled>{{ customer_instance.name }}</textarea>
               <span>{% blocktrans %}Tax{% endblocktrans %}:</span>
-              <input class="form-control" disabled value="{{ order_instance.customer.tax }}">
+              <input class="form-control" disabled value="{{ customer_instance.tax }}">
               <span>{% blocktrans %}Billing Country{% endblocktrans %}:</span>
-              <input class="form-control" disabled value="{{ order_instance.customer.billing_country }}">
+              <input class="form-control" disabled value="{{ customer_instance.billing_country }}">
               <span>{% blocktrans %}Billing Postal Code{% endblocktrans %}:</span>
-              <input class="form-control" disabled value="{{ order_instance.customer.billing_postal_code }}">
+              <input class="form-control" disabled value="{{ customer_instance.billing_postal_code }}">
               <span>{% blocktrans %}Billing City{% endblocktrans %}:</span>
-              <input class="form-control" disabled value="{{ order_instance.customer.billing_city }}">
+              <input class="form-control" disabled value="{{ customer_instance.billing_city }}">
               <span>{% blocktrans %}Billing Street{% endblocktrans %}:</span>
               <input class="form-control" disabled
-                value="{{ order_instance.customer.billing_street }} {{ order_instance.customer.billing_number }}">
+                value="{{ customer_instance.billing_street }} {{ customer_instance.billing_number }}">
               <span>{% blocktrans %}Telephone{% endblocktrans %}:</span>
-              <input class="form-control" id="contact" name="contact" value="{% if order_instance.contact %}{{ order_instance.contact }}{% endif %}" maxlength="14">
+              <input class="form-control" id="contact" name="contact" value="{% if order_instance.contact %}{{ order_instance.contact }}{% else %}{{ customer_instance.telephone }}{% endif %}" maxlength="14">
             </div>
             <h5>{% blocktrans %}Service Address{% endblocktrans %}:</h5>
             <div id="id_address" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
@@ -182,10 +186,10 @@
       <div class="tab-pane fade" id="service_details" role="tabpanel" aria-labelledby="service_details-tab">
         <ul class="nav nav-tabs" id="service-tab" role="tablist">
           <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="service_details1-tab" data-bs-toggle="tab" data-bs-target="#service_details1" type="button" role="tab" aria-controls="service_details1" aria-selected="true">{% blocktrans %}Service Details{% endblocktrans %}</button>
+            <button class="nav-link active" id="service_details1-tab" data-bs-toggle="tab" data-bs-target="#service_details1" type="button" role="tab" aria-controls="service_details1" aria-selected="true">{% blocktrans %}Device{% endblocktrans %}</button>
           </li>
           <li class="nav-item" role="presentation">
-            <button {% if not order_instance.customer.id %} disabled="disabled" {% endif %} class="nav-link" id="services_details-tab" data-bs-toggle="tab" data-bs-target="#services_details" type="button" role="tab" aria-controls="services_details" aria-selected="false">{% blocktrans %}Services Details{% endblocktrans %}</button>
+            <button class="nav-link" id="services_details-tab" data-bs-toggle="tab" data-bs-target="#services_details" type="button" role="tab" aria-controls="services_details" aria-selected="false">{% blocktrans %}Services{% endblocktrans %}</button>
           </li>
         </ul>
         <div class="tab-content" id="service-tab-content">
@@ -229,6 +233,7 @@
                     {% for service in order_instance.services.all %}
                     <tr>
                       <td hidden="hidden">{{ service.id }}</td>
+                      <td hidden="hidden">{{ service.from_session }}</td>
                       <td>{{ service.name|title }}</td>
                       <td>{{ service.quantity }}</td>
                       <td>{{ service.price_net }}</td>
@@ -421,16 +426,16 @@
               </select>
             </div>
           </div>
-          <form id="serviceForm" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="add_service" value="true"/>
+          <form id="serviceForm" method="post" >
+            <input type="hidden" id="OrderServiceUpdate" name="update" value="False"/>
             <input type="hidden" id="order_service_id"/>
-            {{ service_form.as_div }}
+            {% csrf_token %}
+            {{ order_service_form.as_div }}
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-top">
               <h2 class="h2"></h2>
               <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group me-2">
-                  <button class="btn btn-sm btn-outline-secondary" type="submit">{% blocktrans %}Save{% endblocktrans %}</button>
+                  <button class="btn btn-sm btn-outline-secondary" onclick="orderServiceUpdate()" type="button">{% blocktrans %}Save{% endblocktrans %}</button>
                 </div>
               </div>
             </div>

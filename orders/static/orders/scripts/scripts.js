@@ -58,56 +58,105 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+function loadCustomerDetails(customerId, orderId) {
+    var customerDetailsUrl = "/orders/customer_details/" + customerId + "/";
+    var addressFormUrl = "/orders/address_form/" + customerId + "/?order_id=" + orderId;
+
+    fetch(customerDetailsUrl)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("customer-details").innerHTML = data;
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+
+    fetch(addressFormUrl)
+        .then(response => response.text())
+        .then(data => {
+            var inputs = document.querySelectorAll('#address-details input, #address-details textarea');
+            inputs.forEach(function(input) {
+                input.value = '';
+            });
+            document.getElementById("additional_address-select").innerHTML = data;
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+   $('#customer-select').val(customerId).trigger('change');
+
+}
+
 $(document).ready(function() {
     $('#id_customer').on('select2:select', function (e) {
-        var customerId = e.params.data.id;
         var orderId = $('#orderId').val();
-        var payerId = $('#payerId').val();
-        var addressId = $('#addressId').val();
-
-        window.location.href = '/orders/' + orderId + '/update/?customer_id=' + customerId + '&payer_id=' + payerId + '&address_id=' + addressId;
+        var customerId = e.params.data.id;
+        loadCustomerDetails(customerId, orderId);
     });
 });
+
+
+function loadPayerDetails(customerId) {
+    var url = "/orders/customer_details/" + customerId + "/";
+
+    fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("payer-details").innerHTML = data;
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+}
 
 $(document).ready(function() {
     $('#id_payer').on('select2:select', function (e) {
-        var payerId = e.params.data.id;
-        var orderId = $('#orderId').val();
-        var customerId = $('#customerId').val();
-        var addressId = $('#addressId').val();
-
-        window.location.href = '/orders/' + orderId + '/update/?customer_id=' + customerId + '&payer_id=' + payerId + '&address_id=' + addressId;
+        var customerId = e.params.data.id;
+        loadPayerDetails(customerId);
     });
 });
+
+
+function loadAddressDetails(addressId) {
+    var url = "/orders/address_details/" + addressId + "/";
+
+    fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("address-details").innerHTML = data;
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+}
+
+function clearAddressInputs() {
+    var inputs = document.querySelectorAll('#address-details input, #address-details textarea');
+    inputs.forEach(function(input) {
+        input.value = '';
+    });
+}
 
 $(document).ready(function() {
     $('#id_address').on('select2:select', function (e) {
         var addressId = e.params.data.id;
-        var orderId = $('#orderId').val();
-        var customerId = $('#customerId').val();
-        var payerId = $('#payerId').val();
-
-        window.location.href = '/orders/' + orderId + '/update/?customer_id=' + customerId + '&payer_id=' + payerId + '&address_id=' + addressId;
+        loadAddressDetails(addressId);
     }).on('select2:unselect', function (e) {
-        var addressId = null;
-        var orderId = $('#orderId').val();
-        var customerId = $('#customerId').val();
-        var payerId = $('#payerId').val();
-
-        window.location.href = '/orders/' + orderId + '/update/?customer_id=' + customerId + '&payer_id=' + payerId + '&address_id=' + addressId;
+        clearAddressInputs();
     });
 });
 
 
 function handleSubmitForm(formId, modalId, submit_type) {
     $(formId).submit(function(event) {
+
         event.preventDefault();
-        var customerId = $('#customerId').val();
-        var payerId = $('#payerId').val();
-        var addressId = $('#addressId').val();
-        var deviceId = $('#deviceId').val();
+        var customerId = $('#customer-select').val() !== 'undefined' ? $('#customer-select').val() : '';
+        var payerId = $('#payer-select').val() !== 'undefined' ? $('#payer-select').val() : '';
+        var addressId = $('#additional_address-select').val() !== 'undefined' ? $('#additional_address-select').val() : '';
+        var deviceId = $('#device-select').val() !== 'undefined' ? $('#device-select').val() : '';
         var orderId = $('#orderId').val();
-        var base_redirect_url = '/orders/' + orderId + '/update/'
+        var base_redirect_url = orderId ? '/orders/' + orderId + '/update/' : '/orders/create/';
         var formData = $(this).serialize();
         formData += '&order_id=' + orderId;
         formData += '&customer=' + customerId;
@@ -127,7 +176,6 @@ function handleSubmitForm(formId, modalId, submit_type) {
             data: formData,
             success: function(response) {
                 if (response.success) {
-
                     var redirect_url;
                     if (submit_type === 'customer') {
                         redirect_url = base_redirect_url + '?customer_id=' + response.customer_id + '&payer_id=' + payerId + '&address_id=' + addressId + '&device_id=' + deviceId;
@@ -156,6 +204,7 @@ handleSubmitForm('#addressForm', '#addAddressModal',  'address');
 handleSubmitForm('#deviceForm', '#addDeviceModal',  'device');
 
 
+// order service filters
 document.addEventListener('DOMContentLoaded', function() {
     var serviceSelect = document.getElementById('id_service_services');
 
@@ -164,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var modelId = document.getElementById('filterByModel').value;
 
         $.ajax({
-            url: '/orders/services_filter/',
+            url: '/orders/api/services_filter/',
             type: 'GET',
             data: {
                 brand_id: brandId,
@@ -179,7 +228,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     var optionElement = document.createElement('option');
                     optionElement.value = service.id;
                     optionElement.textContent = service.name;
-                    serviceSelect.appendChild(optionElement);
                 });
 
                 if (response.length > 0) {
@@ -202,28 +250,13 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-function updateSummary() {
-    var totalPrice = 0;
-
-    $('#service-table-body tr').each(function() {
-        var quantity = parseInt($(this).find('td:nth-child(3)').text());
-        var price = parseFloat($(this).find('td:nth-child(4)').text());
-
-        if (!isNaN(quantity) && !isNaN(price)) {
-            totalPrice += quantity * price;
-        }
-    });
-
-    $('#total_summary').text(totalPrice.toFixed(2));
-}
-
-
+// when service select is changed get and fill received data order service field
 $(document).ready(function() {
     $('#id_service_services').change(function() {
         var selectedServiceId = $(this).val();
 
         $.ajax({
-            url: '/orders/service_details/' + selectedServiceId + '/',
+            url: '/orders/api/service_details/' + selectedServiceId + '/',
             dataType: 'json',
             success: function(data) {
                 $('#id_service_name').val(data.name);
@@ -235,108 +268,75 @@ $(document).ready(function() {
 });
 
 
-$(document).ready(function() {
-    $('#serviceForm').submit(function(event) {
-        event.preventDefault();
-
-        var formData = $(this).serialize();
-        var serviceId = $('#order_service_id').val();
-
-        formData += '&order_service_id=' +  serviceId;
-
-        $.ajax({
-            url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: formData,
-            success: function(response) {
-                $('#addServiceModal').modal('hide');
-
-                var orderId = $('#orderId').val();
-
-                updateServiceTable(orderId);
-
-                $('#service_details-tab').tab('show');
-            },
-        });
-    });
-});
-
-
+// update order service table
 function updateServiceTable(orderId) {
+    var url = "/orders/api/order_services_list/?order_id=" + orderId;
+
+    fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("service-table-body").innerHTML = data;
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+}
+
+
+// create/update order service
+function orderServiceUpdate() {
+    var orderId = $('#orderId').val();
+    var formData = $('#serviceForm').serialize();
+    var update = $('#OrderServiceUpdate').val();
+    var orderServiceId = $('#order_service_id').val();
+    var url = '';
+
+    if (update === 'True') {
+        url = "/orders/api/order_service_update/" + orderServiceId + "/";
+    } else {
+        url = '/orders/api/order_service_create/';
+    }
+
     $.ajax({
-        url: '/orders/services_list/',
-        method: 'GET',
-        data: {
-            'order_id': orderId
+        url: url,
+        type: 'POST',
+        data: formData,
+        success: function(response) {
+            updateServiceTable(orderId);
         },
-        dataType: 'json',
-        success: function(data) {
-            var tableBody = '';
-            data.services.forEach(function(service) {
-                tableBody += '<tr>';
-                tableBody += '<td hidden="hidden">' + service.id + '</td>';
-                tableBody += '<td>' + service.name + '</td>';
-                tableBody += '<td>' + service.quantity + '</td>';
-                tableBody += '<td>' + service.price_net + '</td>';
-                tableBody += '<td>';
-                tableBody += '<div class="btn-group me-2">';
-                tableBody += '<button type="button" class="btn btn-sm btn-outline-secondary" id="service-edit">Update</button>';
-                tableBody += '<button type="button" class="btn btn-sm btn-outline-secondary service-delete-btn" data-service-id="' + service.id + '">Delete</button>';
-                tableBody += '</div>';
-                tableBody += '</td>';
-                tableBody += '</tr>';
-            });
-            tableBody += '<tr id="summary-row">';
-            tableBody += '<td colspan="2"><b>Summary:</b></td>';
-            tableBody += '<td id="total_summary" style="font-weight: bold;">{{ total_summary }}</td>';
-            tableBody += '<td><b>NET PLN</b></td>';
-            tableBody += '<td></td>';
-            tableBody += '</tr>';
-            $('#service-table-body').html(tableBody);
-            updateSummary();
-
-            $('.service-delete-btn').click(function() {
-                var serviceIdToDelete = $(this).data('service-id');
-                var orderId = $('#orderId').val();
-
-                $.ajax({
-                    url: '/orders/service_delete/',
-                    type: 'POST',
-                    data: {
-                        'pk': serviceIdToDelete,
-                        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        updateServiceTable(orderId);
-                    },
-                });
-            });
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
         },
+        complete: function() {
+            $('#addServiceModal').modal('hide');
+            $('#OrderServiceUpdate').val('False');
+        }
     });
 }
 
 
+// display edit order service form
 $(document).ready(function() {
     $('#service-table-body').on('click', 'button#service-edit', function() {
         var serviceId = $(this).closest('tr').find('td:first-child').text();
+        var fromSession = $(this).closest('tr').find('td:nth-child(2)').text();
 
         $.ajax({
-            url: '/orders/service_update/',
+            url: "/orders/api/order_service_details/" + serviceId + "/",
             method: 'GET',
             data: {
-                'service_id': serviceId
+                'service_id': serviceId,
+                'from_session': fromSession,
             },
             dataType: 'json',
             success: function(response) {
-                $('#order_service_id').val(response.id);
+                $('#order_service_id').val(serviceId);
                 $('#id_service_services').val(response.service);
                 $('#id_service_name').val(response.name);
                 $('#id_service_price_net').val(response.price_net);
                 $('#id_service_quantity').val(response.quantity);
-
-                updateSummary();
-
+                $('#id_service_from_session').val(response.from_session);
+                $('#OrderServiceUpdate').val('True');
                 $('#addServiceModal').modal('show');
 
             },
@@ -344,19 +344,20 @@ $(document).ready(function() {
     });
 });
 
-updateSummary()
 
-
+// delete order service
 $(document).ready(function() {
-    $('.service-delete-btn').click(function() {
+    $(document).on('click', '.service-delete-btn', function() {
         var serviceIdToDelete = $(this).closest('tr').find('td:first-child').text();
+        var from_session = $(this).closest('tr').find('td:nth-child(2)').text();
         var orderId = $('#orderId').val();
 
         $.ajax({
-            url: '/orders/service_delete/',
+            url: '/orders/api/order_service_delete/',
             type: 'POST',
             data: {
                 'pk': serviceIdToDelete,
+                'order_from_session': from_session,
                 'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
             },
             dataType: 'json',
@@ -421,13 +422,6 @@ function checkFileSize(input) {
             document.getElementById("fileSizeError").style.display = "none";
         }
     }
-}
-
-
-function getReportt(orderId) {
-alert('dsada')
-    var detailsRow = document.getElementById('row' + orderId);
-    detailsRow.classList.toggle('show');
 }
 
 
