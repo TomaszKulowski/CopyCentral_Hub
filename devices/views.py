@@ -1,33 +1,37 @@
-from django.core.paginator import Paginator
 from django.db.models import Q
-from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views import View
-from django.views.generic import UpdateView, CreateView
+from django.views.generic import UpdateView, CreateView, ListView
 
 from .forms import DeviceForm
 from .models import Device
 from CopyCentral_Hub.mixins import EmployeeRequiredMixin
 
 
-class DevicesList(EmployeeRequiredMixin, View):
-    def get(self, request):
-        devices = Device.objects.all()
-        search_query = request.GET.get('search', False)
+class DevicesList(EmployeeRequiredMixin, ListView):
+    model = Device
+    template_name = 'devices/list.html'
+    paginate_by = 10
+
+    def get_template_names(self):
+        search_query = self.request.GET.get('search', False)
+        if search_query or search_query == '':
+            return ['devices/list_table.html']
+        return super().get_template_names()
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        search_query = self.request.GET.get('search', '')
 
         if search_query:
-            devices = devices.filter(
+            queryset = queryset.filter(
                 Q(serial_number__icontains=search_query)
             )
 
-        page = request.GET.get('page')
-        paginator = Paginator(devices, 10)
-        page_obj = paginator.get_page(page)
+        return queryset
 
-        if search_query or search_query == '':
-            return render(request, 'devices/list_table.html', {'page_obj': page_obj})
-
-        return render(request, 'devices/list.html', {'page_obj': page_obj})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 class DeviceDetails(EmployeeRequiredMixin, UpdateView):
