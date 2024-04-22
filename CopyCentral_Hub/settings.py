@@ -190,3 +190,5 @@ Please find attached the report for order number #order_number.
 Best regards,
 #employee
 """)
+
+LOGIN_URL = '/authentication/login/'

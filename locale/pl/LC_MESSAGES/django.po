@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-21 16:55+0200\n"
+"POT-Creation-Date: 2024-04-22 19:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,6 +42,10 @@ msgstr ""
 "Z poważaniem,\n"
 "#employee\n"
 
+#: .\authentication\admin.py:25
+msgid "Send password reset email"
+msgstr "Wyślij email z linkiem resetującym hasło"
+
 #: .\authentication\templates\authentication\login.html:56
 msgid "Please sign in"
 msgstr "Proszę się zalogować"
@@ -57,6 +61,39 @@ msgstr "Hasło"
 #: .\authentication\templates\authentication\login.html:67
 msgid "Sign in"
 msgstr "Zaloguj się"
+
+#: .\authentication\templates\authentication\reset.html:1
+msgid ""
+"\n"
+"Hello,\n"
+"\n"
+"You are receiving this email because a request has been made to reset the "
+"password for your account.\n"
+"\n"
+"Click the link below to reset your password:\n"
+msgstr ""
+"\n"
+"Witaj,\n"
+"\n"
+"Otrzymujesz tę wiadomość, ponieważ poproszono o zresetowanie hasła dla "
+"Twojego konta.\n"
+"\n"
+"Kliknij poniższy link, aby zresetować hasło:\n"
+
+#: .\authentication\templates\authentication\reset.html:9
+msgid ""
+"\n"
+"If you did not request a password reset, you can safely ignore this "
+"message.\n"
+"\n"
+"Thank you,\n"
+"CopyCare Manager Team\n"
+msgstr ""
+"\n"
+"Jeśli nie prosiłeś o zresetowanie hasła, możesz zignorować tę wiadomość.\n"
+"\n"
+"Dziękujemy,\n"
+"Zespół CopyCare Manager\n"
 
 #: .\customers\forms.py:39
 msgid "Yes"
@@ -1254,21 +1291,21 @@ msgstr "Szczegóły modelu"
 msgid "Model Update"
 msgstr "Edycja modelu"
 
-#: .\services\templates\services\service_base.html:8
-msgid "Service Options"
-msgstr "Opcje usług"
-
-#: .\services\templates\services\service_base.html:14
-msgid "Brands list"
-msgstr "Lista marek"
-
-#: .\services\templates\services\service_base.html:20
-msgid "Model list"
-msgstr "Lista modeli"
-
 #: .\services\templates\services\service_update.html:7
 msgid "Service Update"
 msgstr "Edycja usługi"
+
+#: .\services\templates\services\services_base.html:8
+msgid "Service Options"
+msgstr "Opcje usług"
+
+#: .\services\templates\services\services_base.html:14
+msgid "Brands list"
+msgstr "Lista marek"
+
+#: .\services\templates\services\services_base.html:20
+msgid "Model list"
+msgstr "Lista modeli"
 
 #: .\templates\base.html:163 .\templates\base.html:183
 msgid "Settings"
