@@ -32,6 +32,7 @@ urlpatterns = [
     path('orders/', include('orders.urls')),
     path('order_management/', include('order_management.urls')),
     path('history/', include('history.urls')),
+    path('order_review/', include('order_review.urls')),
     path('change-language/', change_language, name='change_language'),
 
     path("__debug__/", include("debug_toolbar.urls")),
