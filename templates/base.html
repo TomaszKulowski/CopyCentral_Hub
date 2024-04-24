@@ -170,12 +170,14 @@
               {% endblock %}
               <hr class="my-3">
               <ul class="nav flex-column mb-auto">
-                <li class="nav-item">
-                  <a href="#" class="nav-link d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#settingsModal">
-                    <svg class="bi"><use xlink:href="#gear-wide-connected"/></svg>
-                    {% blocktrans %}Settings{% endblocktrans %}
-                  </a>
-                </li>
+                {% if request.path == "/" %}
+                  <li class="nav-item">
+                    <a href="#" class="nav-link d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#settingsModal">
+                      <svg class="bi"><use xlink:href="#gear-wide-connected"/></svg>
+                      {% blocktrans %}Settings{% endblocktrans %}
+                    </a>
+                  </li>
+                {% endif %}
                 <li class="nav-item">
                   <form action="{% url 'authentication:logout' %}" method="post">
                     {% csrf_token %}
