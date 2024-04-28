@@ -21,6 +21,12 @@ from django.urls import path, include
 
 from .views import Home, change_language
 
+
+admin.site.site_header = "CopyCentral Hub Administration"
+admin.site.site_title = "CopyCentral Hub admin"
+admin.site.index_title = "CopyCentral Hub administration"
+
+
 urlpatterns = [
     path('', Home.as_view(), name='home'),
     path('admin/', admin.site.urls),
