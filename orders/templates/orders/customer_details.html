@@ -15,5 +15,7 @@
   <input class="form-control" disabled
     value="{{ customer.billing_street }} {{ customer.billing_number }}">
   <span>{% blocktrans %}Telephone{% endblocktrans %}:</span>
-  <input class="form-control" id="contact" name="contact" value="{{ customer.telephone }}" maxlength="14">
+  <input class="form-control" id="contact" name="contact"
+         value="{% if customer.telephone %}{{ customer.telephone }}{% endif %}"
+         maxlength="14">
 </div>

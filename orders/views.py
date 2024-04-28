@@ -340,6 +340,36 @@ class OrderUpdate(EmployeeRequiredMixin, View):
 
         if order_instance:
             customer_instance = get_object_or_404(Customer, pk=order_instance.customer.id)
+
+            if not order_instance.contact:
+                setattr(order_instance, 'contact', '')
+
+            if customer_instance:
+                for attr, value in customer_instance.__dict__.items():
+                    if value is None and attr == 'telephone':
+                        setattr(order_instance.customer, attr, '')
+                        continue
+                    if value is None:
+                        setattr(customer_instance, attr, '---')
+            if order_instance.customer:
+                for attr, value in order_instance.customer.__dict__.items():
+                    if value is None and attr == 'telephone':
+                        setattr(order_instance.customer, attr, '')
+                        continue
+                    if value is None:
+                        setattr(order_instance.customer, attr, '---')
+            if order_instance.payer:
+                for attr, value in order_instance.payer.__dict__.items():
+                    if value is None and attr == 'telephone':
+                        setattr(order_instance.payer, attr, '')
+                        continue
+                    if value is None:
+                        setattr(order_instance.payer, attr, '---')
+            if order_instance.additional_address:
+                for attr, value in order_instance.additional_address.__dict__.items():
+                    if value is None:
+                        setattr(order_instance.additional_address, attr, '---')
+
             order_form = self.order_form_class(instance=order_instance)
             order_services = order_instance.services.all()
         else:
@@ -353,6 +383,13 @@ class OrderUpdate(EmployeeRequiredMixin, View):
             order_form = self.order_form_class(initial=initial_data)
 
         total_summary = sum(service.quantity * service.price_net for service in order_services)
+
+        if order_instance:
+            for attr, value in order_instance.__dict__.items():
+                if value is None and attr == 'contact':
+                    setattr(customer_instance, attr, '')
+                if value is None:
+                    setattr(customer_instance, attr, '---')
 
         context = {
             'order_instance': order_instance,
@@ -462,6 +499,9 @@ class OrderDetails(OrderUpdate):
 class CustomerDetails(EmployeeRequiredMixin, View):
     def get(self, request, pk):
         customer = get_object_or_404(Customer, pk=pk)
+        for attr, value in customer.__dict__.items():
+            if value is None and attr != 'telephone':
+                setattr(customer, attr, '---')
         request.session['customer_id'] = customer.id
         order_form = OrderForm
         context = {'customer': customer, 'order_form': order_form}
@@ -483,6 +523,13 @@ class CustomerCreateModal(EmployeeRequiredMixin, CreateView):
 class AddressDetails(EmployeeRequiredMixin, DetailView):
     model = AdditionalAddress
     template_name = 'orders/address_details.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        for attr, value in context['additionaladdress'].__dict__.items():
+            if value is None:
+                setattr(context['additionaladdress'], attr, '---')
+        return context
 
 
 class AddressForm(EmployeeRequiredMixin, View):

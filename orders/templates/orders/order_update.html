@@ -78,7 +78,7 @@
               <input class="form-control" disabled
                 value="{{ customer_instance.billing_street }} {{ customer_instance.billing_number }}">
               <span>{% blocktrans %}Telephone{% endblocktrans %}:</span>
-              <input class="form-control" id="contact" name="contact" value="{% if order_instance.contact %}{{ order_instance.contact }}{% else %}{{ customer_instance.telephone }}{% endif %}" maxlength="14">
+              <input class="form-control" id="contact" name="contact" value="{% if order_instance.contact %}{{ order_instance.contact }}{% else %}{% if customer_instance.telephone %}{{ customer_instance.telephone }}{% endif %}{% endif %}" maxlength="14">
             </div>
             <h5>{% blocktrans %}Service Address{% endblocktrans %}:</h5>
             <div id="id_address" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
