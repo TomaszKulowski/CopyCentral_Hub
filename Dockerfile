@@ -12,6 +12,8 @@ WORKDIR /usr/src/CopyCentral_Hub
 
 COPY . /usr/src/CopyCentral_Hub/
 
+RUN apt-get update && apt-get install -y --no-install-recommends
+
 # install python dependencies
 COPY ./requirements.txt .
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/CopyCentral_Hub/wheels -r requirements.txt
@@ -24,7 +26,7 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/CopyCentral_Hub/whee
 # pull official base image
 FROM python:3.11
 
-# create directory for the app user
+# create directory for the copycentralhub user
 RUN mkdir -p /home/CopyCentral_Hub
 
 # create the app user
@@ -42,7 +44,7 @@ WORKDIR $APP_HOME
 
 # install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends
-RUN apt-get install -y libreoffice libreoffice-writer
+RUN apt-get install -y libreoffice-writer gettext
 RUN apt-get install -y libreoffice-java-common
 COPY --from=builder /usr/src/CopyCentral_Hub/wheels /wheels
 COPY --from=builder /usr/src/CopyCentral_Hub/requirements.txt .
@@ -57,10 +59,11 @@ RUN chmod +x  $APP_HOME/entrypoint.prod.sh
 # copy project
 COPY . $APP_HOME
 
-# chown all the files to the app user
-RUN chown -R copycentralhub:copycentralhub $APP_HOME
+# chown all the files to the copycentralhub user
+RUN chown -R copycentralhub:copycentralhub $HOME
 
-# change to the app user
+# change to the copycentralhub user
+USER copycentralhub
 
 # run entrypoint.prod.sh
 ENTRYPOINT ["/home/CopyCentral_Hub/web/entrypoint.prod.sh"]
