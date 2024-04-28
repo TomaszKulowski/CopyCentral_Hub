@@ -1,11 +1,10 @@
 import os
-import pythoncom
+import subprocess
 
 from datetime import datetime
 
 from django.conf import settings
 from django.utils.translation import activate, gettext_lazy as _
-from docx2pdf import convert
 from mailmerge import MailMerge
 
 from orders.models import StatusChoices, PriorityChoices, OrderTypeChoices, PaymentMethodChoices, Order
@@ -26,10 +25,18 @@ def map_choices_int_to_str(orders):
     return orders
 
 
-def docx_to_pdf(input_docx):
-    pythoncom.CoInitialize()
-    name, extension = os.path.splitext(input_docx)
-    convert(input_docx, name + '.pdf')
+def docx_to_pdf(doc_path, dir):
+    name, extension = os.path.splitext(doc_path)
+
+    subprocess.call([
+        '/usr/bin/soffice',
+        '--headless',
+        '--convert-to',
+        'pdf',
+        '--outdir',
+        dir,
+        doc_path,
+    ])
     return name + '.pdf'
 
 
@@ -144,7 +151,7 @@ def get_report(order, employee_name, language):
     os.makedirs(reports_dir, exist_ok=True)
     document_path = os.path.join(reports_dir, f'{report}_{order.id}_{current_datetime}.docx')
     document.write(document_path)
-    report_path = docx_to_pdf(document_path)
+    report_path = docx_to_pdf(document_path, reports_dir)
 
     if os.path.exists(document_path):
         os.remove(document_path)
