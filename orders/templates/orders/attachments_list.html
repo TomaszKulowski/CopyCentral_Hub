@@ -1,0 +1,18 @@
+{% load i18n %}
+
+<div id="attachment_list">
+  {% for id, attachment in attachments.items %}
+    <div class="form-control">
+      {% if attachment.image %}
+        <img src="{{ attachment.image.url }}" alt="image">
+      {% else %}
+        {{ attachment.filename }}
+      {% endif %}
+      <br>
+      <a class="btn btn-sm btn-outline-secondary" href="{% url 'orders:attachment_details' id %}">{% blocktrans %}View{% endblocktrans %}</a>
+      <a class="btn btn-sm btn-outline-secondary delete-button" data-attachment-id="{{ id }}">{% blocktrans %}Delete{% endblocktrans %}</a>
+      <br>
+    </div>
+  <br>
+  {% endfor %}
+</div>

@@ -1,0 +1,13 @@
+{% load i18n %}
+
+<div id="address-details">
+  <span>{% blocktrans %}Postal Code{% endblocktrans %}:</span>
+  <input class="form-control" disabled value="{{ additionaladdress.postal_code }}">
+  <span>{% blocktrans %}City{% endblocktrans %}:</span>
+  <input class="form-control" disabled value="{{ additionaladdress.city }}">
+  <span>{% blocktrans %}Street{% endblocktrans %}:</span>
+  <input class="form-control" disabled
+    value="{{ additionaladdress.street }} {{ additionaladdress.number }}">
+  <span>{% blocktrans %}Description{% endblocktrans %}:</span>
+  <textarea class="form-control" rows="2" disabled>{{ additionaladdress.description }}</textarea>
+</div>

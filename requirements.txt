@@ -1,0 +1,12 @@
+psycopg2-binary==2.9.6
+Django
+python-dotenv
+factory_boy
+django-extensions
+django-debug-toolbar
+django-jsignature
+django-simple-history
+docx-mailmerge
+django-autocomplete-light
+sorl-thumbnail
+gunicorn==21.2.0

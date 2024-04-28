@@ -1,0 +1,17 @@
+{% load i18n %}
+
+<table class="table table-striped table-sm">
+  <tbody id="devices-table-body">
+    {% for device in page_obj %}
+      <tr>
+        <td hidden="hidden">{% url "devices:details" device.id %}</td>
+        <td>{{ device.brand|title }} {{ device.model|title }}</td>
+        <td>{{ device.serial_number }}</td>
+        <td>{{ device.get_status_display }}</td>
+        <td style="text-align: right;">
+          <a href="{% url 'devices:details' device.id %}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Details{% endblocktrans %}</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
