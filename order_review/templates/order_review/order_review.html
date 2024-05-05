@@ -10,7 +10,7 @@
   <script type="text/javascript" src="{% static 'order_review/scripts/scripts.js' %}"></script>
   {% if for_review %}
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 mb-3">
-      <h2 class="h2"><a href="{% url 'order_review:orders_list' %}" class="text-decoration-none link-dark">{% blocktrans %}Order Review{% endblocktrans %}</a></h2>
+      <h2 class="h2"><a href="{% url 'order_review:orders_list' %}" class="text-body" style="text-decoration: none;">{% blocktrans %}Order Review{% endblocktrans %}</a></h2>
     </div>
     <div class="container border">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -50,13 +50,13 @@
         <tbody id="review-table-body">
           {% for order in page_obj %}
             <tr data-target="#row{{ order.id }}">
-              <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'orders:order_details' order.id %}"><b>#{{ order.id }}</b></a></td>
-              <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order.customer.id %}">
+              <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'orders:order_details' order.id %}"><b>#{{ order.id }}</b></a></td>
+              <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'customers:customer_details' order.customer.id %}">
                 <b>{% blocktrans %}Name{% endblocktrans %}:</b> {{ order.customer.name }}<br>
                 <b>{% blocktrans %}Address{% endblocktrans %}:</b> {{ order.customer.get_address }}
               </a></td>
               {% if not order.payer.id == order.customer.id %}
-                <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order.payer.id %}">
+                <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'customers:customer_details' order.payer.id %}">
                 <b>{% blocktrans %}Name{% endblocktrans %}:</b> {{ order.customer.name }}<br>
                 <b>{% blocktrans %}Address{% endblocktrans %}:</b> {{ order.customer.get_address }}
                 </a></td>

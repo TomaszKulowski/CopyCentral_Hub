@@ -76,9 +76,9 @@
       <tbody id="order-table">
         {% for order in orders %}
           <tr class="clickable" data-toggle="collapse" data-target="#row{{ order.id }}">
-            <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'orders:order_details' order.id %}"><b>#{{ order.id }}</b></a></td>
+            <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'orders:order_details' order.id %}"><b>#{{ order.id }}</b></a></td>
             {% if order.customer__id %}
-              <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order.customer__id %}">{{ order.customer_name }}</a></td>
+              <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'customers:customer_details' order.customer__id %}">{{ order.customer_name }}</a></td>
             {% else %}
               <td>{{ order.customer_name }}</td>
             {% endif %}

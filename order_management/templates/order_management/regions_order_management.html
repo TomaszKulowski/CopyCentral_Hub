@@ -8,7 +8,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="{% static 'order_management/scripts/base_scripts.js' %}"></script>
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 mb-3">
-    <h2 class="h2"><a href="{% url 'order_management:orders_list' %}" class="text-decoration-none link-dark">{% blocktrans %}Order Management{% endblocktrans %}</a></h2>
+    <h2 class="h2"><a href="{% url 'order_management:orders_list' %}" class="text-body" style="text-decoration: none;">{% blocktrans %}Order Management{% endblocktrans %}</a></h2>
   </div>
   <div class="container border">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -44,16 +44,16 @@
           <tbody>
             {% for order_details in order.orders_list %}
               <tr class="clickable" data-toggle="collapse" data-executor_id="{{ order.executor_id }}" data-order_id="{{ order_details.id }}" data-target="#row{{ order_details.id }}">
-              <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'orders:order_details' order_details.id %}"><b>#{{ order_details.id }}</b></a></td>
+              <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'orders:order_details' order_details.id %}"><b>#{{ order_details.id }}</b></a></td>
               {% if order_details.customer__id %}
-                <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order_details.customer__id %}">{{ order_details.customer_name }}</a></td>
+                <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'customers:customer_details' order_details.customer__id %}">{{ order_details.customer_name }}</a></td>
               {% else %}
                 <td>{{ order_details.customer_name }}</td>
               {% endif %}
               <td>{{ order_details.address_name }}</td>
               <td>
                 {% if order_details.contact %}
-                 <a class="text-decoration-none link-dark" href="tel:+{{ order_details.contact }}">{{ order_details.contact }}</a>
+                 <a class="text-body" style="text-decoration: none;" href="tel:+{{ order_details.contact }}">{{ order_details.contact }}</a>
                 {% else %}
                   ---
                 {% endif %}

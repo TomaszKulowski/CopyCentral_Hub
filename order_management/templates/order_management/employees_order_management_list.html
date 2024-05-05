@@ -20,16 +20,16 @@
     <tbody>
       {% for order_details in orders %}
         <tr class="clickable" data-toggle="collapse" data-executor_id="{{ order_details.executor__id }}" data-table_id="{{ table_id }}" data-current_position="{{ order_details.sort_number }}" data-order_id="{{ order_details.id }}" data-target="#row{{ order_details.id }}">
-        <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'orders:order_details' order_details.id %}"><b>#{{ order_details.id }}</b></a></td>
+        <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'orders:order_details' order_details.id %}"><b>#{{ order_details.id }}</b></a></td>
         {% if order_details.customer__id %}
-          <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order_details.customer__id %}">{{ order_details.customer_name }}</a></td>
+          <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'customers:customer_details' order_details.customer__id %}">{{ order_details.customer_name }}</a></td>
         {% else %}
           <td>{{ order_details.customer_name }}</td>
         {% endif %}
         <td>{{ order_details.address_name }}</td>
         <td>
           {% if order_details.contact %}
-            <a class="text-decoration-none link-dark" href="tel:+{{ order_details.contact }}">{{ order_details.contact }}</a>
+            <a class="text-body" style="text-decoration: none;" href="tel:+{{ order_details.contact }}">{{ order_details.contact }}</a>
           {% else %}
             ---
           {% endif %}

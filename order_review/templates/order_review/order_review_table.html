@@ -4,13 +4,13 @@
   <tbody id="review-table-body">
     {% for order in page_obj %}
       <tr data-target="#row{{ order.id }}">
-        <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'orders:order_details' order.id %}"><b>#{{ order.id }}</b></a></td>
-        <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order.customer.id %}">
+        <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'orders:order_details' order.id %}"><b>#{{ order.id }}</b></a></td>
+        <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'customers:customer_details' order.customer.id %}">
           <b>{% blocktrans %}Name{% endblocktrans %}:</b> {{ order.customer.name }}<br>
           <b>{% blocktrans %}Address{% endblocktrans %}:</b> {{ order.customer.get_address }}
         </a></td>
         {% if not order.payer.id == order.customer.id %}
-          <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order.payer.id %}">
+          <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'customers:customer_details' order.payer.id %}">
           <b>{% blocktrans %}Name{% endblocktrans %}:</b> {{ order.customer.name }}<br>
           <b>{% blocktrans %}Address{% endblocktrans %}:</b> {{ order.customer.get_address }}
           </a></td>
