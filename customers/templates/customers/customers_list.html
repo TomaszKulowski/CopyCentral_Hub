@@ -30,11 +30,11 @@
         {% for customer in page_obj %}
         <tr>
           <td hidden="hidden">{% url "customers:customer_details" customer.id %}</td>
-          <td>{{ customer.name|title }}</td>
-          <td>{{ customer.tax }}</td>
-          <td>{{ customer.billing_city|title }}</td>
-          <td>{{ customer.billing_postal_code }}</td>
-          <td>{{ customer.billing_street|title }} {{ customer.billing_number }}</td>
+          <td>{% if customer.name %}{{ customer.name|title }}{% else %}---{% endif %}</td>
+          <td>{% if customer.tax %}{{ customer.tax }}{% else %}---{% endif %}</td>
+          <td>{% if customer.billing_city %}{{ customer.billing_city|title }}{% else %}---{% endif %}</td>
+          <td>{% if customer.billing_postal_code %}{{ customer.billing_postal_code }}{% else %}---{% endif %}</td>
+          <td>{% if customer.billing_street %}{{ customer.billing_street|title }}{% else %}---{% endif %} {% if customer.billing_number %}{{ customer.billing_number }}{% endif %}</td>
           <td style="text-align: right;">
             <a href="{% url 'customers:customer_details' customer.id %}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Details{% endblocktrans %}</a>
           </td>
