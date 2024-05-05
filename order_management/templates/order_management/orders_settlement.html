@@ -93,7 +93,7 @@
                     <li><b>{% blocktrans %}Order Intake{% endblocktrans %}:</b> {{ order.user_intake }}</li>
                     <li><b>{% blocktrans %}Order Type{% endblocktrans %}:</b> {{ order.get_order_type_display }}</li>
                     <li><b>{% blocktrans %}Payment Method{% endblocktrans %}:</b> {{ order.get_payment_method_display }}</li>
-                    <li><b>{% blocktrans %}Phone Number{% endblocktrans %}:</b> {{ order.phone_number }}</li>
+                    <li><b>{% blocktrans %}Phone Number{% endblocktrans %}:</b> {% if order.phone_number %}{{ order.phone_number }}{% else %}---{% endif %}</li>
                   </ul><br>
                   <b>{% blocktrans %}Customer Details{% endblocktrans %}:</b>
                   <ul>
