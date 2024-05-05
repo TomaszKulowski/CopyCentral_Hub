@@ -61,6 +61,7 @@ COPY . $APP_HOME
 
 # chown all the files to the copycentralhub user
 RUN chown -R copycentralhub:copycentralhub $HOME
+RUN chmod +x  $APP_HOME/entrypoint.prod.sh
 
 # change to the copycentralhub user
 USER copycentralhub
