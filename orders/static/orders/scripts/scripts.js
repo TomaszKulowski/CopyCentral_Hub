@@ -203,6 +203,8 @@ function handleSubmitForm(formId, modalId, submit_type) {
                     alert('Successfully Created!');
                     window.location.href = redirect_url;
                 } else {
+                    var errorsElement = document.getElementById("errors");
+                    errorsElement.innerHTML = response.errors;
                     alert('An error occurred while adding.');
                 }
             }

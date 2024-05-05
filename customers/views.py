@@ -34,10 +34,10 @@ class CustomerList(EmployeeRequiredMixin, ListView):
                 Q(tax__icontains=search_query) |
                 Q(billing_city__icontains=search_query) |
                 Q(billing_street__icontains=search_query) |
-                Q(telephone__icontains=search_query)
+                Q(phone_number__icontains=search_query)
             )
 
-        return queryset
+        return queryset.order_by('name')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

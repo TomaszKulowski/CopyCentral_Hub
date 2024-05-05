@@ -104,7 +104,7 @@ def get_report(order, employee_name, language):
         'address': address,
         'additional_info': order.additional_info,
         'description': order.description,
-        'tel': order.contact,
+        'tel': order.phone_number,
         'total_counter': total_counter,
         'mono_c': mono_counter,
         'color_c': color_counter,

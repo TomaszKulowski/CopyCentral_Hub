@@ -5,7 +5,7 @@
 {% block content %}
   {% if customer %}
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h2 class="h2">{% blocktrans %}Service Orders{% endblocktrans %} - <a class="text-decoration-none link-dark" href="{% url 'customers:customer_details' customer.id %}">{{ customer.name }}</a></h2>
+    <h2 class="h2">{% blocktrans %}Service Orders{% endblocktrans %} - <a class="text-body" style="text-decoration: none;" href="{% url 'customers:customer_details' customer.id %}">{{ customer.name }}</a></h2>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
         <button onclick="window.location.href='{% url 'orders:order_create' %}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Add New Order{% endblocktrans %}</button>
@@ -14,7 +14,7 @@
   </div>
   {% elif device %}
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-      <h2 class="h2">{% blocktrans %}Service Orders{% endblocktrans %} - <a class="text-decoration-none link-dark" href="{% url 'devices:details' device.id %}">{{ device.brand }} {{device.model}} ; {{ device.serial_number }}</a></h2>
+      <h2 class="h2">{% blocktrans %}Service Orders{% endblocktrans %} - <a class="text-body" style="text-decoration: none;" href="{% url 'devices:details' device.id %}">{{ device.brand }} {{device.model}} ; {{ device.serial_number }}</a></h2>
       <div class="btn-toolbar mb-2 mb-md-0">
       </div>
     </div>
@@ -42,7 +42,7 @@
             <th scope="col" width=5%><a href="?order_by=-id&customer_id={{ customer.id }}&device_id={{ device.id }}" class="text-decoration-none link-light">#ID</a></th>
           {% endif %}
           <th scope="col" width=20%>{% blocktrans %}Customer{% endblocktrans %}</th>
-          <th scope="col" width=10%>{% blocktrans %}City{% endblocktrans %}</th>
+          <th scope="col" width=10%>{% blocktrans %}Address{% endblocktrans %}</th>
           <th scope="col" width=20%>{% blocktrans %}Device{% endblocktrans %}</th>
           <th scope="col" width=10%>{% blocktrans %}Status{% endblocktrans %}</th>
           {% if order_by == '-created_at' %}
@@ -62,16 +62,16 @@
         {% for order in page_objs %}
         <tr>
           <td hidden="hidden">{% url "orders:order_details" order.id %}</td>
-          <td><a class="text-decoration-none link-dark" href="{% url 'orders:order_details' order.id %}"><b>#{{ order.id }}</b></a></td>
+          <td><a class="text-body" style="text-decoration: none;" href="{% url 'orders:order_details' order.id %}"><b>#{{ order.id }}</b></a></td>
           {% if order.customer %}
-            <td><a class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order.customer.id %}">{{ order.customer.name|title }}</a></td>
+            <td><a class="text-body" style="text-decoration: none;" href="{% url 'customers:customer_details' order.customer.id %}">{{ order.customer.name|title }}</a></td>
           {% else %}
-            <td>{{ order.customer.name|title }}</td>
+            <td>{{ order.customer.|title }}</td>
           {% endif %}
           {% if order.additional_address %}
-            <td>{{ order.additional_address.city|title }}</td>
+            <td>{{ order.additional_address.get_address|title }}</td>
           {% else %}
-            <td>{{ order.customer.billing_city|title }}</td>
+            <td>{{ order.customer.get_address|title }}</td>
           {% endif %}
           {% if order.device.brand and order.device.model %}
             <td>{{ order.device.brand|title }} {{ order.device.model|title }}</td>

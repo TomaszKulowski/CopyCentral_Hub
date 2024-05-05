@@ -12,6 +12,9 @@ function handleFilterChange() {
 function filterOrders(selectedRegion, selectedPriority, selectedExecutor) {
     var rows = document.querySelectorAll('#order-table tr.clickable');
     rows.forEach(function(row) {
+        var detailsRowId = row.getAttribute('data-target').substring(1);
+        var detailsRow = document.getElementById(detailsRowId);
+
         var priorityCell = row.querySelector('td:nth-child(9) select');
         var executorCell = row.querySelector('td:nth-child(10) select');
         var regionCell = row.querySelector('td:nth-child(8) select');
@@ -26,8 +29,14 @@ function filterOrders(selectedRegion, selectedPriority, selectedExecutor) {
 
         if (regionMatch && priorityMatch && executorMatch) {
             row.style.display = '';
+            if (detailsRow) {
+                detailsRow.style.display = '';
+            }
         } else {
             row.style.display = 'none';
+            if (detailsRow) {
+                detailsRow.style.display = 'none';
+            }
         }
     });
 

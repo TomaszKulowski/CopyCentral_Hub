@@ -123,13 +123,13 @@
               <ul class="nav flex-column">
                 {% if user.employee.first.department <= 2 %}
                   <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="{% url 'order_management:orders_list' %}">
+                    <a class="nav-link d-flex align-items-center gap-2" aria-current="page" href="{% url 'order_management:orders_list' %}">
                       <svg class="bi"><use xlink:href="#house-fill"/></svg>
                       {% blocktrans %}Order Management{% endblocktrans %}
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="{% url 'order_review:orders_list' %}">
+                    <a class="nav-link d-flex align-items-center gap-2" aria-current="page" href="{% url 'order_review:orders_list' %}">
                       <svg class="bi"><use xlink:href="#person-lines-fill"/></svg>
                       {% blocktrans %}Order Review{% endblocktrans %}
                     </a>
