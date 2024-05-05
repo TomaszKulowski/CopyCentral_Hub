@@ -179,14 +179,14 @@ class Order(models.Model):
                         else:
                             self.sort_number = 1
 
-                if self.status in [2, 3, 4, 5] and old_order_instance.sort_number:
+                elif self.status in [2, 3, 4, 5] and old_order_instance.sort_number:
                     self.sort_number = None
                     Order.objects.filter(
                         executor=old_order_instance.executor,
                         sort_number__gt=old_order_instance.sort_number
                     ).update(sort_number=models.F('sort_number') - 1)
 
-                if old_order_instance.executor != self.executor and self.status not in [2, 3, 4, 5]:
+                elif old_order_instance.executor != self.executor and self.status not in [2, 3, 4, 5]:
                     if self.executor is not None:
                         max_sort_number_new_executor = Order.objects.filter(
                             executor=self.executor
@@ -203,6 +203,9 @@ class Order(models.Model):
                             executor=old_order_instance.executor,
                             sort_number__gt=old_order_instance.sort_number
                         ).update(sort_number=models.F('sort_number') - 1)
+                else:
+                    if old_order_instance.sort_number and not self.sort_number:
+                        self.sort_number = old_order_instance.sort_number
             else:
                 if self.status not in [2, 3, 4, 5]:
                     if self.executor:
