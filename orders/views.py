@@ -555,6 +555,9 @@ class DeviceCreateModal(EmployeeRequiredMixin, CreateView):
     model = Device
     form_class = DeviceForm
 
+    def form_invalid(self, form):
+        return JsonResponse({'status': 400, 'errors': form.errors.as_ul()})
+
     def form_valid(self, form):
         device_instance = form.save()
         device_id = device_instance.id

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-05 12:02+0200\n"
+"POT-Creation-Date: 2024-05-05 15:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -318,7 +318,7 @@ msgstr "Aktualizacja dodatkowego adresu"
 #: .\orders\templates\orders\order_update.html:344
 #: .\orders\templates\orders\order_update.html:368
 #: .\orders\templates\orders\order_update.html:392
-#: .\orders\templates\orders\order_update.html:438
+#: .\orders\templates\orders\order_update.html:439
 #: .\services\templates\services\brand_update.html:14
 #: .\services\templates\services\brand_update.html:25
 #: .\services\templates\services\model_update.html:14
@@ -568,19 +568,7 @@ msgstr "Status"
 msgid "Price Net"
 msgstr "Cena netto"
 
-#: .\devices\templates\devices\details.html:7
-msgid "Device Details"
-msgstr "Szczegóły Urządzenia"
-
-#: .\devices\templates\devices\list.html:7 .\templates\base.html:165
-msgid "Devices"
-msgstr "Urządzenia"
-
-#: .\devices\templates\devices\list.html:10
-msgid "Search by Serial Number"
-msgstr "Szukaj według numeru seryjnego"
-
-#: .\devices\templates\devices\list.html:22
+#: .\devices\models.py:44 .\devices\templates\devices\list.html:22
 #: .\order_management\templates\order_management\employees_order_management.html:33
 #: .\order_management\templates\order_management\employees_order_management_list.html:12
 #: .\order_management\templates\order_management\main_order_management.html:69
@@ -593,6 +581,18 @@ msgstr "Szukaj według numeru seryjnego"
 #: .\orders\templates\orders\orders_list.html:46
 msgid "Device"
 msgstr "Urządzenie"
+
+#: .\devices\templates\devices\details.html:7
+msgid "Device Details"
+msgstr "Szczegóły Urządzenia"
+
+#: .\devices\templates\devices\list.html:7 .\templates\base.html:165
+msgid "Devices"
+msgstr "Urządzenia"
+
+#: .\devices\templates\devices\list.html:10
+msgid "Search by Serial Number"
+msgstr "Szukaj według numeru seryjnego"
 
 #: .\devices\templates\devices\update.html:8
 msgid "Device Update"
@@ -868,8 +868,8 @@ msgstr "Brak przypisanego regionu"
 #: .\order_management\templates\order_management\main_order_management.html:53
 #: .\order_management\templates\order_management\my_orders_management.html:29
 #: .\order_management\templates\order_management\my_orders_management.html:34
-#: .\orders\templates\orders\order_update.html:413
-#: .\orders\templates\orders\order_update.html:422
+#: .\orders\templates\orders\order_update.html:414
+#: .\orders\templates\orders\order_update.html:423
 #: .\services\templates\services\services_list.html:8
 msgid "Display All"
 msgstr "Wyświetl wszystko"
@@ -1197,15 +1197,15 @@ msgstr "Numer sortowania"
 msgid "Order ID"
 msgstr "ID zlecenia"
 
-#: .\orders\models.py:233
+#: .\orders\models.py:236
 msgid "Order"
 msgstr "Zlecenie"
 
-#: .\orders\models.py:234
+#: .\orders\models.py:237
 msgid "Image"
 msgstr "Obraz"
 
-#: .\orders\models.py:235
+#: .\orders\models.py:238
 msgid "File"
 msgstr "Plik"
 
@@ -1319,15 +1319,15 @@ msgstr "Dodaj nowy adres"
 msgid "Create New Device"
 msgstr "Dodaj nowe urządzenie"
 
-#: .\orders\templates\orders\order_update.html:405
+#: .\orders\templates\orders\order_update.html:406
 msgid "Add New Service"
 msgstr "Dodaj nową usługę"
 
-#: .\orders\templates\orders\order_update.html:411
+#: .\orders\templates\orders\order_update.html:412
 msgid "Filter By Brand"
 msgstr "Filtruj według marek"
 
-#: .\orders\templates\orders\order_update.html:420
+#: .\orders\templates\orders\order_update.html:421
 msgid "Filter By Model"
 msgstr "Filtruj według modeli"
 

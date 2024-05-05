@@ -40,5 +40,8 @@ class Device(models.Model):
     price_net = models.FloatField(_('Price Net'), blank=True, null=True)
     history = HistoricalRecords()
 
+    class Meta:
+        verbose_name = _('Device')
+
     def __str__(self):
         return f'{self.brand} {self.model}; {self.serial_number}'
