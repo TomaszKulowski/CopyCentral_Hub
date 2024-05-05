@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-05 11:51+0200\n"
+"POT-Creation-Date: 2024-05-05 12:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -175,10 +175,14 @@ msgid "Calling Code"
 msgstr "Nr kierunkowy"
 
 #: .\customers\models.py:30
+#: .\order_management\templates\order_management\employees_order_management.html:31
+#: .\order_management\templates\order_management\employees_order_management_list.html:10
 #: .\order_management\templates\order_management\main_order_management.html:67
+#: .\order_management\templates\order_management\my_orders_management.html:62
 #: .\order_management\templates\order_management\orders_settlement.html:96
 #: .\order_management\templates\order_management\orders_settlement.html:104
 #: .\order_management\templates\order_management\orders_settlement.html:121
+#: .\order_management\templates\order_management\regions_order_management.html:35
 #: .\order_review\templates\order_review\order_review.html:111
 #: .\order_review\templates\order_review\order_review.html:119
 #: .\order_review\templates\order_review\order_review.html:136
@@ -708,13 +712,6 @@ msgstr "Zarządzanie zleceniami"
 #: .\orders\templates\orders\orders_list.html:45
 msgid "Address"
 msgstr "Adres"
-
-#: .\order_management\templates\order_management\employees_order_management.html:31
-#: .\order_management\templates\order_management\employees_order_management_list.html:10
-#: .\order_management\templates\order_management\my_orders_management.html:62
-#: .\order_management\templates\order_management\regions_order_management.html:35
-msgid "Contact"
-msgstr "Kontakt"
 
 #: .\order_management\templates\order_management\employees_order_management.html:32
 #: .\order_management\templates\order_management\employees_order_management_list.html:11
@@ -1419,6 +1416,9 @@ msgstr "Wyloguj"
 #: .\templates\base.html:204
 msgid "Select Language"
 msgstr "Wybierz język"
+
+#~ msgid "Contact"
+#~ msgstr "Kontakt"
 
 #~ msgid "Telephone"
 #~ msgstr "Telefon"
