@@ -11,8 +11,8 @@
         </a></td>
         {% if not order.payer.id == order.customer.id %}
           <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'customers:customer_details' order.payer.id %}">
-          <b>{% blocktrans %}Name{% endblocktrans %}:</b> {{ order.customer.name }}<br>
-          <b>{% blocktrans %}Address{% endblocktrans %}:</b> {{ order.customer.get_address }}
+          <b>{% blocktrans %}Name{% endblocktrans %}:</b> {{ order.payer.name }}<br>
+          <b>{% blocktrans %}Address{% endblocktrans %}:</b> {{ order.payer.get_address }}
           </a></td>
         {% else %}
           <td>{% blocktrans %}The Same Data as Customer{% endblocktrans %}</td>
