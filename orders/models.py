@@ -186,7 +186,7 @@ class Order(models.Model):
                         sort_number__gt=old_order_instance.sort_number
                     ).update(sort_number=models.F('sort_number') - 1)
 
-                if old_order_instance.executor != self.executor:
+                if old_order_instance.executor != self.executor and self.status not in [2, 3, 4, 5]:
                     if self.executor is not None:
                         max_sort_number_new_executor = Order.objects.filter(
                             executor=self.executor
@@ -197,19 +197,22 @@ class Order(models.Model):
                             self.sort_number = 1
                     else:
                         self.sort_number = None
-                    Order.objects.filter(
-                        executor=old_order_instance.executor,
-                        sort_number__gt=old_order_instance.sort_number
-                    ).update(sort_number=models.F('sort_number') - 1)
+
+                    if self.sort_number and old_order_instance.sort_number:
+                        Order.objects.filter(
+                            executor=old_order_instance.executor,
+                            sort_number__gt=old_order_instance.sort_number
+                        ).update(sort_number=models.F('sort_number') - 1)
             else:
-                if self.executor:
-                    max_sort_number = Order.objects.filter(
-                        executor=self.executor
-                    ).aggregate(Max('sort_number'))['sort_number__max']
-                    if max_sort_number:
-                        self.sort_number = max_sort_number + 1
-                    else:
-                        self.sort_number = 1
+                if self.status not in [2, 3, 4, 5]:
+                    if self.executor:
+                        max_sort_number = Order.objects.filter(
+                            executor=self.executor
+                        ).aggregate(Max('sort_number'))['sort_number__max']
+                        if max_sort_number:
+                            self.sort_number = max_sort_number + 1
+                        else:
+                            self.sort_number = 1
 
         if self._state.adding and self.executor:
             max_sort_number = Order.objects.filter(
