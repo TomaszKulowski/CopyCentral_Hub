@@ -64,7 +64,7 @@
           <th scope="col" width=5%>#ID</th>
           <th scope="col" width=20%>{% blocktrans %}Customer{% endblocktrans %}</th>
           <th scope="col" width=20%>{% blocktrans %}Address{% endblocktrans %}</th>
-          <th scope="col" width=10%>{% blocktrans %}Contact{% endblocktrans %}</th>
+          <th scope="col" width=10%>{% blocktrans %}Phone Number{% endblocktrans %}</th>
           <th scope="col" width=10%>{% blocktrans %}Short Description{% endblocktrans %}</th>
           <th scope="col" width=10%>{% blocktrans %}Device{% endblocktrans %}</th>
           <th scope="col" width=8%>{% blocktrans %}Status{% endblocktrans %}</th>
@@ -89,7 +89,8 @@
               {% else %}
                 ---
               {% endif %}
-            </td>            <td>{{ order.short_description_name }}</td>
+            </td>
+            <td>{{ order.short_description_name }}</td>
             <td>{{ order.device_full_name }}</td>
             <td>{{ order.status }}</td>
             <td>

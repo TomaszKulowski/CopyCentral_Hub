@@ -62,15 +62,15 @@
             <li><b>{% blocktrans %}Order Intake{% endblocktrans %}:</b> {{ order.user_intake }}</li>
             <li><b>{% blocktrans %}Order Type{% endblocktrans %}:</b> {{ order.get_order_type_display }}</li>
             <li><b>{% blocktrans %}Payment Method{% endblocktrans %}:</b> {{ order.get_payment_method_display }}</li>
-            <li><b>{% blocktrans %}Telephone{% endblocktrans %}:</b> {{ order.contact }}</li>
+            <li><b>{% blocktrans %}Phone Number{% endblocktrans %}:</b> {{ order.phone_number }}</li>
           </ul><br>
           <b>{% blocktrans %}Customer Details{% endblocktrans %}:</b>
           <ul>
             {% if order.customer.tax %}
               <li><b>{% blocktrans %}Tax{% endblocktrans %}:</b> {{ order.customer.tax }}</li>
             {% endif %}
-            {% if order.customer.telephone %}
-              <li><b>{% blocktrans %}Telephone{% endblocktrans %}:</b> {{ order.customer.telephone }}</li>
+            {% if order.customer.phone_number %}
+              <li><b>{% blocktrans %}Phone Number{% endblocktrans %}:</b> {{ order.customer.phone_number }}</li>
             {% endif %}
             {% if order.customer.email %}
               <li><b>{% blocktrans %}Email{% endblocktrans %}:</b> {{ order.customer.email }}</li>
@@ -86,8 +86,8 @@
               {% if order.payer.tax %}
                 <li><b>{% blocktrans %}Tax{% endblocktrans %}:</b> {{ order.payer.tax }}</li>
               {% endif %}
-              {% if order.payer.telephone %}
-                <li><b>{% blocktrans %}Telephone{% endblocktrans %}:</b> {{ order.payer.telephone }}</li>
+              {% if order.payer.phone_number %}
+                <li><b>{% blocktrans %}Phone Number{% endblocktrans %}:</b> {{ order.payer.phone_number }}</li>
               {% endif %}
               {% if order.payer.email %}
                 <li><b>{% blocktrans %}Email{% endblocktrans %}:</b> {{ order.payer.email }}</li>

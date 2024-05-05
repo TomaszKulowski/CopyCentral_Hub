@@ -14,8 +14,8 @@
   <span>{% blocktrans %}Billing Street{% endblocktrans %}:</span>
   <input class="form-control" disabled
     value="{{ customer.billing_street }} {{ customer.billing_number }}">
-  <span>{% blocktrans %}Telephone{% endblocktrans %}:</span>
-  <input class="form-control" id="contact" name="contact"
-         value="{% if customer.telephone %}{{ customer.telephone }}{% endif %}"
+  <span>{% blocktrans %}Phone Number{% endblocktrans %}:</span>
+  <input class="form-control" id="phone_number" name="phone_number"
+         value="{% if customer.phone_number %}{{ customer.phone_number }}{% endif %}"
          maxlength="14">
 </div>

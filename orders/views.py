@@ -66,7 +66,7 @@ class CustomerAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetVi
                 Q(tax__icontains=self.q) |
                 Q(billing_city__icontains=self.q) |
                 Q(billing_street__icontains=self.q) |
-                Q(telephone__icontains=self.q)
+                Q(phone_number__icontains=self.q)
             )
 
         return qs
@@ -305,8 +305,8 @@ class OrderUpdate(EmployeeRequiredMixin, View):
             customer_instance = get_object_or_404(Customer, pk=customer_id)
             if order_instance:
                 order_instance.customer = customer_instance
-                if not order_instance.contact:
-                    order_instance.contact = customer_instance.telephone
+                if not order_instance.phone_number:
+                    order_instance.phone_number = customer_instance.phone_number
 
         else:
             customer_instance = None
@@ -341,26 +341,26 @@ class OrderUpdate(EmployeeRequiredMixin, View):
         if order_instance:
             customer_instance = get_object_or_404(Customer, pk=order_instance.customer.id)
 
-            if not order_instance.contact:
-                setattr(order_instance, 'contact', '')
+            if not order_instance.phone_number:
+                setattr(order_instance, 'phone_number', '')
 
             if customer_instance:
                 for attr, value in customer_instance.__dict__.items():
-                    if value is None and attr == 'telephone':
+                    if value is None and attr == 'phone_number':
                         setattr(order_instance.customer, attr, '')
                         continue
                     if value is None:
                         setattr(customer_instance, attr, '---')
             if order_instance.customer:
                 for attr, value in order_instance.customer.__dict__.items():
-                    if value is None and attr == 'telephone':
+                    if value is None and attr == 'phone_number':
                         setattr(order_instance.customer, attr, '')
                         continue
                     if value is None:
                         setattr(order_instance.customer, attr, '---')
             if order_instance.payer:
                 for attr, value in order_instance.payer.__dict__.items():
-                    if value is None and attr == 'telephone':
+                    if value is None and attr == 'phone_number':
                         setattr(order_instance.payer, attr, '')
                         continue
                     if value is None:
@@ -386,7 +386,7 @@ class OrderUpdate(EmployeeRequiredMixin, View):
 
         if order_instance:
             for attr, value in order_instance.__dict__.items():
-                if value is None and attr == 'contact':
+                if value is None and attr == 'phone_number':
                     setattr(customer_instance, attr, '')
                 if value is None:
                     setattr(customer_instance, attr, '---')
@@ -416,8 +416,8 @@ class OrderUpdate(EmployeeRequiredMixin, View):
             order_instance = self.model()
             order_instance.user_intake = self.request.user.employee.first()
 
-        if not order_instance.contact and order_instance.customer:
-            order_instance.contact = order_instance.customer.telephone
+        if not order_instance.phone_number and order_instance.customer:
+            order_instance.phone_number = order_instance.customer.phone_number
 
         request_data = request.POST.copy()
         address_id = request_data.pop('additional_address', None)
@@ -500,7 +500,7 @@ class CustomerDetails(EmployeeRequiredMixin, View):
     def get(self, request, pk):
         customer = get_object_or_404(Customer, pk=pk)
         for attr, value in customer.__dict__.items():
-            if value is None and attr != 'telephone':
+            if value is None and attr != 'phone_number':
                 setattr(customer, attr, '---')
         request.session['customer_id'] = customer.id
         order_form = OrderForm

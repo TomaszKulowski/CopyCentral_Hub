@@ -75,8 +75,8 @@
             <span>{% blocktrans %}Billing Street{% endblocktrans %}:</span>
             <input class="form-control" disabled
               value="{{ order_instance.customer.billing_street }} {{ order_instance.customer.billing_number }}">
-            <span>{% blocktrans %}Telephone{% endblocktrans %}:</span>
-            <input class="form-control" disabled value="{{ order_instance.contact }}">
+            <span>{% blocktrans %}Phone Number{% endblocktrans %}:</span>
+            <input class="form-control" disabled value="{{ order_instance.phone_number }}">
           </div>
           <h5>{% blocktrans %}Service Address{% endblocktrans %}:</h5>
           <div id="id_address" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
@@ -125,8 +125,8 @@
             <span>{% blocktrans %}Billing Street{% endblocktrans %}:</span>
             <input class="form-control" disabled
               value="{{ order_instance.payer.billing_street }} {{ order_instance.payer.billing_number }}">
-            <span>{% blocktrans %}Telephone{% endblocktrans %}:</span>
-            <input class="form-control" disabled value="{{ order_instance.payer.telephone }}">
+            <span>{% blocktrans %}Phone Number{% endblocktrans %}:</span>
+            <input class="form-control" disabled value="{{ order_instance.payer.phone_number }}">
           </div>
         </div>
       </div>

@@ -27,7 +27,7 @@ class Customer(models.Model):
     billing_street = models.CharField(_('Billing Street'), max_length=24, blank=True, null=True)
     billing_number = models.CharField(_('Billing Number'), max_length=24, blank=True, null=True)
     country_calling_code = models.CharField(_('Calling Code'), max_length=8, blank=True, null=True)
-    telephone = models.IntegerField(_('Telephone'), blank=True, null=True)
+    phone_number = models.IntegerField(_('Phone Number'), blank=True, null=True)
     email = models.EmailField(_('Email'), blank=True, null=True)
     description = models.TextField(_('Description'), max_length=300, blank=True, null=True)
     payment = models.SmallIntegerField(_('Payment'), choices=Payment.choices, default=Payment.CASH)
@@ -69,7 +69,6 @@ class AdditionalAddress(models.Model):
 
     def __str__(self):
         return self.get_address()
-        return f'{self.city} - {self.postal_code}, {self.street} {self.number}'
 
     def get_address(self):
         address = ''

@@ -77,8 +77,8 @@
               <span>{% blocktrans %}Billing Street{% endblocktrans %}:</span>
               <input class="form-control" disabled
                 value="{{ customer_instance.billing_street }} {{ customer_instance.billing_number }}">
-              <span>{% blocktrans %}Telephone{% endblocktrans %}:</span>
-              <input class="form-control" id="contact" name="contact" value="{% if order_instance.contact %}{{ order_instance.contact }}{% else %}{% if customer_instance.telephone %}{{ customer_instance.telephone }}{% endif %}{% endif %}" maxlength="14">
+              <span>{% blocktrans %}Phone Number{% endblocktrans %}:</span>
+              <input class="form-control" id="phone_number" name="phone_number" value="{% if order_instance.phone_number %}{{ order_instance.phone_number }}{% else %}{% if customer_instance.phone_number %}{{ customer_instance.phone_number }}{% endif %}{% endif %}" maxlength="14">
             </div>
             <h5>{% blocktrans %}Service Address{% endblocktrans %}:</h5>
             <div id="id_address" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
@@ -121,8 +121,8 @@
               <span>{% blocktrans %}Billing Street{% endblocktrans %}:</span>
               <input class="form-control" disabled
                 value="{{ order_instance.payer.billing_street }} {{ order_instance.payer.billing_number }}">
-              <span>{% blocktrans %}Telephone{% endblocktrans %}:</span>
-              <input class="form-control" disabled value="{{ order_instance.payer.telephone }}">
+              <span>{% blocktrans %}Phone Number{% endblocktrans %}:</span>
+              <input class="form-control" disabled value="{{ order_instance.payer.phone_number }}">
             </div>
           </div>
         </div>
