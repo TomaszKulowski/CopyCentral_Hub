@@ -3,6 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
+from django.utils.translation import gettext_lazy as _
 from django.views import View
 
 from CopyCentral_Hub.mixins import EmployeeRequiredMixin
@@ -99,6 +100,16 @@ class HistoryList(EmployeeRequiredMixin, View):
                     if field_name in LABELS:
                         new_record = getattr(history_delta.new_record, f'get_{field_name}_display')()
                         old_record = getattr(history_delta.old_record, f'get_{field_name}_display')()
+                    elif field_name == 'signature':
+                        if getattr(history_delta.new_record, field_name) and getattr(history_delta.old_record, field_name):
+                            new_record = _('Updated Sign')
+                            old_record = _('Sign')
+                        elif getattr(history_delta.new_record, field_name):
+                            new_record = _('Added Sign')
+                            old_record = _('No Sign')
+                        elif not getattr(history_delta.new_record, field_name):
+                            new_record = _('Removed Sign')
+                            old_record = _('Sign')
                     else:
                         new_record = getattr(history_delta.new_record, field_name)
                         old_record = getattr(history_delta.old_record, field_name)

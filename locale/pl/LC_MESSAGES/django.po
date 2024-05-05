@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-05 15:59+0200\n"
+"POT-Creation-Date: 2024-05-05 16:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -670,6 +670,26 @@ msgstr "Strona"
 #: .\orders\templates\orders\orders_list.html:101 .\templates\base.html:264
 msgid "of"
 msgstr "z"
+
+#: .\history\views.py:105
+msgid "Updated Sign"
+msgstr "Zaktualizowno podpis"
+
+#: .\history\views.py:106 .\history\views.py:112
+msgid "Sign"
+msgstr "Podpis"
+
+#: .\history\views.py:108
+msgid "Added Sign"
+msgstr "Dodano podpis"
+
+#: .\history\views.py:109
+msgid "No Sign"
+msgstr "Brak podpisu"
+
+#: .\history\views.py:111
+msgid "Removed Sign"
+msgstr "Usunięto podpis"
 
 #: .\order_management\templates\order_management\base_order_management.html:7
 msgid "Management Options"
