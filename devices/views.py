@@ -27,7 +27,7 @@ class DevicesList(EmployeeRequiredMixin, ListView):
                 Q(serial_number__icontains=search_query)
             )
 
-        return queryset
+        return queryset.order_by('-id')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

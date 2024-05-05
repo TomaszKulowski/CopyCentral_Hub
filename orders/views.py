@@ -6,6 +6,7 @@ from dal import autocomplete
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.db.models import Q
+from django.db.models.functions import Lower
 from django.forms import ModelForm
 from django.forms.models import model_to_dict
 from django.http import FileResponse, HttpResponseRedirect, HttpResponse, JsonResponse
@@ -69,7 +70,7 @@ class CustomerAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetVi
                 Q(phone_number__icontains=self.q)
             )
 
-        return qs
+        return qs.order_by(Lower('name'))
 
 
 class ExecutorAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView):
@@ -85,7 +86,7 @@ class ExecutorAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetVi
                 Q(user__last_name__icontains=self.q)
             )
 
-        return qs
+        return qs.order_by(Lower('user__first_name'))
 
 
 class AddressAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView):
@@ -103,7 +104,7 @@ class AddressAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetVie
                     Q(street__icontains=self.q)
                 )
 
-            return qs
+            return qs.order_by(Lower('city'))
         return AdditionalAddress.objects.none()
 
 
@@ -119,7 +120,7 @@ class DeviceAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView
                 Q(serial_number__icontains=self.q)
             )
 
-        return qs
+        return qs.order_by(Lower('brand'))
 
 
 class ServiceAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView):
@@ -147,7 +148,7 @@ class ServiceAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetVie
                 Q(description__icontains=self.q)
             )
 
-        return qs
+        return qs.order_by(Lower('device_model')).order_by(Lower('device_brand'))
 
 
 class AttachmentDetails(EmployeeRequiredMixin, View):

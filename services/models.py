@@ -52,6 +52,9 @@ class Service(models.Model):
             name += f'{self.device_brand.name} '
         if self.device_brand and not self.device_model and self.device_brand.name != 'Basic Services':
             name += _('- All Models')
+        if self.device_model:
+            if self.device_model.name:
+                name += f'{self.device_model.name} '
         if name:
             name += f'- {self.name} - {self.price_net} PLN'
         return name
