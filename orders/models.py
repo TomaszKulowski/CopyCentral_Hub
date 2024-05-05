@@ -68,6 +68,7 @@ class OrderService(models.Model):
     price_net = models.FloatField(_('Price Net'))
     quantity = models.PositiveSmallIntegerField(_('Quantity'))
     from_session = models.BooleanField(default=True, blank=True, null=True)
+    is_active = models.BooleanField(default=True, blank=True, null=True)
     history = HistoricalRecords()
 
     def __str__(self):

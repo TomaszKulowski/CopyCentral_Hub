@@ -156,6 +156,7 @@ class OrderServiceForm(forms.ModelForm):
     class Meta:
         model = OrderService
         fields = '__all__'
+        exclude = ['is_active']
 
 
 class AttachmentForm(forms.ModelForm):

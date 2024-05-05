@@ -372,7 +372,7 @@ class OrderUpdate(EmployeeRequiredMixin, View):
                         setattr(order_instance.additional_address, attr, '---')
 
             order_form = self.order_form_class(instance=order_instance)
-            order_services = order_instance.services.all()
+            order_services = order_instance.services.filter(is_active=True)
         else:
             order_services = []
             initial_data = {
@@ -608,8 +608,7 @@ class ServiceDetails(EmployeeRequiredMixin, DetailView):
         })
 
     def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        context = self.get_context_data(object=self.object)
+        context = self.get_context_data(object=self.get_object())
 
         return self.render_to_response(context)
 
@@ -621,7 +620,7 @@ class OrderServicesList(EmployeeRequiredMixin, ListView):
 
         if order_id:
             order = get_object_or_404(Order, pk=order_id)
-            services_data += list(order.services.all())
+            services_data += list(order.services.filter(is_active=True))
 
         total_summary = sum(service.quantity * service.price_net for service in services_data)
         context = {
@@ -720,9 +719,8 @@ class OrderServiceDelete(EmployeeRequiredMixin, View):
             return JsonResponse({'status': 400})
 
         order_service = get_object_or_404(OrderService, pk=order_service_id)
-        order = Order.objects.filter(services=order_service)
-        if order:
-            order[0].services.remove(order_service)
+        order_service.is_active = False
+        order_service.save()
 
         return JsonResponse({'status': 204})
 

@@ -155,7 +155,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    {% for service in order.services.all %}
+                    {% for service in order.active_services %}
                       <tr>
                         <td><b>{{ forloop.counter }}</b></td>
                         <td>{{ service.name }}</td>
