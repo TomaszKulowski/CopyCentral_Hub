@@ -46,13 +46,13 @@ class Customer(models.Model):
                 if field == self.billing_city:
                     address += self.billing_city
                     address += ' - '
-                if field == self.billing_postal_code:
+                elif field == self.billing_postal_code:
                     address += self.billing_postal_code
                     address += ', '
-                if self.billing_street:
+                elif field == self.billing_street:
                     address += self.billing_street
                     address += ' '
-                if self.billing_number:
+                elif field == self.billing_number:
                     address += self.billing_number
         return address
 
