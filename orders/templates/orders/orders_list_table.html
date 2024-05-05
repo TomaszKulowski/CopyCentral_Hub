@@ -12,9 +12,9 @@
           <td>{{ order.customer.name|title }}</td>
         {% endif %}
         {% if order.additional_address %}
-          <td>{{ order.additional_address.city|title }}</td>
+          <td>{{ order.additional_address.get_address|title }}</td>
         {% else %}
-          <td>{{ order.customer.billing_city|title }}</td>
+          <td>{{ order.customer.get_address|title }}</td>
         {% endif %}
         {% if order.device.brand and order.device.model %}
           <td>{{ order.device.brand|title }} {{ order.device.model|title }}</td>

@@ -42,7 +42,7 @@
             <th scope="col" width=5%><a href="?order_by=-id&customer_id={{ customer.id }}&device_id={{ device.id }}" class="text-decoration-none link-light">#ID</a></th>
           {% endif %}
           <th scope="col" width=20%>{% blocktrans %}Customer{% endblocktrans %}</th>
-          <th scope="col" width=10%>{% blocktrans %}City{% endblocktrans %}</th>
+          <th scope="col" width=10%>{% blocktrans %}Address{% endblocktrans %}</th>
           <th scope="col" width=20%>{% blocktrans %}Device{% endblocktrans %}</th>
           <th scope="col" width=10%>{% blocktrans %}Status{% endblocktrans %}</th>
           {% if order_by == '-created_at' %}
@@ -66,12 +66,12 @@
           {% if order.customer %}
             <td><a class="text-body" style="text-decoration: none;" href="{% url 'customers:customer_details' order.customer.id %}">{{ order.customer.name|title }}</a></td>
           {% else %}
-            <td>{{ order.customer.name|title }}</td>
+            <td>{{ order.customer.|title }}</td>
           {% endif %}
           {% if order.additional_address %}
-            <td>{{ order.additional_address.city|title }}</td>
+            <td>{{ order.additional_address.get_address|title }}</td>
           {% else %}
-            <td>{{ order.customer.billing_city|title }}</td>
+            <td>{{ order.customer.get_address|title }}</td>
           {% endif %}
           {% if order.device.brand and order.device.model %}
             <td>{{ order.device.brand|title }} {{ order.device.model|title }}</td>

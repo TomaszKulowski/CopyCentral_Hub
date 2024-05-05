@@ -68,4 +68,23 @@ class AdditionalAddress(models.Model):
     is_active = models.BooleanField(_('Is Active'), default=True)
 
     def __str__(self):
+        return self.get_address()
         return f'{self.city} - {self.postal_code}, {self.street} {self.number}'
+
+    def get_address(self):
+        address = ''
+        fields = [self.city, self.postal_code, self.street, self.number]
+        for field in fields:
+            if field:
+                if field == self.city:
+                    address += self.city
+                elif field == self.postal_code:
+                    address += ' - '
+                    address += self.postal_code
+                elif field == self.street:
+                    address += ', '
+                    address += self.street
+                elif field == self.number:
+                    address += ' '
+                    address += self.number
+        return address
