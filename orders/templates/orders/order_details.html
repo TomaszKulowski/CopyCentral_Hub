@@ -5,7 +5,7 @@
 {% block content %}
   <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">{% blocktrans %}Service Order Details{% endblocktrans %}</h1>
+    <h2 class="h2">{% blocktrans %}Service Order Details{% endblocktrans %}</h2>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
         <h2 class="h2">{% blocktrans %}Service ID{% endblocktrans %}: {{ order_instance.id }}</h2>
@@ -75,8 +75,8 @@
             <span>{% blocktrans %}Billing Street{% endblocktrans %}:</span>
             <input class="form-control" disabled
               value="{{ order_instance.customer.billing_street }} {{ order_instance.customer.billing_number }}">
-            <span>{% blocktrans %}Telephone{% endblocktrans %}:</span>
-            <input class="form-control" disabled value="{{ order_instance.contact }}">
+            <span>{% blocktrans %}Phone Number{% endblocktrans %}:</span>
+            <input class="form-control" disabled value="{{ order_instance.phone_number }}">
           </div>
           <h5>{% blocktrans %}Service Address{% endblocktrans %}:</h5>
           <div id="id_address" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
@@ -125,8 +125,8 @@
             <span>{% blocktrans %}Billing Street{% endblocktrans %}:</span>
             <input class="form-control" disabled
               value="{{ order_instance.payer.billing_street }} {{ order_instance.payer.billing_number }}">
-            <span>{% blocktrans %}Telephone{% endblocktrans %}:</span>
-            <input class="form-control" disabled value="{{ order_instance.payer.telephone }}">
+            <span>{% blocktrans %}Phone Number{% endblocktrans %}:</span>
+            <input class="form-control" disabled value="{{ order_instance.payer.phone_number }}">
           </div>
         </div>
       </div>
@@ -246,14 +246,14 @@
                   </tr>
                 </thead>
                 <tbody id="service-table-body">
-                  {% for service in order_instance.services.all %}
-                  <tr>
-                    <td hidden="hidden">{{ service.id }}</td>
-                    <td>{{ service.name|title }}</td>
-                    <td>{{ service.quantity }}</td>
-                    <td>{{ service.price_net }}</td>
-                    <td></td>
-                  </tr>
+                  {% for service in order_services %}
+                    <tr>
+                      <td hidden="hidden">{{ service.id }}</td>
+                      <td>{{ service.name|title }}</td>
+                      <td>{{ service.quantity }}</td>
+                      <td>{{ service.price_net }}</td>
+                      <td></td>
+                    </tr>
                   {% endfor %}
                   <tr id="summary-row">
                     <td colspan="2"><b>{% blocktrans %}Summary{% endblocktrans %}:</b></td>

@@ -27,7 +27,7 @@ class Customer(models.Model):
     billing_street = models.CharField(_('Billing Street'), max_length=24, blank=True, null=True)
     billing_number = models.CharField(_('Billing Number'), max_length=24, blank=True, null=True)
     country_calling_code = models.CharField(_('Calling Code'), max_length=8, blank=True, null=True)
-    telephone = models.IntegerField(_('Telephone'), blank=True, null=True)
+    phone_number = models.IntegerField(_('Phone Number'), blank=True, null=True)
     email = models.EmailField(_('Email'), blank=True, null=True)
     description = models.TextField(_('Description'), max_length=300, blank=True, null=True)
     payment = models.SmallIntegerField(_('Payment'), choices=Payment.choices, default=Payment.CASH)
@@ -46,13 +46,13 @@ class Customer(models.Model):
                 if field == self.billing_city:
                     address += self.billing_city
                     address += ' - '
-                if field == self.billing_postal_code:
+                elif field == self.billing_postal_code:
                     address += self.billing_postal_code
                     address += ', '
-                if self.billing_street:
+                elif field == self.billing_street:
                     address += self.billing_street
                     address += ' '
-                if self.billing_number:
+                elif field == self.billing_number:
                     address += self.billing_number
         return address
 
@@ -68,4 +68,22 @@ class AdditionalAddress(models.Model):
     is_active = models.BooleanField(_('Is Active'), default=True)
 
     def __str__(self):
-        return f'{self.city} - {self.postal_code}, {self.street} {self.number}'
+        return self.get_address()
+
+    def get_address(self):
+        address = ''
+        fields = [self.city, self.postal_code, self.street, self.number]
+        for field in fields:
+            if field:
+                if field == self.city:
+                    address += self.city
+                elif field == self.postal_code:
+                    address += ' - '
+                    address += self.postal_code
+                elif field == self.street:
+                    address += ', '
+                    address += self.street
+                elif field == self.number:
+                    address += ' '
+                    address += self.number
+        return address

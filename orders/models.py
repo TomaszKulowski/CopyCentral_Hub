@@ -68,6 +68,7 @@ class OrderService(models.Model):
     price_net = models.FloatField(_('Price Net'))
     quantity = models.PositiveSmallIntegerField(_('Quantity'))
     from_session = models.BooleanField(default=True, blank=True, null=True)
+    is_active = models.BooleanField(default=True, blank=True, null=True)
     history = HistoricalRecords()
 
     def __str__(self):
@@ -109,7 +110,7 @@ class Order(models.Model):
     )
     approver = models.ForeignKey(Employee, on_delete=models.PROTECT, blank=True, null=True, verbose_name=_('Approver'))
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT, blank=True, null=True, verbose_name=_('Customer'))
-    contact = models.IntegerField(_('Contact'), blank=True, null=True)
+    phone_number = models.IntegerField(_('Phone Number'), blank=True, null=True)
     additional_address = models.ForeignKey(
         AdditionalAddress,
         on_delete=models.PROTECT,
@@ -179,14 +180,14 @@ class Order(models.Model):
                         else:
                             self.sort_number = 1
 
-                if self.status in [2, 3, 4, 5] and old_order_instance.sort_number:
+                elif self.status in [2, 3, 4, 5] and old_order_instance.sort_number:
                     self.sort_number = None
                     Order.objects.filter(
                         executor=old_order_instance.executor,
                         sort_number__gt=old_order_instance.sort_number
                     ).update(sort_number=models.F('sort_number') - 1)
 
-                if old_order_instance.executor != self.executor:
+                elif old_order_instance.executor != self.executor and self.status not in [2, 3, 4, 5]:
                     if self.executor is not None:
                         max_sort_number_new_executor = Order.objects.filter(
                             executor=self.executor
@@ -197,19 +198,25 @@ class Order(models.Model):
                             self.sort_number = 1
                     else:
                         self.sort_number = None
-                    Order.objects.filter(
-                        executor=old_order_instance.executor,
-                        sort_number__gt=old_order_instance.sort_number
-                    ).update(sort_number=models.F('sort_number') - 1)
+
+                    if self.sort_number and old_order_instance.sort_number:
+                        Order.objects.filter(
+                            executor=old_order_instance.executor,
+                            sort_number__gt=old_order_instance.sort_number
+                        ).update(sort_number=models.F('sort_number') - 1)
+                else:
+                    if old_order_instance.sort_number and not self.sort_number:
+                        self.sort_number = old_order_instance.sort_number
             else:
-                if self.executor:
-                    max_sort_number = Order.objects.filter(
-                        executor=self.executor
-                    ).aggregate(Max('sort_number'))['sort_number__max']
-                    if max_sort_number:
-                        self.sort_number = max_sort_number + 1
-                    else:
-                        self.sort_number = 1
+                if self.status not in [2, 3, 4, 5]:
+                    if self.executor:
+                        max_sort_number = Order.objects.filter(
+                            executor=self.executor
+                        ).aggregate(Max('sort_number'))['sort_number__max']
+                        if max_sort_number:
+                            self.sort_number = max_sort_number + 1
+                        else:
+                            self.sort_number = 1
 
         if self._state.adding and self.executor:
             max_sort_number = Order.objects.filter(
@@ -223,9 +230,9 @@ class Order(models.Model):
         if not self.payer:
             self.payer = self.customer
         if self.customer:
-            if not self.contact:
+            if not self.phone_number:
                 customer = get_object_or_404(Customer, pk=self.customer.id)
-                self.contact = customer.telephone
+                self.phone_number = customer.phone_number
         super().save(*args, **kwargs)
 
 
