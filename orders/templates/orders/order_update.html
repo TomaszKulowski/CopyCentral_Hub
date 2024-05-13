@@ -56,7 +56,7 @@
         <div class="tab-content" id="customer-tab-content">
           <div class="tab-pane fade show active" id="customer_details1" role="tabpanel" aria-labelledby="customer_details-tab">
             {{ order_form.media }}
-            <h5>{{ order_form.customer.label }}:</h5>
+            <h5>* {{ order_form.customer.label }}:</h5>
             <div id="id_customer" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
               {{ order_form.customer }}
               <button type="button" class="btn btn-sm btn-outline-secondary select-button" data-bs-toggle="modal" data-bs-target="#addCustomerModal">

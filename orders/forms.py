@@ -139,19 +139,21 @@ class OrderServiceForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(OrderServiceForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            if field.required:
+                field.label = f'* {field.label}'
 
-        for field in self.fields:
-            if field == 'name':
-                self.fields[field].widget.attrs.update({'id': 'id_service_name'})
-            if field == 'price_net':
-                self.fields[field].widget.attrs.update({'id': 'id_service_price_net'})
-            if field == 'quantity':
-                self.fields[field].widget.attrs.update({'id': 'id_service_quantity'})
-            if field == 'from_session':
-                self.fields[field].widget = forms.HiddenInput()
-                self.fields[field].widget.attrs.update({'id': 'id_service_from_session'})
+            if field_name == 'name':
+                self.fields[field_name].widget.attrs.update({'id': 'id_service_name'})
+            if field_name == 'price_net':
+                self.fields[field_name].widget.attrs.update({'id': 'id_service_price_net'})
+            if field_name == 'quantity':
+                self.fields[field_name].widget.attrs.update({'id': 'id_service_quantity'})
+            if field_name == 'from_session':
+                self.fields[field_name].widget = forms.HiddenInput()
+                self.fields[field_name].widget.attrs.update({'id': 'id_service_from_session'})
 
-            self.fields[field].widget.attrs.update({'class': 'form-control'})
+            self.fields[field_name].widget.attrs.update({'class': 'form-control'})
 
     class Meta:
         model = OrderService
