@@ -120,7 +120,7 @@ class DeviceAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView
                 Q(serial_number__icontains=self.q)
             )
 
-        return qs.order_by(Lower('brand'))
+        return qs.order_by(Lower('brand__name'))
 
 
 class ServiceAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView):
@@ -148,7 +148,7 @@ class ServiceAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetVie
                 Q(description__icontains=self.q)
             )
 
-        return qs.order_by(Lower('device_model')).order_by(Lower('device_brand'))
+        return qs.order_by(Lower('device_model__name')).order_by(Lower('device_brand__name'))
 
 
 class AttachmentDetails(EmployeeRequiredMixin, View):
