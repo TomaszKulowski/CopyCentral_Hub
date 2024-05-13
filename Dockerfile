@@ -63,6 +63,7 @@ COPY . $APP_HOME
 RUN chown -R copycentralhub:copycentralhub $HOME
 RUN chmod +x  $APP_HOME/entrypoint.prod.sh
 
+
 # change to the copycentralhub user
 USER copycentralhub
 
