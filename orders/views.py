@@ -120,7 +120,7 @@ class DeviceAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView
                 Q(serial_number__icontains=self.q)
             )
 
-        return qs.order_by(Lower('brand__name'))
+        return qs.order_by(Lower('brand'))
 
 
 class ServiceAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView):
@@ -608,7 +608,8 @@ class ServiceDetails(EmployeeRequiredMixin, DetailView):
         })
 
     def get(self, request, *args, **kwargs):
-        context = self.get_context_data(object=self.get_object())
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
 
         return self.render_to_response(context)
 
