@@ -69,6 +69,9 @@ def get_report(order, employee_name, language):
                 'price_gross': price_gross,
             }
         )
+    if len(order.services.all()) == 0:
+        services = [{} for _ in range(5)]
+
     document.merge_rows('service', services)
     total_price_gross = total_price_net * 1.23
     if total_price_net:
