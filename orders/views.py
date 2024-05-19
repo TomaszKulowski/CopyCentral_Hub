@@ -608,7 +608,8 @@ class ServiceDetails(EmployeeRequiredMixin, DetailView):
         })
 
     def get(self, request, *args, **kwargs):
-        context = self.get_context_data(object=self.get_object())
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
 
         return self.render_to_response(context)
 
