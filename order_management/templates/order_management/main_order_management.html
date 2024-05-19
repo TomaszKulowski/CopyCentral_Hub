@@ -64,7 +64,7 @@
           <th scope="col" width=5%>#ID</th>
           <th scope="col" width=20%>{% blocktrans %}Customer{% endblocktrans %}</th>
           <th scope="col" width=20%>{% blocktrans %}Address{% endblocktrans %}</th>
-          <th scope="col" width=10%>{% blocktrans %}Contact{% endblocktrans %}</th>
+          <th scope="col" width=10%>{% blocktrans %}Phone Number{% endblocktrans %}</th>
           <th scope="col" width=10%>{% blocktrans %}Short Description{% endblocktrans %}</th>
           <th scope="col" width=10%>{% blocktrans %}Device{% endblocktrans %}</th>
           <th scope="col" width=8%>{% blocktrans %}Status{% endblocktrans %}</th>
@@ -76,20 +76,21 @@
       <tbody id="order-table">
         {% for order in orders %}
           <tr class="clickable" data-toggle="collapse" data-target="#row{{ order.id }}">
-            <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'orders:order_details' order.id %}"><b>#{{ order.id }}</b></a></td>
+            <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'orders:order_details' order.id %}"><b>#{{ order.id }}</b></a></td>
             {% if order.customer__id %}
-              <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order.customer__id %}">{{ order.customer_name }}</a></td>
+              <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'customers:customer_details' order.customer__id %}">{{ order.customer_name }}</a></td>
             {% else %}
               <td>{{ order.customer_name }}</td>
             {% endif %}
             <td>{{ order.address_name }}</td>
             <td>
-              {% if order_details.contact %}
-                <a class="text-decoration-none link-dark" href="tel:+{{ order.contact }}">{{ order.contact }}</a>
+              {% if order_details.phone_number %}
+                <a class="text-decoration-none link-dark" href="tel:+{{ order.phone_number }}">{{ order.phone_number }}</a>
               {% else %}
                 ---
               {% endif %}
-            </td>            <td>{{ order.short_description_name }}</td>
+            </td>
+            <td>{{ order.short_description_name }}</td>
             <td>{{ order.device_full_name }}</td>
             <td>{{ order.status }}</td>
             <td>

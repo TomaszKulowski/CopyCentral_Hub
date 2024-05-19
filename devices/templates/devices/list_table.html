@@ -7,7 +7,7 @@
         <td hidden="hidden">{% url "devices:details" device.id %}</td>
         <td>{{ device.brand|title }} {{ device.model|title }}</td>
         <td>{{ device.serial_number }}</td>
-        <td>{{ device.get_status_display }}</td>
+        <td>{% if device.get_status_display %}{{ device.get_status_display }}{% else %}---{% endif %}</td>
         <td style="text-align: right;">
           <a href="{% url 'devices:details' device.id %}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Details{% endblocktrans %}</a>
         </td>

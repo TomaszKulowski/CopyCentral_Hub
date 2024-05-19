@@ -56,7 +56,7 @@
         <div class="tab-content" id="customer-tab-content">
           <div class="tab-pane fade show active" id="customer_details1" role="tabpanel" aria-labelledby="customer_details-tab">
             {{ order_form.media }}
-            <h5>{{ order_form.customer.label }}:</h5>
+            <h5>* {{ order_form.customer.label }}:</h5>
             <div id="id_customer" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
               {{ order_form.customer }}
               <button type="button" class="btn btn-sm btn-outline-secondary select-button" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
@@ -77,8 +77,8 @@
               <span>{% blocktrans %}Billing Street{% endblocktrans %}:</span>
               <input class="form-control" disabled
                 value="{{ customer_instance.billing_street }} {{ customer_instance.billing_number }}">
-              <span>{% blocktrans %}Telephone{% endblocktrans %}:</span>
-              <input class="form-control" id="contact" name="contact" value="{% if order_instance.contact %}{{ order_instance.contact }}{% else %}{% if customer_instance.telephone %}{{ customer_instance.telephone }}{% endif %}{% endif %}" maxlength="14">
+              <span>{% blocktrans %}Phone Number{% endblocktrans %}:</span>
+              <input class="form-control" id="phone_number" name="phone_number" value="{% if order_instance.phone_number %}{{ order_instance.phone_number }}{% else %}{% if customer_instance.phone_number %}{{ customer_instance.phone_number }}{% endif %}{% endif %}" maxlength="14">
             </div>
             <h5>{% blocktrans %}Service Address{% endblocktrans %}:</h5>
             <div id="id_address" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
@@ -121,8 +121,8 @@
               <span>{% blocktrans %}Billing Street{% endblocktrans %}:</span>
               <input class="form-control" disabled
                 value="{{ order_instance.payer.billing_street }} {{ order_instance.payer.billing_number }}">
-              <span>{% blocktrans %}Telephone{% endblocktrans %}:</span>
-              <input class="form-control" disabled value="{{ order_instance.payer.telephone }}">
+              <span>{% blocktrans %}Phone Number{% endblocktrans %}:</span>
+              <input class="form-control" disabled value="{{ order_instance.payer.phone_number }}">
             </div>
           </div>
         </div>
@@ -230,20 +230,20 @@
                     </tr>
                   </thead>
                   <tbody id="service-table-body">
-                    {% for service in order_instance.services.all %}
-                    <tr>
-                      <td hidden="hidden">{{ service.id }}</td>
-                      <td hidden="hidden">{{ service.from_session }}</td>
-                      <td>{{ service.name|title }}</td>
-                      <td>{{ service.quantity }}</td>
-                      <td>{{ service.price_net }}</td>
-                      <td>
-                        <div class="btn-group me-2">
-                          <button type="button" class="btn btn-sm btn-outline-secondary" id="service-edit">{% blocktrans %}Update{% endblocktrans %}</button>
-                          <button type="button" class="btn btn-sm btn-outline-secondary service-delete-btn" data-service-id="{{ service.id }}">{% blocktrans %}Delete{% endblocktrans %}</button>
-                        </div>
-                      </td>
-                    </tr>
+                    {% for service in order_services %}
+                      <tr>
+                        <td hidden="hidden">{{ service.id }}</td>
+                        <td hidden="hidden">{{ service.from_session }}</td>
+                        <td>{{ service.name|title }}</td>
+                        <td>{{ service.quantity }}</td>
+                        <td>{{ service.price_net }}</td>
+                        <td>
+                          <div class="btn-group me-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="service-edit">{% blocktrans %}Update{% endblocktrans %}</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary service-delete-btn" data-service-id="{{ service.id }}">{% blocktrans %}Delete{% endblocktrans %}</button>
+                          </div>
+                        </td>
+                      </tr>
                     {% endfor %}
                     <tr id="summary-row">
                       <td colspan="2"><b>{% blocktrans %}Summary{% endblocktrans %}:</b></td>
@@ -384,7 +384,7 @@
         <div class="modal-body">
           <form id="deviceForm" method="post">
             {% csrf_token %}
-            {{ device_form.as_p }}
+            {{ device_form.as_div }}
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-top">
               <h2 class="h2"></h2>
               <div class="btn-toolbar mb-2 mb-md-0">
@@ -393,6 +393,7 @@
                 </div>
               </div>
             </div>
+            <div id="errors"></div>
           </form>
         </div>
       </div>

@@ -3,6 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
+from django.utils.translation import gettext_lazy as _
 from django.views import View
 
 from CopyCentral_Hub.mixins import EmployeeRequiredMixin
@@ -52,11 +53,14 @@ class HistoryList(EmployeeRequiredMixin, View):
                                 services_history = service.history.all()
                                 for service_index, service_entry in enumerate(services_history):
                                     if service_index < services_history.count() - 1:
-                                        service_history_delta = service_entry.diff_against(services_history[service_index + 1])
+                                        service_history_delta = service_entry.diff_against(
+                                            services_history[service_index + 1]
+                                        )
                                         service_changed_fields = []
                                         for field in service_history_delta.changed_fields:
-                                            service_changed_fields.append(str(service_entry.history_object._meta.get_field(field).verbose_name))
-
+                                            service_changed_fields.append(
+                                                str(service_entry.history_object._meta.get_field(field).verbose_name)
+                                            )
                                         if not service_changed_fields:
                                             continue
 
@@ -66,11 +70,16 @@ class HistoryList(EmployeeRequiredMixin, View):
                                                 'employee': f'{service_entry.history_user.first_name} {service_entry.history_user.last_name}',
                                             },
                                         }
+                                        if 'is active' in service_changed_fields:
+                                            service_new_record = '---'
+                                            service_old_record = service_history_delta.old_record.instance
+                                            service_changes = {_('Services'): [service_new_record, service_old_record]}
 
-                                        service_new_record = service_history_delta.new_record.instance
-                                        service_old_record = service_history_delta.old_record.instance
+                                        else:
+                                            service_new_record = service_history_delta.new_record.instance
+                                            service_old_record = service_history_delta.old_record.instance
+                                            service_changes = {', '.join(service_changed_fields): [service_new_record, service_old_record]}
 
-                                        service_changes = {', '.join(service_changed_fields): [service_new_record, service_old_record]}
                                         service_history_entry.update(service_changes)
 
                                         context['history']['0' + str(n) + str(service_index)] = service_history_entry
@@ -99,6 +108,16 @@ class HistoryList(EmployeeRequiredMixin, View):
                     if field_name in LABELS:
                         new_record = getattr(history_delta.new_record, f'get_{field_name}_display')()
                         old_record = getattr(history_delta.old_record, f'get_{field_name}_display')()
+                    elif field_name == 'signature':
+                        if getattr(history_delta.new_record, field_name) and getattr(history_delta.old_record, field_name):
+                            new_record = _('Updated Sign')
+                            old_record = _('Sign')
+                        elif getattr(history_delta.new_record, field_name):
+                            new_record = _('Added Sign')
+                            old_record = _('No Sign')
+                        elif not getattr(history_delta.new_record, field_name):
+                            new_record = _('Removed Sign')
+                            old_record = _('Sign')
                     else:
                         new_record = getattr(history_delta.new_record, field_name)
                         old_record = getattr(history_delta.old_record, field_name)

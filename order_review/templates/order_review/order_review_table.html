@@ -4,15 +4,15 @@
   <tbody id="review-table-body">
     {% for order in page_obj %}
       <tr data-target="#row{{ order.id }}">
-        <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'orders:order_details' order.id %}"><b>#{{ order.id }}</b></a></td>
-        <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order.customer.id %}">
+        <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'orders:order_details' order.id %}"><b>#{{ order.id }}</b></a></td>
+        <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'customers:customer_details' order.customer.id %}">
           <b>{% blocktrans %}Name{% endblocktrans %}:</b> {{ order.customer.name }}<br>
           <b>{% blocktrans %}Address{% endblocktrans %}:</b> {{ order.customer.get_address }}
         </a></td>
         {% if not order.payer.id == order.customer.id %}
-          <td><a onclick="handleDropdownClick(event)" class="text-decoration-none link-dark" href="{% url 'customers:customer_details' order.payer.id %}">
-          <b>{% blocktrans %}Name{% endblocktrans %}:</b> {{ order.customer.name }}<br>
-          <b>{% blocktrans %}Address{% endblocktrans %}:</b> {{ order.customer.get_address }}
+          <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'customers:customer_details' order.payer.id %}">
+          <b>{% blocktrans %}Name{% endblocktrans %}:</b> {{ order.payer.name }}<br>
+          <b>{% blocktrans %}Address{% endblocktrans %}:</b> {{ order.payer.get_address }}
           </a></td>
         {% else %}
           <td>{% blocktrans %}The Same Data as Customer{% endblocktrans %}</td>
@@ -62,15 +62,15 @@
             <li><b>{% blocktrans %}Order Intake{% endblocktrans %}:</b> {{ order.user_intake }}</li>
             <li><b>{% blocktrans %}Order Type{% endblocktrans %}:</b> {{ order.get_order_type_display }}</li>
             <li><b>{% blocktrans %}Payment Method{% endblocktrans %}:</b> {{ order.get_payment_method_display }}</li>
-            <li><b>{% blocktrans %}Telephone{% endblocktrans %}:</b> {{ order.contact }}</li>
+            <li><b>{% blocktrans %}Phone Number{% endblocktrans %}:</b> {% if order.phone_number %}{{ order.phone_number }}{% else %}---{% endif %}</li>
           </ul><br>
           <b>{% blocktrans %}Customer Details{% endblocktrans %}:</b>
           <ul>
             {% if order.customer.tax %}
               <li><b>{% blocktrans %}Tax{% endblocktrans %}:</b> {{ order.customer.tax }}</li>
             {% endif %}
-            {% if order.customer.telephone %}
-              <li><b>{% blocktrans %}Telephone{% endblocktrans %}:</b> {{ order.customer.telephone }}</li>
+            {% if order.customer.phone_number %}
+              <li><b>{% blocktrans %}Phone Number{% endblocktrans %}:</b> {{ order.customer.phone_number }}</li>
             {% endif %}
             {% if order.customer.email %}
               <li><b>{% blocktrans %}Email{% endblocktrans %}:</b> {{ order.customer.email }}</li>
@@ -86,8 +86,8 @@
               {% if order.payer.tax %}
                 <li><b>{% blocktrans %}Tax{% endblocktrans %}:</b> {{ order.payer.tax }}</li>
               {% endif %}
-              {% if order.payer.telephone %}
-                <li><b>{% blocktrans %}Telephone{% endblocktrans %}:</b> {{ order.payer.telephone }}</li>
+              {% if order.payer.phone_number %}
+                <li><b>{% blocktrans %}Phone Number{% endblocktrans %}:</b> {{ order.payer.phone_number }}</li>
               {% endif %}
               {% if order.payer.email %}
                 <li><b>{% blocktrans %}Email{% endblocktrans %}:</b> {{ order.payer.email }}</li>
@@ -109,7 +109,7 @@
               </tr>
             </thead>
             <tbody>
-              {% for service in order.services.all %}
+              {% for service in order.active_services %}
                 <tr>
                   <td><b>{{ forloop.counter }}</b></td>
                   <td>{{ service.name }}</td>

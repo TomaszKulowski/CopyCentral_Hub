@@ -49,7 +49,8 @@ class OrderReviewList(OfficeWorkerRequiredMixin, View):
 
         context['page_obj'] = page_obj
         for order in context['page_obj']:
-            total_price = order.services.aggregate(total_price=Sum(F('price_net') * F('quantity')))['total_price']
+            order.active_services = order.services.filter(is_active=True)
+            total_price = order.active_services.aggregate(total_price=Sum(F('price_net') * F('quantity')))['total_price']
             order.total_price = total_price if total_price else 0
 
         return context
