@@ -17,14 +17,18 @@ class OrderReviewList(OfficeWorkerRequiredMixin, View):
     def get_queryset(self):
         for_review = self.request.GET.get('for_review')
         if for_review:
-            orders = Order.objects.filter(Q(orderreview__is_approved=False) & Q(orderreview__for_review=True))
+            orders = Order.objects.filter(
+                orderreview__user_id=self.request.user.id,
+                orderreview__is_approved=False,
+                orderreview__for_review=True,
+            )
 
         else:
-            orders_without_approval = Order.objects.filter(orderreview__isnull=True)
-            orders_not_approved = Order.objects.filter(
-                Q(orderreview__isnull=False) & Q(orderreview__is_approved=False) & Q(orderreview__for_review=False)
+            orders = Order.objects.filter(
+                orderreview__user_id=self.request.user.id,
+                orderreview__is_approved=False,
+                orderreview__for_review=False,
             )
-            orders = orders_without_approval | orders_not_approved
 
         orders = orders.filter(status__in=[2, 3, 4, 5]).prefetch_related('services').order_by('-updated_at')
 

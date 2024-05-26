@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Max
 from django.shortcuts import get_object_or_404
+from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from jsignature.fields import JSignatureField
 from pathlib import Path
@@ -66,7 +67,7 @@ class OrderService(models.Model):
     service = models.ForeignKey(Service, on_delete=models.PROTECT, verbose_name=_('Service'), blank=True, null=True)
     name = models.CharField(_('Name'), max_length=255)
     price_net = models.FloatField(_('Price Net'))
-    quantity = models.PositiveSmallIntegerField(_('Quantity'))
+    quantity = models.IntegerField(_('Quantity'))
     from_session = models.BooleanField(default=True, blank=True, null=True)
     is_active = models.BooleanField(default=True, blank=True, null=True)
     history = HistoricalRecords()
@@ -110,7 +111,7 @@ class Order(models.Model):
     )
     approver = models.ForeignKey(Employee, on_delete=models.PROTECT, blank=True, null=True, verbose_name=_('Approver'))
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT, blank=True, null=True, verbose_name=_('Customer'))
-    phone_number = models.IntegerField(_('Phone Number'), blank=True, null=True)
+    phone_number = models.BigIntegerField(_('Phone Number'), blank=True, null=True)
     additional_address = models.ForeignKey(
         AdditionalAddress,
         on_delete=models.PROTECT,
