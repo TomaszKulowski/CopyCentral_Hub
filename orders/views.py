@@ -26,6 +26,7 @@ from devices.forms import DeviceForm
 from devices.models import Device
 from employees.models import Employee
 from order_management.views import EmployeesOrdersList, OrderListViewBase
+from order_review.models import OrderReview
 from orders.utils import map_choices_int_to_str
 from services.models import Brand, Model, Service
 
@@ -450,6 +451,13 @@ class OrderUpdate(EmployeeRequiredMixin, View):
 
             order_instance.save()
 
+            office_employees_ids = Employee.objects.filter(department__lte=2)
+            if order_instance.status in [2, 3, 4, 5]:
+                for employee in office_employees_ids:
+                    order_review = OrderReview.objects.filter(order_id=order_instance.id, user_id=employee.user.id)
+                    if not order_review:
+                        OrderReview(order_id=order_instance.id, user_id=employee.user.id).save()
+
             services_list = get_services(request)
             if services_list:
                 for service in services_list:
@@ -458,7 +466,6 @@ class OrderUpdate(EmployeeRequiredMixin, View):
                     order_instance.services.add(service)
 
             return HttpResponseRedirect(reverse_lazy('orders:order_details', kwargs={'pk': order_instance.id}))
-
         else:
             context = self.get_context_data(**kwargs)
             return render(request, self.template_name, context)
