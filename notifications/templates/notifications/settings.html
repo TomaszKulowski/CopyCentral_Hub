@@ -1,0 +1,12 @@
+{% extends "admin/change_list.html" %}
+
+{% block object-tools %}
+    {{ block.super }}<br><br>
+    <ul class="object-tools">
+        <li>
+            <a href="{{ send_notifications_url }}">
+                Start sending notifications
+            </a>
+        </li>
+    </ul>
+{% endblock %}

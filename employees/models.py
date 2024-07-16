@@ -20,6 +20,7 @@ class Employee(models.Model):
         verbose_name=_('User'),
     )
     department = models.SmallIntegerField(_('Department'), choices=DepartmentChoices.choices)
+    phone_number = models.PositiveBigIntegerField(blank=True, null=True)
 
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name}'
