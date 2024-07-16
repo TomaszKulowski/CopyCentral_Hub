@@ -1,16 +1,17 @@
 from django.core.cache import cache
 from django.contrib import admin
-from django.urls import path
 from django.http import HttpResponseRedirect
-from .tasks import notifications_task
+from django.urls import path
+from django.utils.translation import gettext_lazy as _
 
+from .tasks import notifications_task
 from .models import Notification, NotificationSettings
 from .utils import mark_orders_as_sent
 
 
 @admin.register(NotificationSettings)
 class NotificationSettingsAdmin(admin.ModelAdmin):
-    change_list_template = "notifications/templates/notifications/settings.html"
+    change_list_template = 'notifications/templates/notifications/settings.html'
 
     def get_urls(self):
         urls = super().get_urls()
@@ -24,9 +25,9 @@ class NotificationSettingsAdmin(admin.ModelAdmin):
             mark_orders_as_sent()
             notifications_task.delay()
             cache.set('notification_enabled', True, timeout=None)
-            self.message_user(request, "Notification enabled.")
+            self.message_user(request, _('Notification enabled'))
         else:
-            self.message_user(request, "Notifications are already enabled.")
+            self.message_user(request, _('Notifications are already enabled'))
 
         return HttpResponseRedirect("../")
 
