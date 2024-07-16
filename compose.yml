@@ -1,11 +1,10 @@
 version: '3'
-
 services:
   web:
     build:
       context: .
       dockerfile: Dockerfile
-    command: gunicorn CopyCentral_Hub.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn --workers=2 CopyCentral_Hub.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - static_volume:/home/CopyCentral_Hub/web/staticfiles
       - media_volume:/home/CopyCentral_Hub/web/mediafiles
@@ -15,7 +14,9 @@ services:
       - ./.env.prod
     depends_on:
       - db
+      - redis
     restart: always
+    image: tomasz987/biuroserwis_web:latest
 
   db:
     image: postgres:16.2
@@ -23,6 +24,15 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - ./.env.prod.db
+    ports:
+      - "5432:5432"
+    restart: always
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
     restart: always
 
   nginx:
@@ -31,10 +41,12 @@ services:
       - static_volume:/home/CopyCentral_Hub/web/staticfiles
       - media_volume:/home/CopyCentral_Hub/web/mediafiles
     ports:
-      - "1337:80"
+      - "80:80"
     depends_on:
       - web
     restart: always
+    image: tomasz987/biuroserwis_nginx:latest
+
 
 volumes:
   postgres_data:

@@ -10,3 +10,5 @@ docx-mailmerge
 django-autocomplete-light
 sorl-thumbnail
 gunicorn==21.2.0
+requests
+celery

@@ -13,6 +13,8 @@ WORKDIR /usr/src/CopyCentral_Hub
 COPY . /usr/src/CopyCentral_Hub/
 
 RUN apt-get update && apt-get install -y --no-install-recommends
+RUN apt-get install -y gdal-bin libgdal-dev build-essential
+
 
 # install python dependencies
 COPY ./requirements.txt .
@@ -46,12 +48,21 @@ WORKDIR $APP_HOME
 RUN apt-get update && apt-get install -y --no-install-recommends
 RUN apt-get install -y libreoffice-writer gettext
 RUN apt-get install -y libreoffice-java-common
+RUN apt-get install -y gdal-bin libgdal-dev build-essential
+
+ENV GDAL_LIBRARY_PATH /usr/lib/libgdal.so
+
 COPY --from=builder /usr/src/CopyCentral_Hub/wheels /wheels
 COPY --from=builder /usr/src/CopyCentral_Hub/requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
 
-# copy entrypoint.prod.sh
+# install redis
+RUN apt-get install -y redis-server
+
+# expose Redis port
+EXPOSE 6379
+
 COPY ./entrypoint.prod.sh .
 RUN sed -i 's/\r$//g'  $APP_HOME/entrypoint.prod.sh
 RUN chmod +x  $APP_HOME/entrypoint.prod.sh

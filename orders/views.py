@@ -121,7 +121,7 @@ class DeviceAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView
                 Q(serial_number__icontains=self.q)
             )
 
-        return qs.order_by(Lower('brand'))
+        return qs.order_by(Lower('brand__name'))
 
 
 class ServiceAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView):
