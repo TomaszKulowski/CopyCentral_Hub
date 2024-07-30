@@ -43,6 +43,8 @@
     <input type="hidden" id="payerId" name="payer" value="{{ order_instance.payer.id }}" />
     <input type="hidden" id="addressId" name="address" value="{{ order_instance.additional_address.id }}" />
     <input type="hidden" id="deviceId" name="device" value="{{ order_instance.device.id }}" />
+    <input type="hidden" id="latitudeId" name="latitude" value="{{ order_instance.latitude }}" />
+    <input type="hidden" id="longitudeId" name="longitude" value="{{ order_instance.longitude }}" />
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="customer_details" role="tabpanel" aria-labelledby="customer_details-tab">
         <ul class="nav nav-tabs" id="payer-tab" role="tablist">

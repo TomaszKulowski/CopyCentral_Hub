@@ -17,7 +17,7 @@ def map_choices_int_to_str(orders):
     payment_method_map = {str(choice.value): choice.label for choice in PaymentMethodChoices}
 
     for order in orders:
-        order['status'] = status_map.get(str(order['status']), 'Unknown')
+        order['status'] = [order['status'], status_map.get(str(order['status']), 'Unknown')]
         order['priority'] = priority_map.get(str(order['priority']), 'Unknown')
         order['order_type'] = order_type_map.get(str(order['order_type']), 'Unknown')
         order['payment_method'] = payment_method_map.get(str(order['payment_method']), 'Unknown')
@@ -51,25 +51,30 @@ def get_report(order, employee_name, language):
 
     services = []
     total_price_net = 0
-    for index, service in enumerate(order.services.all(), 1):
+    for index, service in enumerate(order.services.filter(is_active=True), 1):
         if service.price_net:
             total_price_net += service.price_net * service.quantity
             price_gross = f'{service.price_net * 1.23} zł'
             price_net = f'{service.price_net} zł'
         else:
-            price_gross = None
-            price_net = None
+            price_gross = '0.0 zł'
+            price_net = '0.0 zł'
+        service_name = str(service.name).split('[')
+        if len(service_name) > 1:
+            service_namee = service_name[0].strip()
+        else:
+            service_namee = str(service.name)
 
         services.append(
             {
                 'num': str(index),
-                'service': str(service.name),
+                'service': service_namee,
                 'qty': str(service.quantity),
                 'price_net': price_net,
                 'price_gross': price_gross,
             }
         )
-    if len(order.services.all()) == 0:
+    if len(order.services.filter(is_active=True)) == 0:
         services = [{} for _ in range(5)]
 
     document.merge_rows('service', services)
@@ -114,13 +119,15 @@ def get_report(order, employee_name, language):
         'payment_method': order.get_payment_method_display(),
         'priority': order.get_priority_display(),
         'current_date': str(datetime.now().strftime('%d-%m-%Y %H:%M')),
-        'employee_sign': employee_name,
         'customer_sign': order.signer_name,
         'p_total_net': total_price_net,
         'p_total_gross': total_price_gross,
     }
+    if len(order.services.filter(is_active=True)) != 0:
+        fields['employee_sign'] = employee_name
+
     if order.device:
-        fields['device'] = str(order.device)
+        fields['device'] = f'{str(order.device.brand)} {str(order.device.model)}'
         fields['serial_number'] = order.device.serial_number
     else:
         fields['device'] = order.device_name

@@ -1,6 +1,7 @@
 from django.urls import path
 
-from .views import OrdersList, ApplyFilters, EmployeesOrdersList, RegionsOrdersList, MyOrdersList, OrdersSettlement
+from .views import OrdersList, ApplyFilters, EmployeesOrdersList, RegionsOrdersList, MyOrdersList, OrdersSettlement,\
+    OrdersMapList
 
 app_name = 'order_management'
 
@@ -10,5 +11,6 @@ urlpatterns = [
     path('regions/', RegionsOrdersList.as_view(), name='regions_orders_list'),
     path('my_orders/', MyOrdersList.as_view(), name='my_orders_list'),
     path('orders_settlement/', OrdersSettlement.as_view(), name='orders_settlement'),
+    path('map/', OrdersMapList.as_view(), name='orders_map'),
     path('apply_filters/', ApplyFilters.as_view(), name='apply_filters'),
 ]
