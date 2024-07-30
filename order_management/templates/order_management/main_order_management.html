@@ -92,7 +92,7 @@
             </td>
             <td>{{ order.short_description_name }}</td>
             <td>{{ order.device_full_name }}</td>
-            <td>{{ order.status }}</td>
+            <td data-status-id="{{ order.status.0 }}">{{ order.status.1 }}</td>
             <td>
               <div class="dropdown" onclick="handleDropdownClick(event)">
                 <select class="region-select form-select" style="width:auto;" data-order-id="{{ order.id }}">

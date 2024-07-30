@@ -184,6 +184,8 @@ class OrderUpdateAPIView(EmployeeRequiredMixin, View):
         order = get_object_or_404(Order, pk=order_id)
         selected_type = request.POST.get('selected_type')
         selected_value = request.POST.get('selected_value')
+        if selected_value == 'None':
+            selected_value = '-1'
 
         if selected_type == 'executor' and selected_value:
             if selected_value and selected_value != '-1':

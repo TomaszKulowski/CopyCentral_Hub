@@ -27,7 +27,7 @@ class Customer(models.Model):
     billing_street = models.CharField(_('Billing Street'), max_length=60, blank=True, null=True)
     billing_number = models.CharField(_('Billing Number'), max_length=24, blank=True, null=True)
     country_calling_code = models.CharField(_('Calling Code'), max_length=8, blank=True, null=True)
-    phone_number = models.CharField(_('Phone Number'), blank=True, null=True)
+    phone_number = models.CharField(_('Phone Number'), max_length=20, blank=True, null=True)
     email = models.EmailField(_('Email'), blank=True, null=True)
     description = models.TextField(_('Description'), max_length=300, blank=True, null=True)
     payment = models.SmallIntegerField(_('Payment'), choices=Payment.choices, default=Payment.CASH)
