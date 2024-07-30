@@ -46,6 +46,7 @@ services:
     restart: always
     image: tomasz987/biuroserwis_nginx:latest
 
+
 volumes:
   postgres_data:
   static_volume:
