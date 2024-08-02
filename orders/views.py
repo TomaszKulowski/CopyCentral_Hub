@@ -79,13 +79,22 @@ class ExecutorAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetVi
         if not self.request.user.is_authenticated:
             return Employee.objects.none()
 
-        qs = Employee.objects.select_related()
+        qs = Employee.objects.exclude(user__id=1).exclude(user__is_active=False).select_related()
 
         if self.q:
-            qs = qs.filter(
-                Q(user__first_name__icontains=self.q) |
-                Q(user__last_name__icontains=self.q)
-            )
+            search_terms = self.q.split()
+            if len(search_terms) > 1:
+                first_name = search_terms[0]
+                last_name = ' '.join(search_terms[1:])
+                qs = qs.filter(
+                    Q(user__first_name__icontains=first_name) &
+                    Q(user__last_name__icontains=last_name)
+                )
+            else:
+                qs = qs.filter(
+                    Q(user__first_name__icontains=self.q.strip()) |
+                    Q(user__last_name__icontains=self.q.strip())
+                )
 
         return qs.order_by(Lower('user__first_name'))
 
@@ -121,7 +130,7 @@ class DeviceAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView
                 Q(serial_number__icontains=self.q)
             )
 
-        return qs.order_by(Lower('brand__name'))
+        return qs.order_by(Lower('brand'))
 
 
 class ServiceAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetView):
@@ -139,7 +148,7 @@ class ServiceAutocomplete(EmployeeRequiredMixin, autocomplete.Select2QuerySetVie
         if service_filter_by_brand_id and service_filter_by_brand_id != 'All':
             qs = qs.filter(device_brand__id=service_filter_by_brand_id)
         if service_filter_by_model_id and service_filter_by_model_id != 'All':
-            qs = qs.filter(device_model__id=service_filter_by_model_id)
+            qs = qs.filter(Q(device_model__id=service_filter_by_model_id) | Q(device_model__isnull=True))
 
         if self.q:
             qs = qs.filter(
