@@ -79,14 +79,14 @@
             <td>{{ order_details.address_name }}</td>
             <td>
               {% if order_details.phone_number %}
-               <a class="text-body" style="text-decoration: none;" href="tel:+{{ order_details.phone_number }}">{{ order_details.phone_number }}</a>
+               <a class="text-body" style="text-decoration: none;" href="tel:{{ order_details.phone_number }}">{{ order_details.phone_number }}</a>
               {% else %}
                 ---
               {% endif %}
             </td>
             <td>{{ order_details.short_description_name }}</td>
             <td>{{ order_details.device_full_name }}</td>
-            <td>{{ order_details.status }}</td>
+            <td>{{ order_details.status.1 }}</td>
             <td>{{ order_details.priority }}</td>
             <td style="text-align: right;">
               <div class="btn-group me-2">

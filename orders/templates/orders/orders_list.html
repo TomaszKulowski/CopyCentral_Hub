@@ -77,6 +77,8 @@
             <td>{{ order.device.brand|title }} {{ order.device.model|title }}</td>
           {% elif order.device.brand and not order.device.model %}
             <td>{{ order.device.brand|title }}</td>
+          {% elif order.device_name %}
+            <td>{{ order.device_name }}</td>
           {% else %}
             <td> --- </td>
           {% endif %}

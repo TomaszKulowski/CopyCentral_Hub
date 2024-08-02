@@ -86,14 +86,6 @@ class OrderForm(forms.ModelForm):
         customer = kwargs.pop('customer', None)
         super(OrderForm, self).__init__(*args, **kwargs)
 
-        if self.instance.executor:
-            if self.instance.executor.department > 2:
-                statuses = StatusChoices.choices.copy()
-                del(statuses[3])
-                self.fields['status'].choices = statuses
-            else:
-                self.fields['status'].choices = self.fields['status'].choices
-
         if self.instance.customer:
             self.fields['additional_address'].queryset = AdditionalAddress.objects.filter(
                 customer=self.instance.customer,
@@ -107,6 +99,12 @@ class OrderForm(forms.ModelForm):
             )
 
         for field in self.fields:
+            if field == 'total_counter':
+                self.fields[field].widget.attrs.update({'id': 'total_counter', 'readonly': 'True'})
+            if field == 'mono_counter':
+                self.fields[field].widget.attrs.update({'id': 'mono_counter'})
+            if field == 'color_counter':
+                self.fields[field].widget.attrs.update({'id': 'color_counter'})
             if field == 'name':
                 self.fields[field].widget.attrs.update({'rows': 2})
             if field in ['additional_info', 'description']:
