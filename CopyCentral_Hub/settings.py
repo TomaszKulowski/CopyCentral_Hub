@@ -212,6 +212,11 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:1337',
 ]
 
+
+SESSION_COOKIE_AGE = 10800  # 3 hours. "1209600(2 weeks)" by default
+SESSION_SAVE_EVERY_REQUEST = True
+
+
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
