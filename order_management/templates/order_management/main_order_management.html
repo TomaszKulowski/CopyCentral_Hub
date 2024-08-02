@@ -84,8 +84,8 @@
             {% endif %}
             <td>{{ order.address_name }}</td>
             <td>
-              {% if order_details.phone_number %}
-                <a class="text-decoration-none link-dark" href="tel:+{{ order.phone_number }}">{{ order.phone_number }}</a>
+              {% if order.phone_number %}
+                <a class="text-decoration-none link-dark" href="tel:{{ order.phone_number }}">{{ order.phone_number }}</a>
               {% else %}
                 ---
               {% endif %}
