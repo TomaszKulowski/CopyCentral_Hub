@@ -155,25 +155,38 @@ function addressCreate() {
 function deviceCreate() {
     var url = '/orders/api/device_create/';
     var formData = $('#deviceForm').serialize();
+    var errorDiv = $('#errors');
 
     $.ajax({
         url: url,
         type: 'POST',
         data: formData,
+        dataType: 'json',
         error: function(xhr, status, error) {
             console.error(xhr.responseText);
         },
         success: function(response) {
-            var my_field = document.getElementById('device-select');
-            var new_option = document.createElement('option');
-            new_option.text = response.device_name;
-            new_option.value = response.device_id;
+            errorDiv.html('');
 
-            my_field.appendChild(new_option);
-            $(my_field).val(new_option.value).trigger('change');
-        },
-        complete: function() {
-            $('#addDeviceModal').modal('hide');
+            if (response.status === 201) {
+                var my_field = document.getElementById('device-select');
+                var new_option = document.createElement('option');
+                new_option.text = response.device_name;
+                new_option.value = response.device_id;
+
+                my_field.appendChild(new_option);
+                $(my_field).val(new_option.value).trigger('change');
+                $('#addDeviceModal').modal('hide');
+            } else if (response.status === 400) {
+                var errors = response.errors;
+                var errorList = '';
+                for (var field in errors) {
+                    if (errors.hasOwnProperty(field)) {
+                        errorList += errors[field];
+                    }
+                }
+                errorDiv.html(errorList);
+            }
         }
     });
 }
@@ -541,4 +554,47 @@ function sendReport(orderId, email) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', endpointURL, true);
     xhr.send();
+}
+
+
+// auto calculate total counter in the order template
+document.addEventListener('DOMContentLoaded', function() {
+    var monoCounter = document.getElementById('mono_counter');
+    var colorCounter = document.getElementById('color_counter');
+    var totalCounter = document.getElementById('total_counter');
+
+    function updateTotalCounter() {
+        var monoValue = parseInt(monoCounter.value) || 0;
+        var colorValue = parseInt(colorCounter.value) || 0;
+        totalCounter.value = monoValue + colorValue;
+    }
+
+    monoCounter.addEventListener('input', updateTotalCounter);
+    colorCounter.addEventListener('input', updateTotalCounter);
+
+    updateTotalCounter();
+});
+
+// auto calculate total counter in the device modal
+document.addEventListener('DOMContentLoaded', function() {
+    var monoCounter_device = document.getElementById('mono_counter_device');
+    var colorCounter_device = document.getElementById('color_counter_device');
+    var totalCounter_device = document.getElementById('total_counter_device');
+
+    function updateTotalCounter() {
+        var monoValue_device = parseInt(monoCounter_device.value) || 0;
+        var colorValue_device = parseInt(colorCounter_device.value) || 0;
+        totalCounter_device.value = monoValue_device + colorValue_device;
+    }
+
+    monoCounter_device.addEventListener('input', updateTotalCounter);
+    colorCounter_device.addEventListener('input', updateTotalCounter);
+
+    updateTotalCounter();
+});
+
+
+function toggleDetails(orderId) {
+    var detailsRow = document.getElementById('row' + orderId);
+    detailsRow.classList.toggle('show');
 }

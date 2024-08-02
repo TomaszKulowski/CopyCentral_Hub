@@ -9,6 +9,7 @@ from django.db.models import Q, Sum, F
 from django.db.models.functions import Lower
 from django.forms import ModelForm
 from django.forms.models import model_to_dict
+from django.forms.utils import ErrorList
 from django.http import FileResponse, HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
@@ -552,7 +553,14 @@ class DeviceCreateModal(EmployeeRequiredMixin, CreateView):
     form_class = DeviceForm
 
     def form_invalid(self, form):
-        return JsonResponse({'status': 400, 'errors': form.errors.as_ul()})
+        errors = {}
+        for field, error_list in form.errors.items():
+            if isinstance(error_list, ErrorList):
+                errors[field] = error_list.as_text()
+            else:
+                errors[field] = error_list
+
+        return JsonResponse({'status': 400, 'errors': errors})
 
     def form_valid(self, form):
         device_instance = form.save()
