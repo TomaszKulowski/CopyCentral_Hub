@@ -5,13 +5,14 @@ from concurrent.futures import ThreadPoolExecutor
 from dal import autocomplete
 from django.conf import settings
 from django.core.mail import EmailMessage
-from django.db.models import Q
+from django.db.models import Q, Sum, F
 from django.db.models.functions import Lower
 from django.forms import ModelForm
 from django.forms.models import model_to_dict
 from django.http import FileResponse, HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from sorl.thumbnail import get_thumbnail
@@ -247,6 +248,7 @@ class OrderList(EmployeeRequiredMixin, ListView):
             orders = orders.filter(
                 Q(id__contains=search_query) |
                 Q(customer__name__icontains=search_query) |
+                Q(customer__tax__icontains=search_query) |
                 Q(invoice_number__icontains=search_query) |
                 Q(device__serial_number__icontains=search_query)
             )
@@ -262,6 +264,13 @@ class OrderList(EmployeeRequiredMixin, ListView):
 
         context['order_by'] = order_by
         context['page_objs'] = context['page_obj']
+
+        for order in context['page_objs']:
+            order.active_services = order.services.filter(is_active=True)
+            total_price = order.active_services.aggregate(
+                total_price=Sum(F('price_net') * F('quantity'))
+            )['total_price']
+            order.total_price = total_price if total_price else 0
 
         if customer_id and customer_id != 'None':
             self.request.session['customer_id'] = customer_id
@@ -291,16 +300,13 @@ class OrderUpdate(EmployeeRequiredMixin, View):
     attachment_formset = AttachmentFormSet
 
     def get_context_data(self, **kwargs):
-        order_id = kwargs.get('pk')
-        customer_id = kwargs.get('customer_id')
-        payer_id = kwargs.get('payer_id')
-        address_id = kwargs.get('address_id')
-        device_id = kwargs.get('device_id')
         attachments = None
+        customer_instance = None
+        order_id = kwargs.get('pk')
+        order_form = OrderForm()
 
         if order_id:
             order_instance = get_object_or_404(self.model.objects.select_related(), pk=order_id)
-            self.request.session['customer_id'] = order_instance.customer.id
             atts = order_instance.attachment_set.all()
             attachments = {}
             for att in atts:
@@ -311,45 +317,6 @@ class OrderUpdate(EmployeeRequiredMixin, View):
 
         else:
             order_instance = None
-            self.request.session['customer_id'] = None
-
-        if customer_id:
-            self.request.session['customer_id'] = customer_id
-            customer_instance = get_object_or_404(Customer, pk=customer_id)
-            if order_instance:
-                order_instance.customer = customer_instance
-                if not order_instance.phone_number:
-                    order_instance.phone_number = customer_instance.phone_number
-
-        else:
-            customer_instance = None
-
-        if not customer_id and not order_id:
-            self.request.session['customer_id'] = None
-
-        if payer_id:
-            payer_instance = get_object_or_404(Customer, pk=payer_id)
-            if order_instance:
-                order_instance.payer = payer_instance
-        else:
-            payer_instance = None
-
-        if address_id == 'null':
-            if order_instance:
-                order_instance.additional_address = None
-        if address_id:
-            address_instance = get_object_or_404(AdditionalAddress, pk=address_id)
-            if order_instance:
-                order_instance.additional_address = address_instance
-        else:
-            address_instance = None
-
-        if device_id:
-            device_instance = get_object_or_404(Device, pk=device_id)
-            if order_instance:
-                order_instance.device = device_instance
-        else:
-            device_instance = None
 
         if order_instance:
             customer_instance = get_object_or_404(Customer, pk=order_instance.customer.id)
@@ -387,13 +354,6 @@ class OrderUpdate(EmployeeRequiredMixin, View):
             order_services = order_instance.services.filter(is_active=True)
         else:
             order_services = []
-            initial_data = {
-                'customer': customer_instance,
-                'payer': payer_instance,
-                'additional_address': address_instance,
-                'device': device_instance,
-            }
-            order_form = self.order_form_class(initial=initial_data)
 
         total_summary = sum(service.quantity * service.price_net for service in order_services)
 
@@ -403,6 +363,13 @@ class OrderUpdate(EmployeeRequiredMixin, View):
                     setattr(customer_instance, attr, '')
                 if value is None:
                     setattr(customer_instance, attr, '---')
+
+        if self.request.user.employee.first().department > 2:
+            for value, _ in order_form.fields['status'].choices:
+                if value == 3:
+                    status_choices = list(order_form.fields['status'].choices)
+                    status_choices = [choice for choice in status_choices if choice[0] != 3]
+                    order_form.fields['status'].choices = status_choices
 
         context = {
             'order_instance': order_instance,
@@ -451,7 +418,6 @@ class OrderUpdate(EmployeeRequiredMixin, View):
             if address_id:
                 address_instance = get_object_or_404(AdditionalAddress, pk=address_id)
                 customer_id = request_data.get('customer')
-                self.request.session['customer_id'] = customer_id
                 customer_instance = get_object_or_404(Customer, pk=customer_id)
                 if address_instance in customer_instance.additionaladdress_set.all():
                     order_instance.additional_address = address_instance
@@ -534,9 +500,12 @@ class CustomerCreateModal(EmployeeRequiredMixin, CreateView):
 
     def form_valid(self, form):
         customer_instance = form.save()
-        customer_id = customer_instance.id
 
-        return JsonResponse({'status': 201, 'customer_id': customer_id})
+        return JsonResponse({
+            'status': 201,
+            'customer_id': customer_instance.id,
+            'customer_name': str(customer_instance),
+        })
 
 
 class AddressDetails(EmployeeRequiredMixin, DetailView):
@@ -565,8 +534,17 @@ class AddressCreateModal(EmployeeRequiredMixin, View):
         address_form = AdditionalAddressForm(request.POST)
         if address_form.is_valid():
             address_instance = address_form.save()
-            return JsonResponse({'status': 201, 'address_id': address_instance.id})
-        return JsonResponse({'status': 400})
+
+            return JsonResponse({
+                'status': 201,
+                'address_id': address_instance.id,
+                'address_name': str(address_instance),
+            })
+
+        return JsonResponse({
+            'status': 400,
+            'message': _('First select customer'),
+        })
 
 
 class DeviceCreateModal(EmployeeRequiredMixin, CreateView):
@@ -578,9 +556,12 @@ class DeviceCreateModal(EmployeeRequiredMixin, CreateView):
 
     def form_valid(self, form):
         device_instance = form.save()
-        device_id = device_instance.id
 
-        return JsonResponse({'status': 201, 'device_id': device_id})
+        return JsonResponse({
+            'status': 201,
+            'device_id': device_instance.id,
+            'device_name': str(device_instance),
+        })
 
 
 class ServicesFiler(EmployeeRequiredMixin, ListView):
@@ -619,10 +600,15 @@ class ServiceDetails(EmployeeRequiredMixin, DetailView):
     def render_to_response(self, context, **response_kwargs):
         service = context['object']
 
+        if service.description:
+            service_namee = f'{service.name} [{service.description}]'
+        else:
+            service_namee = str(service.name)
+
         return JsonResponse({
-            'name': service.name,
+            'name': service_namee,
             'price_net': service.price_net,
-            'quantity': 1
+            'quantity': 1,
         })
 
     def get(self, request, *args, **kwargs):
