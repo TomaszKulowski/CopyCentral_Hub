@@ -2,8 +2,9 @@
 
 ## Table of Contents
    1. [Description](#description)
-   2. [Applications](#applications)
-   3. [Setup](#setup)
+   2. [Online Demo](#online-demo)
+   3. [Applications](#applications)
+   4. [Setup](#setup)
       1. [Docker](#docker)
          1. [Using Pre-Built Docker Images from Docker Hub](#using-pre-built-docker-images-from-docker-hub)
          2. [Building Docker Images Manually](#building-docker-images-manually)
@@ -17,6 +18,20 @@ designed specifically for managing service orders.
 The application offers a range of features to streamline order-related processes,
 including managing users, customers, devices, employees, history, information, notifications,
 and other relevant aspects.
+
+
+## Online Demo
+
+You can try out a live version of the application for testing purposes at the following link:
+
+- [CopyCentral Hub](http://copycentralhub.com)
+
+**Login credentials for the demo:**
+- **Username:** admin
+- **Password:** admin
+
+Please note that all data on the demo server is reset every hour, so any changes made will not persist.
+
 
 ## Applications
 
