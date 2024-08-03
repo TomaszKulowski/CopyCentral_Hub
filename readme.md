@@ -61,23 +61,24 @@ Please note that all data on the demo server is reset every hour, so any changes
 Ensure that Docker is installed on your machine.
 You can download and install Docker from the [official Docker website](https://www.docker.com/get-started).
 
-Follow these steps to set up and run the Dockerized application:
-
 #### Using Pre-Built Docker Images from Docker Hub
 
 1. **Download `compose_images.yml`**
 
-   Obtain the `compose_images.yml` file, which contains the Docker Compose configuration for the application.
+   Obtain the `compose_images.yml` file from the repository.
+   You can find it [here](https://github.com/TomaszKulowski/CopyCentral_Hub/blob/develop/compose_images.yml).
 
 2. **Create Environment Files**
 
    Create two environment files in the root directory of your project:
 
    - `.env.prod`: This file should contain production environment variables.
-   Use the `.env.prod.example` file as a reference to configure it.
+   Use the [`.env.prod.example`](https://github.com/TomaszKulowski/CopyCentral_Hub/blob/develop/.env.prod-example)
+   file as a reference to configure it.
 
    - `.env-prod.db`: This file should contain database-specific environment variables.
-   Use the `.env-prod.db.example` file as a reference to configure it.
+   Use the [`.env-prod.db.example`](https://github.com/TomaszKulowski/CopyCentral_Hub/blob/develop/.env.prod.db-example)
+   file as a reference to configure it.
 
 3. **Run Docker Compose**
 
@@ -111,10 +112,12 @@ If you prefer to build the Docker images yourself, follow these additional steps
    Create two environment files in the root directory of your project:
 
    - `.env.prod`: This file should contain production environment variables.
-   Use the `.env.prod.example` file as a reference to configure it.
+   Use the [`.env.prod.example`](https://github.com/TomaszKulowski/CopyCentral_Hub/blob/develop/.env.prod-example)
+   file as a reference to configure it.
 
    - `.env-prod.db`: This file should contain database-specific environment variables.
-   Use the `.env-prod.db.example` file as a reference to configure it.
+   Use the [`.env-prod.db.example`](https://github.com/TomaszKulowski/CopyCentral_Hub/blob/develop/.env.prod.db-example)
+   file as a reference to configure it.
 
 3. **Run Docker Compose**
 
@@ -150,10 +153,12 @@ Follow these steps to set up the application without using Docker:
    Create two environment files in the root directory of your project:
 
    - `.env.prod`: This file should contain production environment variables.
-   Use the `.env.prod.example` file as a reference to configure it.
+   Use the [`.env.prod.example`](https://github.com/TomaszKulowski/CopyCentral_Hub/blob/develop/.env.prod-example)
+   file as a reference to configure it.
 
    - `.env-prod.db`: This file should contain database-specific environment variables.
-   Use the `.env-prod.db.example` file as a reference to configure it.
+   Use the [`.env-prod.db.example`](https://github.com/TomaszKulowski/CopyCentral_Hub/blob/develop/.env.prod.db-example)
+   file as a reference to configure it.
 
 4. **Install Dependencies**
 
