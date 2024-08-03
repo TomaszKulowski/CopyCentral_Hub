@@ -9,6 +9,12 @@
          1. [Using Pre-Built Docker Images from Docker Hub](#using-pre-built-docker-images-from-docker-hub)
          2. [Building Docker Images Manually](#building-docker-images-manually)
       2. [Local Setup](#local-setup)
+   5. [Admin Panel](#admin-panel)
+      1. [Admin Panel Features](#admin-panel-features)
+   6. [Application Features](#application-features)
+      1. [Main Page](#main-page)
+      2. [Features for Office Staff/Order Managers](#features-for-office-stafforder-managers)
+      3. [Features for All Employees](#features-for-all-employees)
 
 
 ## Description
@@ -168,3 +174,114 @@ Follow these steps to set up the application without using Docker:
    After running the above command, the application should be up and running.
    You can access it by entering http://localhost in your web browser.
 
+
+## Admin Panel
+
+For administrative tasks, such as managing users, viewing application data, and configuring the system,
+you can access the admin panel.
+
+- **Admin Panel URL:** [http://localhost/admin](http://localhost/admin)
+
+**Default Admin Credentials for Demo:**
+- **Username:** admin
+- **Password:** admin
+
+### Admin Panel Features
+
+In the admin panel, you can perform the following tasks:
+
+- **User Management**
+  - Manage users
+  - Send password reset links to users' emails
+
+- **Employee Management**
+  - Add and remove employees
+  - Each employee is associated with a user account and has additional details such as
+  department, phone number, and a CSS color for map orders
+
+- **Information Section**
+  - Enter and manage information displayed on the main page of the application
+
+- **Notifications**
+  - **Notification Settings**
+    - Configure SMS notification settings, requiring an SMS API server with parameters such as
+    auth token, phone number, and message
+    - Enter the SMS server details, auth token, message template,
+    notification type (currently only new order notifications are supported),
+    and delay time (interval for checking new orders for each employee)
+  - **Notification Logs**
+    - View sent notifications
+
+- **Orders**
+  - **Regions**
+    - Manage regions for orders
+  - **Short Descriptions**
+    - Manage brief descriptions of orders
+
+To access the admin panel, navigate to `/admin` after starting the application
+and log in with the provided credentials. For production use, make sure to update the admin password
+and configure appropriate permissions.
+
+
+## Application Features
+
+### Main Page
+
+The main page displays information added in the admin panel's **Informations** section.
+From the main page, you can access settings to:
+- Change the language (supported languages: Polish and English)
+- Toggle between dark mode and light mode
+
+### Features for Office Staff/Order Managers
+
+- **Order Management**
+  - **Main Section**: Displays all active orders with filtering and searching capabilities.
+  - **Employees Orders**: Shows all orders assigned to a specific employee with options to reorder.
+  - **Regions Orders**: Orders are categorized by region.
+  - **Orders Settlement**: Provides necessary data for invoicing and order settlement.
+  - **Orders Map**: A map view of orders with pins indicating order locations.
+  The color of each pin corresponds to the employee's color set in the admin panel.
+  Orders with incorrectly loaded addresses are shown at coordinates (0,0).
+
+- **Order Review**
+  - **Main Section**: Contains all completed/cancelled/settled orders.
+  Orders can be approved or marked for review as 'to review'.
+  - **Orders for Review**: Displays orders marked as 'to review'.
+
+### Features for All Employees
+
+- **My Orders**
+  - Displays active orders assigned to the logged-in employee.
+
+- **Service Orders**
+  - Shows all orders in the application, including completed, settled, and cancelled ones.
+  - Allows for order searching.
+  - Each order includes:
+    - Client and payer selection
+    - Order details with information about the date of addition and modification
+    - Options to assign an employee, change order type, priority, status, select region,
+    add a brief description, additional information, and capture the signature and name of the person
+    receiving the order
+    - Detailed order information including device information, fault description, performed services,
+    and an attachment section for PDF files or images
+  - In browsing mode, you can:
+    - Download the order report in PDF format
+    - Send the PDF report to the client’s email
+    - Check the order change history
+
+- **Services**
+  - A collection of services and pricing for orders.
+  - **Brands List**: Enter device brands.
+  - **Models List**: Enter device models.
+  - Services can be added to the above data or listed as basic services without specific brands or models.
+  - In browsing mode, you can view the change history of a service.
+
+- **Customers**
+  - Manages clients added to the database.
+  - Each customer has a **Additional Addresses List** section for additional addresses.
+  - In browsing mode, you can view the change history and all orders associated with a customer.
+
+- **Devices**
+  - Displays serviced devices.
+  - In browsing mode, you can view the change history of a device
+  and check the order history where the device data was recorded.
