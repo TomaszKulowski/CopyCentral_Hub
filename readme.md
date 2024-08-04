@@ -16,6 +16,8 @@
       2. [Features for Office Staff/Order Managers](#features-for-office-stafforder-managers)
       3. [Features for All Employees](#features-for-all-employees)
    7. [Testing](#testing)
+      1. [Data Generation Commands](#data-generation-commands)
+      2. [Coming Soon](#coming-soon)
 
 
 ## Description
@@ -297,6 +299,72 @@ From the main page, you can access settings to:
 
 Automated tests are crucial to ensure the stability and reliability of the application.
 We are currently in the process of developing comprehensive test suites for CopyCentral Hub.
+
+### Available Now
+
+To facilitate testing, we currently provide a set of factories designed to generate fake data:
+
+- **UserFactory**
+- **CustomerFactory**
+- **AdditionalAddressFactory**
+- **DeviceFactory**
+- **EmployeeFactory**
+- **InformationFactory**
+- **NotificationFactory**
+- **OrderReviewFactory**
+- **OrderServiceFactory**
+- **RegionFactory**
+- **ShortDescriptionFactory**
+- **OrderFactory**
+- **BrandFactory**
+- **ModelFactory**
+- **ServiceFactory**
+
+These factories can be used to create instances of your models populated with synthetic data.
+This setup allows for effective testing and development without the need for manual data entry.
+
+### Data Generation Commands
+
+To efficiently populate your database with fake data, we provide several management commands.
+The `-n` option specifies the number of objects to be created.
+
+#### Commands
+
+- `python manage.py add_fake_customers -n <number>`  
+  Adds `<number>` fake customer records.
+
+
+- `python manage.py add_fake_customers_with_address -n <number>`  
+  Adds `<number>` fake customer records, each with an associated address.
+
+
+- `python manage.py add_fake_devices -n <number>`  
+  Adds `<number>` fake device records.
+
+
+- `python manage.py add_fake_employees -n <number>`  
+  Adds `<number>` fake employee records.
+
+
+- `python manage.py add_fake_informations -n <number>`  
+  Adds `<number>` fake information records.
+
+
+- `python manage.py add_fake_notifications -n <number>`  
+  Adds `<number>` fake notification records.
+
+
+- `python manage.py add_fake_order_reviews -n <number>`  
+  Adds `<number>` fake order review records.
+
+
+- `python manage.py add_fake_orders -n <number>`  
+  Adds `<number>` fake order records.
+
+
+- `python manage.py add_fake_services -n <number>`  
+  Adds `<number>` fake service records.
+
 
 ### Coming Soon
 
