@@ -107,6 +107,3 @@ class OrderFactory(factory.django.DjangoModelFactory):
             if self.total_counter is not None:
                 self.mono_counter = self.total_counter - random.randint(0, self.total_counter)
                 self.color_counter = self.total_counter - self.mono_counter
-
-
-# todo test order review!!!!!!!!

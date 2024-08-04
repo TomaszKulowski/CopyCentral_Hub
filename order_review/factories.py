@@ -17,7 +17,6 @@ class OrderReviewFactory(factory.django.DjangoModelFactory):
         model = OrderReview
 
     user = factory.LazyAttribute(lambda x: User.objects.filter(employee__department__lt=3).order_by('?').first())
-    # order = factory.SubFactory(OrderFactory)
     order = factory.LazyAttribute(lambda x: OrderFactory(status=random.randint(2, 5)))
     is_approved = factory.LazyAttribute(lambda x: random.choice([True, False]))
     for_review = factory.LazyAttribute(lambda x: random.choice([True, False]))
