@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-04 11:48+0200\n"
+"POT-Creation-Date: 2024-08-04 16:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -576,7 +576,19 @@ msgstr "Status"
 msgid "Price Net"
 msgstr "Cena netto"
 
-#: .\devices\models.py:44 .\devices\templates\devices\list.html:22
+#: .\devices\templates\devices\details.html:7
+msgid "Device Details"
+msgstr "Szczegóły Urządzenia"
+
+#: .\devices\templates\devices\list.html:7 .\templates\base.html:168
+msgid "Devices"
+msgstr "Urządzenia"
+
+#: .\devices\templates\devices\list.html:10
+msgid "Search by Serial Number"
+msgstr "Szukaj według numeru seryjnego"
+
+#: .\devices\templates\devices\list.html:22
 #: .\order_management\templates\order_management\employees_order_management.html:33
 #: .\order_management\templates\order_management\employees_order_management_list.html:12
 #: .\order_management\templates\order_management\main_order_management.html:81
@@ -592,18 +604,6 @@ msgstr "Cena netto"
 #: .\orders\templates\orders\orders_list.html:46
 msgid "Device"
 msgstr "Urządzenie"
-
-#: .\devices\templates\devices\details.html:7
-msgid "Device Details"
-msgstr "Szczegóły Urządzenia"
-
-#: .\devices\templates\devices\list.html:7 .\templates\base.html:168
-msgid "Devices"
-msgstr "Urządzenia"
-
-#: .\devices\templates\devices\list.html:10
-msgid "Search by Serial Number"
-msgstr "Szukaj według numeru seryjnego"
 
 #: .\devices\templates\devices\update.html:8
 msgid "Device Update"
@@ -673,16 +673,16 @@ msgid "Old Value"
 msgstr "Stara wartość"
 
 #: .\history\templates\history\history_list.html:80
-#: .\orders\templates\orders\orders_list.html:105 .\templates\base.html:267
+#: .\orders\templates\orders\orders_list.html:105 .\templates\base.html:274
 msgid "Page"
 msgstr "Strona"
 
 #: .\history\templates\history\history_list.html:80
-#: .\orders\templates\orders\orders_list.html:105 .\templates\base.html:267
+#: .\orders\templates\orders\orders_list.html:105 .\templates\base.html:274
 msgid "of"
 msgstr "z"
 
-#: .\history\views.py:76 .\orders\models.py:151
+#: .\history\views.py:82 .\orders\models.py:151
 #: .\orders\templates\orders\order_details.html:205
 #: .\orders\templates\orders\order_details.html:236
 #: .\orders\templates\orders\order_update.html:196
@@ -693,23 +693,23 @@ msgstr "z"
 msgid "Services"
 msgstr "Usługi"
 
-#: .\history\views.py:113
+#: .\history\views.py:119
 msgid "Updated Sign"
 msgstr "Zaktualizowno podpis"
 
-#: .\history\views.py:114 .\history\views.py:120
+#: .\history\views.py:120 .\history\views.py:126
 msgid "Sign"
 msgstr "Podpis"
 
-#: .\history\views.py:116
+#: .\history\views.py:122
 msgid "Added Sign"
 msgstr "Dodano podpis"
 
-#: .\history\views.py:117
+#: .\history\views.py:123
 msgid "No Sign"
 msgstr "Brak podpisu"
 
-#: .\history\views.py:119
+#: .\history\views.py:125
 msgid "Removed Sign"
 msgstr "Usunięto podpis"
 
@@ -1446,6 +1446,14 @@ msgstr "raport"
 #: .\orders\views.py:547
 msgid "First select customer"
 msgstr "Pierw wybierz kontrahenta"
+
+#: .\services\models.py:8 .\services\models.py:18 .\services\models.py:44
+msgid "True"
+msgstr "Tak"
+
+#: .\services\models.py:8 .\services\models.py:18 .\services\models.py:44
+msgid "False"
+msgstr "Nie"
 
 #: .\services\models.py:32
 msgid "Device Brand"
