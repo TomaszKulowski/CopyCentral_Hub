@@ -78,15 +78,60 @@ class OrderListViewBase(EmployeeRequiredMixin, ListView):
                 output_field=CharField()
             ),
             address_name=Case(
-                When(additional_address__isnull=False, then=Concat(
-                    F('additional_address__city'), Value(', '),
-                    F('additional_address__street'), Value(' '),
-                    F('additional_address__number')
-                )),
-                default=Concat(
-                    F('customer__billing_city'), Value(', '),
-                    F('customer__billing_street'), Value(' '),
-                    F('customer__billing_number')
+                When(
+                    additional_address__isnull=False,
+                    then=Case(
+                        When(
+                            additional_address__city__isnull=False,
+                            then=Concat(
+                                F('additional_address__city'),
+                                Case(
+                                    When(additional_address__street__isnull=False, then=Value(', ')),
+                                    default=Value('')
+                                ),
+                                F('additional_address__street'),
+                                Case(
+                                    When(additional_address__number__isnull=False, then=Value(' ')),
+                                    default=Value('')
+                                ),
+                                F('additional_address__number')
+                            )
+                        ),
+                        default=Concat(
+                            F('additional_address__street'),
+                            Case(
+                                When(additional_address__number__isnull=False, then=Value(' ')),
+                                default=Value('')
+                            ),
+                            F('additional_address__number')
+                        )
+                    )
+                ),
+                default=Case(
+                    When(
+                        customer__billing_city__isnull=False,
+                        then=Concat(
+                            F('customer__billing_city'),
+                            Case(
+                                When(customer__billing_street__isnull=False, then=Value(', ')),
+                                default=Value('')
+                            ),
+                            F('customer__billing_street'),
+                            Case(
+                                When(customer__billing_number__isnull=False, then=Value(' ')),
+                                default=Value('')
+                            ),
+                            F('customer__billing_number')
+                        )
+                    ),
+                    default=Concat(
+                        F('customer__billing_street'),
+                        Case(
+                            When(customer__billing_number__isnull=False, then=Value(' ')),
+                            default=Value('')
+                        ),
+                        F('customer__billing_number')
+                    )
                 ),
                 output_field=CharField(),
             ),
@@ -313,4 +358,3 @@ class OrdersMapList(OfficeWorkerRequiredMixin, OrderListViewBase):
 
         context['orders_details'] = json.dumps(orders_details)
         return context
-
