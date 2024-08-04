@@ -5,7 +5,7 @@ from simple_history.models import HistoricalRecords
 
 class Brand(models.Model):
     name = models.CharField(_('Name'), max_length=255, unique=True)
-    is_active = models.BooleanField(_('Is Active'), choices=[(True, 'True'), (False, 'False')], default=True)
+    is_active = models.BooleanField(_('Is Active'), choices=[(True, _('True')), (False, _('False'))], default=True)
 
     def __str__(self):
         if self.name == 'Basic Services':
@@ -15,7 +15,7 @@ class Brand(models.Model):
 
 class Model(models.Model):
     name = models.CharField(_('Name'), max_length=255, unique=True)
-    is_active = models.BooleanField(_('Is Active'), choices=[(True, 'True'), (False, 'False')], default=True)
+    is_active = models.BooleanField(_('Is Active'), choices=[(True, _('True')), (False, _('False'))], default=True)
 
     def __str__(self):
         if self.name == 'All Models':
@@ -41,7 +41,7 @@ class Service(models.Model):
     name = models.CharField(_('Name'), max_length=255)
     price_net = models.FloatField(_('Price Net'))
     description = models.TextField(_('Description'), max_length=300, blank=True, null=True)
-    is_active = models.BooleanField(_('Is Active'), choices=[(True, 'True'), (False, 'False')], default=True)
+    is_active = models.BooleanField(_('Is Active'), choices=[(True, _('True')), (False, _('False'))], default=True)
     history = HistoricalRecords()
 
     def __str__(self):
