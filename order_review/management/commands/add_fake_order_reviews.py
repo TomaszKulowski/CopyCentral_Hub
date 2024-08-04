@@ -5,17 +5,17 @@ from unittest.mock import patch
 
 from django.core.management import BaseCommand
 
-from orders.factories import OrderFactory
+from order_review.factories import OrderReviewFactory
 
 
 class Command(BaseCommand):
-    help = 'Add fake orders.'
+    help = 'Add fake orders to review.'
 
     def add_arguments(self, parser):
         parser.add_argument(
             '-n',
             '--number',
-            help='Number of orders to create',
+            help='Number of orders to review to create',
             type=int,
             dest='number',
         )
@@ -28,5 +28,5 @@ class Command(BaseCommand):
                     round(random.uniform(-90.0, 90.0), 6),
                     round(random.uniform(-180.0, 180.0), 6),
                 )
-                OrderFactory()
+                OrderReviewFactory()
         stdout.write(f'Successfully created {n} objects.')
