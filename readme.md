@@ -15,6 +15,7 @@
       1. [Main Page](#main-page)
       2. [Features for Office Staff/Order Managers](#features-for-office-stafforder-managers)
       3. [Features for All Employees](#features-for-all-employees)
+   7. [Testing](#testing)
 
 
 ## Description
@@ -290,3 +291,14 @@ From the main page, you can access settings to:
   - Displays serviced devices.
   - In browsing mode, you can view the change history of a device
   and check the order history where the device data was recorded.
+
+
+## Testing
+
+Automated tests are crucial to ensure the stability and reliability of the application.
+We are currently in the process of developing comprehensive test suites for CopyCentral Hub.
+
+### Coming Soon
+
+The testing framework and test cases will be available soon. Stay tuned for updates!
+
