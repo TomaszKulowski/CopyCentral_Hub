@@ -59,14 +59,14 @@
                   <td>
                     <b>{% blocktrans %}Name{% endblocktrans %}: </b>{{ order.device.brand }} {{ order.device.model }}<br>
                     <b>{% blocktrans %}S/N{% endblocktrans %}: </b>{{ order.device.serial_number }}
-                    {% if order.device.total_counter %}
-                      <br><b>{% blocktrans %}Total Counter{% endblocktrans %}: </b>{{ order.device.total_counter }}
+                    {% if order.total_counter %}
+                      <br><b>{% blocktrans %}Total Counter{% endblocktrans %}: </b>{{ order.total_counter }}
                     {% endif %}
-                    {% if order.device.mono_counter %}
-                      <br><b>{% blocktrans %}Mono Counter{% endblocktrans %}: </b>{{ order.device.mono_counter }}
+                    {% if order.mono_counter %}
+                      <br><b>{% blocktrans %}Mono Counter{% endblocktrans %}: </b>{{ order.mono_counter }}
                     {% endif %}
-                    {% if order.device.color_counter %}
-                      <br><b>{% blocktrans %}Color Counter{% endblocktrans %}: </b>{{ order.device.color_counter }}
+                    {% if order.color_counter %}
+                      <br><b>{% blocktrans %}Color Counter{% endblocktrans %}: </b>{{ order.color_counter }}
                     {% endif %}
                   </td>
                 {% elif order.device_name %}
@@ -88,8 +88,17 @@
               <tr></tr>
               <tr id="row{{ order.id }}" class="collapse">
                 <td colspan="2">
+                  {% if order.description %}
+                  <b>{% blocktrans %}Order Description{% endblocktrans %}:</b>
+                  <ul>
+                    <li>{{ order.description|linebreaksbr }}</li>
+                  </ul><br>
+                  {% endif %}
                   <b>{% blocktrans %}Order Details{% endblocktrans %}:</b>
                   <ul>
+                    <li><b>{% blocktrans %}Created At{% endblocktrans %}:</b> {{ order.created_at }}</li>
+                    <li><b>{% blocktrans %}Updated At{% endblocktrans %}:</b> {{ order.updated_at }}</li>
+                    <li><b>{% blocktrans %}Executor{% endblocktrans %}:</b> {% if order.executor %}{{ order.executor }}{% else %} --- {% endif %}</li>
                     <li><b>{% blocktrans %}Order Intake{% endblocktrans %}:</b> {{ order.user_intake }}</li>
                     <li><b>{% blocktrans %}Order Type{% endblocktrans %}:</b> {{ order.get_order_type_display }}</li>
                     <li><b>{% blocktrans %}Payment Method{% endblocktrans %}:</b> {{ order.get_payment_method_display }}</li>
@@ -143,7 +152,7 @@
                       {% for service in order.active_services%}
                         <tr>
                           <td><b>{{ forloop.counter }}</b></td>
-                          <td>{{ service.name }}</td>
+                          <td>{{ service.get_name|upper }}</td>
                           <td>{{ service.quantity }}</td>
                           <td>{{ service.price_net }}</td>
                         </tr>

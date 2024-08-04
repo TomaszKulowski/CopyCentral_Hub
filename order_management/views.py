@@ -266,12 +266,25 @@ class MyOrdersList(EmployeesOrdersListViewBase):
         for region, orders in orders_dict.items():
             result.append({
                 'region': region,
+                'region_id': next(iter(orders)).get('region__id'),
                 'orders_list': orders
             })
         result_sorted = sorted(result, key=lambda x: x['region'])
+
+        selected_region_id = self.request.session.get('selected_region')
+        if selected_region_id == 'Display All':
+            selected_region = 'Display All'
+        elif selected_region_id == 'None':
+            selected_region = 'None'
+        elif selected_region_id and selected_region_id != 'None' and selected_region_id != 'Display All':
+            selected_region = Region.objects.filter(id=selected_region_id).first()
+        else:
+            selected_region = 'Display All'
+
         context = {
             'orders': result_sorted,
-            'selected_region': self.request.session.get('selected_region', 'Display All'),
+            'selected_region': str(selected_region),
+            'selected_region_id': selected_region_id,
         }
 
         return context
@@ -333,7 +346,6 @@ class ApplyFilters(EmployeeRequiredMixin, View):
     def get(self, request):
         if 'region' in request.GET:
             request.session['selected_region'] = request.GET.get('region')
-
         return JsonResponse({'status': 200})
 
 
@@ -352,9 +364,10 @@ class OrdersMapList(OfficeWorkerRequiredMixin, OrderListViewBase):
 
     def get_context_data(self):
         context = super().get_context_data()
-        orders_details = {}
+        result = {}
         for order in context['orders']:
-            orders_details.update({order['id']: [order['latitude'], order['longitude']]})
+            temp = {order['id']: [order['latitude'], order['longitude']]}
+            result.update(temp)
 
-        context['orders_details'] = json.dumps(orders_details)
+        context['result'] = json.dumps(result)
         return context
