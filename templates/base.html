@@ -257,6 +257,13 @@
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 select-button">
           {% block content %}
           {% endblock %}
+          {% if informations %}
+          <div class="d-flex align-items-center border border-1 form-control text-center">
+            {% for info in informations %}
+              {{ info|linebreaksbr }}<br><br>
+            {% endfor %}
+          </div>
+          {% endif %}
           {% if page_obj.paginator.num_pages > 1 %}
             <nav aria-label="Page navigation">
               <ul class="pagination">

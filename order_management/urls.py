@@ -1,7 +1,7 @@
 from django.urls import path
 
-from .views import OrdersList, ApplyFilters, EmployeesOrdersList, RegionsOrdersList, MyOrdersList, OrdersSettlement,\
-    OrdersMapList
+from .views import OrdersList, ApplyFilters, EmployeesOrdersList, RegionsOrdersList, MyOrdersList,\
+    OrdersSettlement, OrdersMapList
 
 app_name = 'order_management'
 

@@ -56,7 +56,11 @@ class Service(models.Model):
             if self.device_model.name:
                 name += f'{self.device_model.name} '
         if name:
-            name += f'- {self.name} - {self.price_net} PLN'
+            if self.description:
+                name += f'- {self.name} - [{self.description}] - {self.price_net} PLN'
+            else:
+                name += f'- {self.name} - {self.price_net} PLN'
+
         return name
 
     def save(self, *args, **kwargs):

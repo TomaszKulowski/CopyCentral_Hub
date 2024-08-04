@@ -26,9 +26,9 @@
               <option hidden="hidden" value="None">{% blocktrans %}No Region Assigned{% endblocktrans %}</option>
             {% else %}
               {% if selected_region == 'Display All' %}
-                <option hidden="hidden" value="{{ selected_region }}">{% blocktrans %}Display All{% endblocktrans %}</option>
+                <option hidden="hidden" value="Display All">{% blocktrans %}Display All{% endblocktrans %}</option>
               {% else %}
-                <option hidden="hidden" value="{{ selected_region }}">{{ selected_region }}</option>
+                <option hidden="hidden" value="{{ selected_region_id }}">{{ selected_region }}</option>
               {% endif %}
             {% endif %}
             <option value="Display All">{% blocktrans %}Display All{% endblocktrans %}</option>
@@ -36,7 +36,7 @@
               {% if order.region == 'None' %}
                 <option value="None">{% blocktrans %}No Region Assigned{% endblocktrans %}</option>
               {% else %}
-                <option value="{{ order.region }}">{{ order.region }}</option>
+                <option value="{{ order.region_id }}">{{ order.region }}</option>
               {% endif %}
             {% endfor %}
           </select>
@@ -49,7 +49,7 @@
       <div class="region-table None">
         <h2>{% blocktrans %}No Region Assigned{% endblocktrans %}</h2>
     {% else %}
-      <div class="region-table {{ order.region }}">
+      <div class="region-table {{ order.region_id }}">
         <h2>{{ order.region }}</h2>
     {% endif %}
     <div class="table-responsive small">
@@ -69,7 +69,7 @@
         </thead>
         <tbody>
           {% for order_details in order.orders_list %}
-            <tr class="clickable" data-toggle="collapse" data-target="#row{{ order_details.id }}">
+            <tr class="clickable" data-toggle="collapse" data-target="#row{{ order_details.id }}" data-executor_id="{{ order_details.executor__id }}" data-table_id="{{ forloop.parentloop.counter }}" data-current_position="{{ order_details.sort_number }}" data-order_id="{{ order_details.id }}" data-target="#row{{ order_details.id }}">
             <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'orders:order_details' order_details.id %}"><b>#{{ order_details.id }}</b></a></td>
             {% if order_details.customer__id %}
               <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'customers:customer_details' order_details.customer__id %}">{{ order_details.customer_name }}</a></td>
@@ -87,7 +87,11 @@
             <td>{{ order_details.short_description_name }}</td>
             <td>{{ order_details.device_full_name }}</td>
             <td>{{ order_details.status.1 }}</td>
-            <td>{{ order_details.priority }}</td>
+            {% if order_details.priority == "Pilny" %}
+              <td style="background: red; font-weight: bold;">{{ order_details.priority }}</td>
+            {% else %}
+              <td>{{ order_details.priority }}</td>
+            {% endif %}
             <td style="text-align: right;">
               <div class="btn-group me-2">
                 <a onclick="handleDropdownClick(event)" href="{% url 'orders:order_details' order_details.id %}" class="btn btn-sm btn-outline-secondary">{% blocktrans %}Details{% endblocktrans %}</a>
@@ -106,8 +110,8 @@
                   <li><b>{% blocktrans %}Payment Method{% endblocktrans %}:</b> {{ order_details.payment_method }}</li>
                 </ul>
               </td>
-              <td colspan="3"><b>{% blocktrans %}Additional Information{% endblocktrans %}:</b><br>{{ order_details.additional_info_name }}</td>
-              <td colspan="3"><b>{% blocktrans %}Order Description{% endblocktrans %}:</b><br>{{ order_details.description_name }}</td>
+              <td colspan="3"><b>{% blocktrans %}Additional Information{% endblocktrans %}:</b><br>{{ order_details.additional_info_name|linebreaksbr }}</td>
+              <td colspan="4"><b>{% blocktrans %}Order Description{% endblocktrans %}:</b><br>{{ order_details.description_name|linebreaksbr }}</td>
             </tr>
           {% endfor %}
         </tbody>

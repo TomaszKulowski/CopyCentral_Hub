@@ -35,6 +35,9 @@ class HistoryList(EmployeeRequiredMixin, View):
                 if not changed_fields:
                     continue
 
+                if not entry.history_user or not entry.history_user:
+                    continue
+
                 history_entry = {
                     'history_details': {
                         'history_date': entry.history_date,
@@ -42,6 +45,9 @@ class HistoryList(EmployeeRequiredMixin, View):
                     },
                 }
                 for field_name in changed_fields:
+                    if field_name in ['latitude', 'longitude', 'last_notification_executor']:
+                        continue
+
                     field_name_label = model._meta.get_field(field_name).verbose_name
                     n = 0
                     if field_name == 'services':

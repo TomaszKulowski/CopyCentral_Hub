@@ -2,7 +2,6 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Max
 from django.shortcuts import get_object_or_404
-from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from jsignature.fields import JSignatureField
 from pathlib import Path
@@ -37,6 +36,8 @@ class StatusChoices(models.IntegerChoices):
     AWAITING_DELIVERY = 6, _('Awaiting Delivery')
     AWAITING_PAYMENT = 7, _('Awaiting Payment')
     AWAITING_PICKUP = 8, _('Awaiting Pickup')
+    CALL_TO_CUSTOMER = 9, _('Call to Customer')
+    READY = 10, _('Ready')
 
 
 class OrderTypeChoices(models.IntegerChoices):

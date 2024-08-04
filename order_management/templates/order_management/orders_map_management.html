@@ -3,6 +3,7 @@
 {% load i18n %}
 
 {% block content %}
+  <link href="{% static 'order_management/css/styles.css' %}" rel="stylesheet">
   <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -12,7 +13,6 @@
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster-src.js"></script>
   <script src="{% static 'order_management/scripts/map_scripts.js' %}"></script>
-  <link href="{% static 'order_management/css/styles.css' %}" rel="stylesheet">
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 mb-3">
     <h2 class="h2">
       <a href="{% url 'order_management:orders_list' %}" class="text-body" style="text-decoration: none;">
@@ -22,7 +22,7 @@
   </div>
   <div class="border">
     <br>
-    <div id="map" data-orders="{{ orders_details }}"></div>
+    <div id="map" data-orders="{{ result }}"></div>
     <br>
   </div>
   {% for order in orders %}
@@ -31,7 +31,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <a href="{% url 'orders:order_details' order.id %}" class="text-decoration-none">
-              <h5 class="modal-title" id="orderModalLabel_{{ order.id }}">{% blocktrans %}Order Details{% endblocktrans %} #{{ order.id }}</h5>
+              <h5 class="modal-title" id="orderModalLabel_{{ order.id }}">{% blocktrans %}Order Details{% endblocktrans %} {{ order.id }}</h5>
             </a>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>

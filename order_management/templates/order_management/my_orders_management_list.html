@@ -14,7 +14,6 @@
         <th scope="col" width=8%>{% blocktrans %}Region{% endblocktrans %}</th>
         <th scope="col" width=8%>{% blocktrans %}Priority{% endblocktrans %}</th>
         <th scope="col" width=14%>{% blocktrans %}Executor{% endblocktrans %}</th>
-        <th scope="col" width=5%></th>
       </tr>
     </thead>
     <tbody>
@@ -29,7 +28,7 @@
         <td>{{ order_details.address_name }}</td>
         <td>
           {% if order_details.phone_number %}
-            <a class="text-body" style="text-decoration: none;" href="tel:+{{ order_details.phone_number }}">{{ order_details.phone_number }}</a>
+            <a class="text-body" style="text-decoration: none;" href="tel:{{ order_details.phone_number }}">{{ order_details.phone_number }}</a>
           {% else %}
             ---
           {% endif %}
@@ -81,23 +80,6 @@
                 <option value="{{ employee.id }}">{{ employee.full_name }}</option>
               {% endfor %}
             </select>
-          </div>
-        </td>
-        <td style="text-align: right;">
-          <div class="btn-group me-2">
-            {% if orders|length == 1 %}
-              <button disabled="disabled" class="btn btn-sm btn-outline-secondary move-up"><i class="bi bi-arrow-up-square"></i></button>
-              <button disabled="disabled" class="btn btn-sm btn-outline-secondary move-down"><i class="bi bi-arrow-down-square"></i></button>
-            {% elif forloop.counter != orders|length and forloop.counter != 1 %}
-              <button class="btn btn-sm btn-outline-secondary move-up"><i class="bi bi-arrow-up-square"></i></button>
-              <button class="btn btn-sm btn-outline-secondary move-down"><i class="bi bi-arrow-down-square"></i></button>
-            {% elif forloop.counter == orders|length %}
-              <button class="btn btn-sm btn-outline-secondary move-up"><i class="bi bi-arrow-up-square"></i></button>
-              <button disabled="disabled" class="btn btn-sm btn-outline-secondary move-down"><i class="bi bi-arrow-down-square"></i></button>
-            {% elif forloop.counter == 1 %}
-              <button disabled="disabled" class="btn btn-sm btn-outline-secondary move-up"><i class="bi bi-arrow-up-square"></i></button>
-              <button class="btn btn-sm btn-outline-secondary move-down"><i class="bi bi-arrow-down-square"></i></button>
-            {% endif %}
           </div>
         </td>
         </tr>
