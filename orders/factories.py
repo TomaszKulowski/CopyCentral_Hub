@@ -80,7 +80,7 @@ class OrderFactory(factory.django.DjangoModelFactory):
     additional_address = factory.SubFactory(AdditionalAddressFactory)
     payer = None
     region = factory.SubFactory(RegionFactory)
-    invoice_number = factory.Sequence(lambda n: f'Invoice-{n}')
+    invoice_number = factory.Sequence(lambda n: f'{n}-Invoice'[:20])
     short_description = factory.SubFactory(ShortDescriptionFactory)
     additional_info = factory.LazyAttribute(lambda x: faker.sentence(20))
     priority = factory.LazyAttribute(lambda x: random.randrange(0, 3))
@@ -95,7 +95,7 @@ class OrderFactory(factory.django.DjangoModelFactory):
     payment_method = factory.LazyAttribute(lambda x: random.randrange(0, 3))
     created_at = factory.LazyFunction(faker.date_time_this_month)
     updated_at = factory.LazyAttribute(lambda obj: obj.created_at + timedelta(seconds=faker.pyint()))
-    signer_name = factory.LazyAttribute(lambda x: faker.name())
+    signer_name = factory.LazyAttribute(lambda x: faker.name()[:20])
     latitude = None
     longitude = None
 
