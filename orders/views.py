@@ -407,15 +407,9 @@ class OrderUpdate(EmployeeRequiredMixin, View):
 
         order_form = self.order_form_class(request_data, instance=order_instance)
 
-        for file in request.FILES:
-            att = AttachmentForm(files={file.split('-')[2]: request.FILES[file]})
-            if att.is_valid():
-                inst = att.save(commit=False)
-                inst.order = order_instance
-                inst.save()
-
         if order_form.is_valid():
             order_instance = order_form.save(commit=False)
+
             if address_id:
                 address_instance = get_object_or_404(AdditionalAddress, pk=address_id)
                 customer_id = request_data.get('customer')
@@ -443,9 +437,17 @@ class OrderUpdate(EmployeeRequiredMixin, View):
                     service.save()
                     order_instance.services.add(service)
 
+            for file in request.FILES:
+                attachment = AttachmentForm(files={file.split('-')[2]: request.FILES[file]})
+                if attachment.is_valid():
+                    attachment_instance = attachment.save(commit=False)
+                    attachment_instance.order = order_instance
+                    attachment_instance.save()
+
             return HttpResponseRedirect(reverse_lazy('orders:order_details', kwargs={'pk': order_instance.id}))
         else:
             context = self.get_context_data(**kwargs)
+
             return render(request, self.template_name, context)
 
     def get(self, request, *args, **kwargs):
