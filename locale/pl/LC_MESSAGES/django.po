@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-04 16:59+0200\n"
+"POT-Creation-Date: 2024-08-05 19:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,11 +20,11 @@ msgstr ""
 "%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
-#: .\CopyCentral_Hub\settings.py:198
+#: .\CopyCentral_Hub\settings.py:199
 msgid "Order Report"
 msgstr "Raport ze zlecenia"
 
-#: .\CopyCentral_Hub\settings.py:199
+#: .\CopyCentral_Hub\settings.py:200
 msgid ""
 "\n"
 "Dear Sir/Madam,\n"
@@ -46,19 +46,19 @@ msgstr ""
 msgid "Send password reset email"
 msgstr "Wyślij email z linkiem resetującym hasło"
 
-#: .\authentication\templates\authentication\login.html:56
+#: .\authentication\templates\authentication\login.html:63
 msgid "Please sign in"
 msgstr "Proszę się zalogować"
 
-#: .\authentication\templates\authentication\login.html:61
+#: .\authentication\templates\authentication\login.html:68
 msgid "Username"
 msgstr "Nazwa użytkownika"
 
-#: .\authentication\templates\authentication\login.html:65
+#: .\authentication\templates\authentication\login.html:72
 msgid "Password"
 msgstr "Hasło"
 
-#: .\authentication\templates\authentication\login.html:67
+#: .\authentication\templates\authentication\login.html:74
 msgid "Sign in"
 msgstr "Zaloguj się"
 
@@ -330,7 +330,7 @@ msgstr "Aktualizacja dodatkowego adresu"
 #: .\services\templates\services\model_update.html:25
 #: .\services\templates\services\service_update.html:10
 #: .\services\templates\services\service_update.html:21
-#: .\templates\base.html:216
+#: .\templates\base.html:221
 msgid "Save"
 msgstr "Zapisz"
 
@@ -673,12 +673,12 @@ msgid "Old Value"
 msgstr "Stara wartość"
 
 #: .\history\templates\history\history_list.html:80
-#: .\orders\templates\orders\orders_list.html:105 .\templates\base.html:274
+#: .\orders\templates\orders\orders_list.html:105 .\templates\base.html:279
 msgid "Page"
 msgstr "Strona"
 
 #: .\history\templates\history\history_list.html:80
-#: .\orders\templates\orders\orders_list.html:105 .\templates\base.html:274
+#: .\orders\templates\orders\orders_list.html:105 .\templates\base.html:279
 msgid "of"
 msgstr "z"
 
@@ -841,8 +841,8 @@ msgstr "Brak regionu"
 #: .\order_management\templates\order_management\employees_order_management.html:100
 #: .\order_management\templates\order_management\employees_order_management_list.html:76
 #: .\order_management\templates\order_management\employees_order_management_list.html:79
+#: .\order_management\templates\order_management\main_order_management.html:148
 #: .\order_management\templates\order_management\main_order_management.html:150
-#: .\order_management\templates\order_management\main_order_management.html:152
 #: .\order_management\templates\order_management\my_orders_management_list.html:75
 #: .\order_management\templates\order_management\my_orders_management_list.html:78
 #: .\order_management\templates\order_management\orders_map_management.html:83
@@ -854,7 +854,7 @@ msgstr "Brak wykonawcy"
 
 #: .\order_management\templates\order_management\employees_order_management.html:129
 #: .\order_management\templates\order_management\employees_order_management_list.html:108
-#: .\order_management\templates\order_management\main_order_management.html:164
+#: .\order_management\templates\order_management\main_order_management.html:162
 #: .\order_management\templates\order_management\my_orders_management.html:106
 #: .\order_management\templates\order_management\my_orders_management_list.html:90
 #: .\order_management\templates\order_management\orders_map_management.html:44
@@ -867,7 +867,7 @@ msgstr "Utworzono"
 
 #: .\order_management\templates\order_management\employees_order_management.html:130
 #: .\order_management\templates\order_management\employees_order_management_list.html:109
-#: .\order_management\templates\order_management\main_order_management.html:165
+#: .\order_management\templates\order_management\main_order_management.html:163
 #: .\order_management\templates\order_management\my_orders_management.html:107
 #: .\order_management\templates\order_management\my_orders_management_list.html:91
 #: .\order_management\templates\order_management\orders_map_management.html:48
@@ -882,7 +882,7 @@ msgstr "Zaktualizowno"
 
 #: .\order_management\templates\order_management\employees_order_management.html:131
 #: .\order_management\templates\order_management\employees_order_management_list.html:110
-#: .\order_management\templates\order_management\main_order_management.html:166
+#: .\order_management\templates\order_management\main_order_management.html:164
 #: .\order_management\templates\order_management\my_orders_management.html:108
 #: .\order_management\templates\order_management\my_orders_management_list.html:92
 #: .\order_management\templates\order_management\orders_settlement.html:102
@@ -896,7 +896,7 @@ msgstr "Zlecenie przyjęte przez"
 
 #: .\order_management\templates\order_management\employees_order_management.html:132
 #: .\order_management\templates\order_management\employees_order_management_list.html:111
-#: .\order_management\templates\order_management\main_order_management.html:167
+#: .\order_management\templates\order_management\main_order_management.html:165
 #: .\order_management\templates\order_management\my_orders_management.html:109
 #: .\order_management\templates\order_management\my_orders_management_list.html:93
 #: .\order_management\templates\order_management\orders_map_management.html:58
@@ -910,7 +910,7 @@ msgstr "Typ zlecenia"
 
 #: .\order_management\templates\order_management\employees_order_management.html:133
 #: .\order_management\templates\order_management\employees_order_management_list.html:112
-#: .\order_management\templates\order_management\main_order_management.html:168
+#: .\order_management\templates\order_management\main_order_management.html:166
 #: .\order_management\templates\order_management\my_orders_management.html:110
 #: .\order_management\templates\order_management\my_orders_management_list.html:94
 #: .\order_management\templates\order_management\orders_settlement.html:104
@@ -923,7 +923,7 @@ msgstr "Metoda płatności"
 
 #: .\order_management\templates\order_management\employees_order_management.html:136
 #: .\order_management\templates\order_management\employees_order_management_list.html:115
-#: .\order_management\templates\order_management\main_order_management.html:171
+#: .\order_management\templates\order_management\main_order_management.html:169
 #: .\order_management\templates\order_management\my_orders_management.html:113
 #: .\order_management\templates\order_management\my_orders_management_list.html:97
 #: .\order_management\templates\order_management\regions_order_management.html:122
@@ -932,7 +932,7 @@ msgstr "Dodatkowe informacje"
 
 #: .\order_management\templates\order_management\employees_order_management.html:137
 #: .\order_management\templates\order_management\employees_order_management_list.html:116
-#: .\order_management\templates\order_management\main_order_management.html:172
+#: .\order_management\templates\order_management\main_order_management.html:170
 #: .\order_management\templates\order_management\my_orders_management.html:114
 #: .\order_management\templates\order_management\my_orders_management_list.html:98
 #: .\order_management\templates\order_management\orders_settlement.html:92
@@ -1370,7 +1370,7 @@ msgstr "Łącznie"
 
 #: .\orders\templates\orders\order_details.html:296
 msgid "Enter Email Address"
-msgstr "Wprowadź adres emai;"
+msgstr "Wprowadź adres email"
 
 #: .\orders\templates\orders\order_details.html:297
 msgid "Enter email"
@@ -1523,7 +1523,7 @@ msgstr "Lista modeli"
 msgid "Search by Name"
 msgstr "Szukaj według nazwy"
 
-#: .\templates\base.html:180 .\templates\base.html:201
+#: .\templates\base.html:180 .\templates\base.html:206
 msgid "Settings"
 msgstr "Ustawienia"
 
@@ -1531,6 +1531,6 @@ msgstr "Ustawienia"
 msgid "Sign out"
 msgstr "Wyloguj"
 
-#: .\templates\base.html:207
+#: .\templates\base.html:212
 msgid "Select Language"
 msgstr "Wybierz język"
