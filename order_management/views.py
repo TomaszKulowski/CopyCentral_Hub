@@ -149,6 +149,7 @@ class OrderListViewBase(EmployeeRequiredMixin, ListView):
         orders = self.get_queryset()
         orders = map_choices_int_to_str(orders)
 
+        # exclude admin
         employees = Employee.objects.exclude(user__id=1).annotate(
             full_name=Concat(F('user__first_name'), Value(' '), F('user__last_name'), output_field=CharField())
         ).order_by(
