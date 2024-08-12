@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-05 19:00+0200\n"
+"POT-Creation-Date: 2024-08-08 19:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -330,7 +330,7 @@ msgstr "Aktualizacja dodatkowego adresu"
 #: .\services\templates\services\model_update.html:25
 #: .\services\templates\services\service_update.html:10
 #: .\services\templates\services\service_update.html:21
-#: .\templates\base.html:221
+#: .\templates\base.html:216
 msgid "Save"
 msgstr "Zapisz"
 
@@ -673,12 +673,12 @@ msgid "Old Value"
 msgstr "Stara wartość"
 
 #: .\history\templates\history\history_list.html:80
-#: .\orders\templates\orders\orders_list.html:105 .\templates\base.html:279
+#: .\orders\templates\orders\orders_list.html:105 .\templates\base.html:274
 msgid "Page"
 msgstr "Strona"
 
 #: .\history\templates\history\history_list.html:80
-#: .\orders\templates\orders\orders_list.html:105 .\templates\base.html:279
+#: .\orders\templates\orders\orders_list.html:105 .\templates\base.html:274
 msgid "of"
 msgstr "z"
 
@@ -1353,7 +1353,7 @@ msgid "Get Report"
 msgstr "Pobierz raport"
 
 #: .\orders\templates\orders\order_details.html:33
-#: .\orders\templates\orders\order_details.html:289
+#: .\orders\templates\orders\order_details.html:294
 msgid "Send Report"
 msgstr "Wyślij raport"
 
@@ -1368,15 +1368,15 @@ msgstr "Adres zlecenia"
 msgid "Summary"
 msgstr "Łącznie"
 
-#: .\orders\templates\orders\order_details.html:296
+#: .\orders\templates\orders\order_details.html:301
 msgid "Enter Email Address"
 msgstr "Wprowadź adres email"
 
-#: .\orders\templates\orders\order_details.html:297
+#: .\orders\templates\orders\order_details.html:302
 msgid "Enter email"
 msgstr "Wprowadź adres email"
 
-#: .\orders\templates\orders\order_details.html:302
+#: .\orders\templates\orders\order_details.html:307
 msgid "Send"
 msgstr "Wyślij"
 
@@ -1443,7 +1443,7 @@ msgstr "Szukaj według ID / kontrahenta / numeru seryjnego / numeru faktury"
 msgid "report"
 msgstr "raport"
 
-#: .\orders\views.py:547
+#: .\orders\views.py:549
 msgid "First select customer"
 msgstr "Pierw wybierz kontrahenta"
 
@@ -1523,7 +1523,7 @@ msgstr "Lista modeli"
 msgid "Search by Name"
 msgstr "Szukaj według nazwy"
 
-#: .\templates\base.html:180 .\templates\base.html:206
+#: .\templates\base.html:180 .\templates\base.html:201
 msgid "Settings"
 msgstr "Ustawienia"
 
@@ -1531,6 +1531,6 @@ msgstr "Ustawienia"
 msgid "Sign out"
 msgstr "Wyloguj"
 
-#: .\templates\base.html:212
+#: .\templates\base.html:207
 msgid "Select Language"
 msgstr "Wybierz język"
