@@ -85,12 +85,20 @@ class OrderService(models.Model):
 class Region(models.Model):
     name = models.CharField(_('Name'), max_length=30)
 
+    class Meta:
+        verbose_name = _('region')
+        verbose_name_plural = _('regions')
+
     def __str__(self):
         return self.name
 
 
 class ShortDescription(models.Model):
     name = models.CharField(_('Name'), max_length=30)
+
+    class Meta:
+        verbose_name = _('short description')
+        verbose_name_plural = _('short descriptions')
 
     def __str__(self):
         return self.name
