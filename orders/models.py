@@ -81,6 +81,13 @@ class OrderService(models.Model):
         self.from_session = False
         super().save(*args, **kwargs)
 
+    def get_name(self):
+        service_name = str(self.name).split('[')
+        if len(service_name) > 1:
+            return service_name[0].strip()
+        else:
+            return str(self.name)
+
 
 class Region(models.Model):
     name = models.CharField(_('Name'), max_length=30)
