@@ -20,6 +20,13 @@ class NotificationSettings(models.Model):
         help_text='Time in minutes before the message is sent',
     )
 
+    class Meta:
+        verbose_name = _('notification setting')
+        verbose_name_plural = _('notification settings')
+
+    def __str__(self):
+        return f'{_("Notification type")}: {self.get_notification_type_display()}'
+
 
 class Notification(models.Model):
     settings = models.ForeignKey(NotificationSettings, on_delete=models.PROTECT, blank=True, null=True)
@@ -28,3 +35,7 @@ class Notification(models.Model):
     message = models.TextField(max_length=400, blank=True, null=True)
     sent = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('notification')
+        verbose_name_plural = _('notifications')

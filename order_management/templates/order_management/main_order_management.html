@@ -55,7 +55,7 @@
         <option value="All">{% blocktrans %}Display All{% endblocktrans %}</option>
         <option value="None">{% blocktrans %}No Employee Assigned{% endblocktrans %}</option>
         {% for employee in employees %}
-          <option value="{{ employee.full_name }}">{{ employee.full_name }}</option>
+          <option value="{{ employee.id }}">{{ employee.full_name }}</option>
         {% endfor %}
       </select>
     </div>
@@ -105,7 +105,7 @@
             </td>
             <td>
               {% if order.phone_number %}
-                <a class="text-decoration-none link-dark" href="tel:{{ order.phone_number }}">{{ order.phone_number|format_phone_number }}</a>
+                <a class="text-body" style="text-decoration: none;" href="tel:{{ order.phone_number }}">{{ order.phone_number|format_phone_number }}</a>
               {% else %}
                 ---
               {% endif %}
@@ -122,7 +122,7 @@
                     {% else %}
                   <option selected disabled hidden value="None">{% blocktrans %}No Region{% endblocktrans %}</option>
                     {% endif %}
-                      <option value="-1">{% blocktrans %}No Region{% endblocktrans %}</option>
+                      <option value="None">{% blocktrans %}No Region{% endblocktrans %}</option>
                   {% for region in regions %}
                     <option value="{{ region.id }}">{{ region.name }}</option>
                   {% endfor %}
@@ -132,11 +132,9 @@
             <td>
               <div class="dropdown" onclick="handleDropdownClick(event)" >
                 <select class="priority-select form-select" style="width:auto;" data-order-id="{{ order.id }}">
-                  <option selected disabled hidden>
-                    {{ order.priority }}
-                  </option>
-                  {% for id, priority in priorities %}
-                    <option value="{{ id }}">{{ priority }}</option>
+                  <option selected disabled hidden value="{{ order.priority }}">{{ order.priority }}</option>
+                  {% for _, priority in priorities %}
+                    <option value="{{ priority }}">{{ priority }}</option>
                   {% endfor %}
                 </select>
               </div>
@@ -145,7 +143,7 @@
               <div class="dropdown" onclick="handleDropdownClick(event)" >
                 <select class="executor-select form-select" style="width:auto;" data-order-id="{{ order.id }}">
                   {% if order.executor_name != ' ' %}
-                    <option selected disabled hidden>{{ order.executor_name }}</option>
+                    <option selected disabled hidden value="{{ order.executor__id }}">{{ order.executor_name }}</option>
                   {% else %}
                     <option selected disabled hidden value="None">{% blocktrans %}No Executor{% endblocktrans %}</option>
                   {% endif %}

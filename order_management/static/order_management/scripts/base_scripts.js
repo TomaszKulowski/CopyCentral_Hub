@@ -61,14 +61,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const rows = document.querySelectorAll('#order-table tr.clickable');
 
         rows.forEach(function(row) {
-            const secondCell = row.querySelector('td:nth-child(2)');
             const fourthCell = row.querySelector('td:nth-child(4)');
             const sixthCell = row.querySelector('td:nth-child(6)');
-            const secondText = secondCell ? secondCell.textContent.toLowerCase() : '';
+            const eighthCell = row.querySelector('td:nth-child(8)');
             const fourthText = fourthCell ? fourthCell.textContent.toLowerCase() : '';
             const sixthText = sixthCell ? sixthCell.textContent.toLowerCase() : '';
+            const eighthText = eighthCell ? eighthCell.textContent.toLowerCase() : '';
 
-            if (secondText.includes(searchText) || fourthText.includes(searchText) || sixthText.includes(searchText)) {
+            if (fourthText.includes(searchText) || sixthText.includes(searchText) || eighthText.includes(searchText)) {
                 row.style.display = '';
             } else {
                 row.style.display = 'none';

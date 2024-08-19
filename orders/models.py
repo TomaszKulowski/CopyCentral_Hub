@@ -81,9 +81,20 @@ class OrderService(models.Model):
         self.from_session = False
         super().save(*args, **kwargs)
 
+    def get_name(self):
+        service_name = str(self.name).split('[')
+        if len(service_name) > 1:
+            return service_name[0].strip()
+        else:
+            return str(self.name)
+
 
 class Region(models.Model):
     name = models.CharField(_('Name'), max_length=30)
+
+    class Meta:
+        verbose_name = _('region')
+        verbose_name_plural = _('regions')
 
     def __str__(self):
         return self.name
@@ -91,6 +102,10 @@ class Region(models.Model):
 
 class ShortDescription(models.Model):
     name = models.CharField(_('Name'), max_length=30)
+
+    class Meta:
+        verbose_name = _('short description')
+        verbose_name_plural = _('short descriptions')
 
     def __str__(self):
         return self.name

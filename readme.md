@@ -146,6 +146,7 @@ Follow these steps to set up the application without using Docker:
       - Python 3.11 or higher
 
 2. **Clone the Repository**
+
    ```bash
    git clone https://github.com/TomaszKulowski/CopyCentral_Hub.git
    cd CopyCentral_Hub
@@ -166,18 +167,33 @@ Follow these steps to set up the application without using Docker:
 4. **Install Dependencies**
 
    Install the necessary dependencies using the following command:
-   ```
+   ```bash
    pip install -r requirements.txt
    ```
 
-5. **Run Development Server**
+5. **Apply Migrations**
+
+   Create and apply the database migrations with the following commands:
+   ```bash
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
+
+6. **Compile Messages**
+
+   Compile translation messages with the following command:
+   ```bash
+   python manage.py compilemessages
+   ```
+
+7. **Run Development Server**
 
    Run the development server with:
-   ```
+   ```bash
    python manage.py runserver 0.0.0.0:80
    ```
 
-6. **Access the Application**
+8. **Access the Application**
 
    After running the above command, the application should be up and running.
    You can access it by entering http://localhost in your web browser.
