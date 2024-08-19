@@ -78,7 +78,7 @@ RUN chmod +x entrypoint.prod.sh && sed -i 's/\r$//g' entrypoint.prod.sh
 COPY . .
 
 # Adjust file ownership and permissions
-RUN chown -R copycentralhub:copycentralhub $HOME
+RUN chown -R copycentralhub:copycentralhub $HOME $APP_HOME/staticfiles $APP_HOME/mediafiles $APP_HOME/locale
 
 # Expose Redis port
 EXPOSE 6379
