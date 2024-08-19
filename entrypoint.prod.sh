@@ -27,6 +27,9 @@ if [ ! -f /home/CopyCentral_Hub/web/.initialized ]; then
     # Compile translation files
     python manage.py compilemessages
 
+    # Ensure permissions for staticfiles
+    chown -R copycentralhub:copycentralhub /home/CopyCentral_Hub/web/staticfiles
+
     # Collect static files
     python manage.py collectstatic --noinput
 
