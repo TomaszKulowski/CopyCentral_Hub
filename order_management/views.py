@@ -70,7 +70,7 @@ class OrderListViewBase(EmployeeRequiredMixin, ListView):
             ),
             device_full_name=Case(
                 When(device__brand__isnull=False, then=Concat(
-                    F('device__brand'), Value(', '),
+                    F('device__brand'), Value(' '),
                     F('device__model'),
                 )),
                 When(device_name__isnull=False, then=F('device_name')),
