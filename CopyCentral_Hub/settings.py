@@ -71,6 +71,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -211,3 +212,19 @@ LOGIN_URL = '/authentication/login/'
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:1337',
 ]
+
+
+SESSION_COOKIE_AGE = 10800  # 3 hours. "1209600(2 weeks)" by default
+SESSION_SAVE_EVERY_REQUEST = True
+
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Europe/Warsaw'
+
+os.environ['GDAL_LIBRARY_PATH'] = '/usr/lib/libgdal.so'

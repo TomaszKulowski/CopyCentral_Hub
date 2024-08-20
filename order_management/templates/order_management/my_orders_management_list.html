@@ -1,0 +1,103 @@
+{% load i18n %}
+
+<div class="table-responsive small">
+  <table class="table table-striped table-sm" id="order-table-{{ table_id }}">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col" width=5%>#ID</th>
+        <th scope="col" width=20%>{% blocktrans %}Customer{% endblocktrans %}</th>
+        <th scope="col" width=20%>{% blocktrans %}Address{% endblocktrans %}</th>
+        <th scope="col" width=10%>{% blocktrans %}Phone Number{% endblocktrans %}</th>
+        <th scope="col" width=10%>{% blocktrans %}Short Description{% endblocktrans %}</th>
+        <th scope="col" width=10%>{% blocktrans %}Device{% endblocktrans %}</th>
+        <th scope="col" width=8%>{% blocktrans %}Status{% endblocktrans %}</th>
+        <th scope="col" width=8%>{% blocktrans %}Region{% endblocktrans %}</th>
+        <th scope="col" width=8%>{% blocktrans %}Priority{% endblocktrans %}</th>
+        <th scope="col" width=14%>{% blocktrans %}Executor{% endblocktrans %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order_details in orders %}
+        <tr class="clickable" data-toggle="collapse" data-executor_id="{{ order_details.executor__id }}" data-table_id="{{ table_id }}" data-current_position="{{ order_details.sort_number }}" data-order_id="{{ order_details.id }}" data-target="#row{{ order_details.id }}">
+        <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'orders:order_details' order_details.id %}"><b>#{{ order_details.id }}</b></a></td>
+        {% if order_details.customer__id %}
+          <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'customers:customer_details' order_details.customer__id %}">{{ order_details.customer_name }}</a></td>
+        {% else %}
+          <td>{{ order_details.customer_name }}</td>
+        {% endif %}
+        <td>{{ order_details.address_name }}</td>
+        <td>
+          {% if order_details.phone_number %}
+            <a class="text-body" style="text-decoration: none;" href="tel:{{ order_details.phone_number }}">{{ order_details.phone_number }}</a>
+          {% else %}
+            ---
+          {% endif %}
+        </td>
+        <td>{{ order_details.short_description_name }}</td>
+        <td>{{ order_details.device_full_name }}</td>
+        <td>{{ order_details.status.1 }}</td>
+        <td>
+          <div class="dropdown" onclick="handleDropdownClick(event)">
+            <select class="region-select form-select" style="width:auto;" data-order-id="{{ order_details.id }}">
+              <option selected disabled hidden>
+                {% if order_details.region__name %}
+                  {{ order_details.region__name }}
+                {% else %}
+                  {% blocktrans %}No Region{% endblocktrans %}
+                {% endif %}
+              </option>
+              <option value="-1">{% blocktrans %}No Region{% endblocktrans %}</option>
+              {% for region in regions %}
+                <option value="{{ region.id }}">{{ region.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </td>
+        <td>
+          <div class="dropdown" onclick="handleDropdownClick(event)">
+            <select class="priority-select form-select" style="width:auto;" data-order-id="{{ order_details.id }}">
+              <option selected disabled hidden>
+                {{ order_details.priority }}
+              </option>
+              {% for id, priority in priorities %}
+              <option value="{{ id }}">{{ priority }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </td>
+        <td>
+          <div class="dropdown" onclick="handleDropdownClick(event)">
+            <select class="executor-select form-select" style="width:auto;" data-order-id="{{ order_details.id }}">
+              <option selected disabled hidden>
+                {% if order_details.executor_name != ' ' %}
+                  {{ order_details.executor_name }}
+                {% else %}
+                  {% blocktrans %}No Executor{% endblocktrans %}
+                {% endif %}
+              </option>
+              <option value="-1">{% blocktrans %}No Executor{% endblocktrans %}</option>
+              {% for employee in employees %}
+                <option value="{{ employee.id }}">{{ employee.full_name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </td>
+        </tr>
+        <tr></tr>
+        <tr id="row{{ order_details.id }}" class="collapse">
+          <td colspan="4">
+            <ul>
+              <li><b>{% blocktrans %}Created At{% endblocktrans %}:</b> {{ order_details.created_at }}</li>
+              <li><b>{% blocktrans %}Updated At{% endblocktrans %}:</b> {{ order_details.updated_at }}</li>
+              <li><b>{% blocktrans %}Order Intake{% endblocktrans %}:</b> {{ order_details.order_intake_name }}</li>
+              <li><b>{% blocktrans %}Order Type{% endblocktrans %}:</b> {{ order_details.order_type }}</li>
+              <li><b>{% blocktrans %}Payment Method{% endblocktrans %}:</b> {{ order_details.payment_method }}</li>
+            </ul>
+          </td>
+          <td colspan="4"><b>{% blocktrans %}Additional Information{% endblocktrans %}:</b><br>{{ order_details.additional_info_name|linebreaksbr }}</td>
+          <td colspan="3"><b>{% blocktrans %}Order Description{% endblocktrans %}:</b><br>{{ order_details.description_name|linebreaksbr }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

@@ -70,46 +70,182 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-function loadCustomerDetails(customerId, orderId) {
-    var customerDetailsUrl = "/orders/customer_details/" + customerId + "/";
-    var addressFormUrl = "/orders/address_form/" + customerId + "/?order_id=" + orderId;
+// create customer
+function customerCreate(customerType) {
+    var url = '/orders/customer_create/';
 
-    fetch(customerDetailsUrl)
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById("customer-details").innerHTML = data;
-        })
-        .catch(error => {
-            console.error("Error:", error);
-        });
+    if (customerType === 'customer') {
+        var formData = $('#customerForm').serialize();
+        var my_field = document.getElementById('customer-select');
 
-    fetch(addressFormUrl)
-        .then(response => response.text())
-        .then(data => {
-            var inputs = document.querySelectorAll('#address-details input, #address-details textarea');
-            inputs.forEach(function(input) {
-                input.value = '';
-            });
-            document.getElementById("additional_address-select").innerHTML = data;
-        })
-        .catch(error => {
-            console.error("Error:", error);
-        });
-   $('#customer-select').val(customerId).trigger('change');
+    } else if (customerType === 'payer') {
+        var formData = $('#payerForm').serialize();
+        var my_field = document.getElementById('payer-select');
 
+    }
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: formData,
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        },
+        success: function(response) {
+            var new_option = document.createElement('option');
+            new_option.text = response.customer_name;
+            new_option.value = response.customer_id;
+
+            my_field.appendChild(new_option);
+            $(my_field).val(new_option.value).trigger('change');
+
+            loadCustomerDetails(new_option.value, customerType);
+            if ( customerType === 'customer') {
+                clearAddressInputs();
+            }
+        },
+
+        complete: function() {
+            $('#addCustomerModal').modal('hide');
+            $('#addPayerModal').modal('hide');
+        }
+    });
 }
 
+
+// create additional address
+function addressCreate() {
+    var url = '/orders/api/address_create/';
+    var customerId = document.getElementById('customer-select').value;
+    var formData = $('#addressForm').serialize();
+    formData += '&customer=' + encodeURIComponent(customerId);
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: formData,
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        },
+        success: function(response) {
+        if (response.status === 400) {
+            var div = document.getElementById('address_error');
+            div.textContent = response.message;
+        } else if (response.status === 201) {
+            var my_field = document.getElementById('additional_address-select');
+            var new_option = document.createElement('option');
+            new_option.text = response.address_name;
+            new_option.value = response.address_id;
+
+            my_field.appendChild(new_option);
+            $(my_field).val(new_option.value).trigger('change');
+
+            loadAddressDetails(response.address_id)
+        }
+
+        },
+        complete: function() {
+            $('#addAddressModal').modal('hide');
+        }
+    });
+}
+
+
+// create device
+function deviceCreate() {
+    var url = '/orders/api/device_create/';
+    var formData = $('#deviceForm').serialize();
+    var errorDiv = $('#errors');
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: formData,
+        dataType: 'json',
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        },
+        success: function(response) {
+            errorDiv.html('');
+
+            if (response.status === 201) {
+                var my_field = document.getElementById('device-select');
+                var new_option = document.createElement('option');
+                new_option.text = response.device_name;
+                new_option.value = response.device_id;
+
+                my_field.appendChild(new_option);
+                $(my_field).val(new_option.value).trigger('change');
+                $('#addDeviceModal').modal('hide');
+            } else if (response.status === 400) {
+                var errors = response.errors;
+                var errorList = '';
+                for (var field in errors) {
+                    if (errors.hasOwnProperty(field)) {
+                        errorList += errors[field];
+                    }
+                }
+                errorDiv.html(errorList);
+            }
+        }
+    });
+}
+
+
+// on customer select
 $(document).ready(function() {
     $('#id_customer').on('select2:select', function (e) {
         var orderId = $('#orderId').val();
         var customerId = e.params.data.id;
         loadCustomerDetails(customerId, orderId);
+        clearAddressInputs();
     });
 });
 
 
+// on payer select
+$(document).ready(function() {
+    $('#id_payer').on('select2:select', function (e) {
+        var customerId = e.params.data.id;
+        loadPayerDetails(customerId);
+    });
+});
+
+
+// on address select
+$(document).ready(function() {
+    $('#id_address').on('select2:select', function (e) {
+        var addressId = e.params.data.id;
+        loadAddressDetails(addressId);
+    }).on('select2:unselect', function (e) {
+        clearAddressInputs();
+    });
+});
+
+
+
+// load and fill customer details
+function loadCustomerDetails(customerId, customerType) {
+    var customerDetailsUrl = "/orders/api/customer_details/" + customerId + "/";
+
+    fetch(customerDetailsUrl)
+        .then(response => response.text())
+        .then(data => {
+           if (customerType === 'payer') {
+               document.getElementById("payer-details").innerHTML = data;
+           } else {
+                document.getElementById("customer-details").innerHTML = data;
+           }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+}
+
+
+// load and fill payer details
 function loadPayerDetails(customerId) {
-    var url = "/orders/customer_details/" + customerId + "/";
+    var url = "/orders/api/customer_details/" + customerId + "/";
 
     fetch(url)
         .then(response => response.text())
@@ -121,16 +257,10 @@ function loadPayerDetails(customerId) {
         });
 }
 
-$(document).ready(function() {
-    $('#id_payer').on('select2:select', function (e) {
-        var customerId = e.params.data.id;
-        loadPayerDetails(customerId);
-    });
-});
 
-
+// load and fill address details
 function loadAddressDetails(addressId) {
-    var url = "/orders/address_details/" + addressId + "/";
+    var url = "/orders/api/address_details/" + addressId + "/";
 
     fetch(url)
         .then(response => response.text())
@@ -142,80 +272,17 @@ function loadAddressDetails(addressId) {
         });
 }
 
+
+// clear address inputs
 function clearAddressInputs() {
+    var div = document.getElementById('address_error');
+    div.textContent = '';
     var inputs = document.querySelectorAll('#address-details input, #address-details textarea');
     inputs.forEach(function(input) {
         input.value = '';
     });
+    $('#additional_address-select').val(null).trigger('change');
 }
-
-$(document).ready(function() {
-    $('#id_address').on('select2:select', function (e) {
-        var addressId = e.params.data.id;
-        loadAddressDetails(addressId);
-    }).on('select2:unselect', function (e) {
-        clearAddressInputs();
-    });
-});
-
-
-function handleSubmitForm(formId, modalId, submit_type) {
-    $(formId).submit(function(event) {
-
-        event.preventDefault();
-        var customerId = $('#customer-select').val() !== 'undefined' ? $('#customer-select').val() : '';
-        var payerId = $('#payer-select').val() !== 'undefined' ? $('#payer-select').val() : '';
-        var addressId = $('#additional_address-select').val() !== 'undefined' ? $('#additional_address-select').val() : '';
-        var deviceId = $('#device-select').val() !== 'undefined' ? $('#device-select').val() : '';
-        var orderId = $('#orderId').val();
-        var base_redirect_url = orderId ? '/orders/' + orderId + '/update/' : '/orders/create/';
-        var formData = $(this).serialize();
-        formData += '&order_id=' + orderId;
-        formData += '&customer=' + customerId;
-
-        var url;
-        if (submit_type === 'customer' || submit_type === 'payer') {
-            url = '/orders/customer_create/';
-        } else if (submit_type === 'address') {
-            url = '/orders/address_create/';
-        } else if (submit_type === 'device') {
-            url = '/orders/device_create/';
-        }
-
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: formData,
-            success: function(response) {
-                if (response.status === 201) {
-                    var redirect_url;
-                    if (submit_type === 'customer') {
-                        redirect_url = base_redirect_url + '?customer_id=' + response.customer_id + '&payer_id=' + payerId + '&address_id=' + addressId + '&device_id=' + deviceId;
-                    } else if (submit_type === 'payer') {
-                        redirect_url = base_redirect_url + '?customer_id=' + customerId + '&payer_id=' + response.customer_id + '&address_id=' + addressId + '&device_id=' + deviceId;
-                    } else if (submit_type === 'address') {
-                        redirect_url = base_redirect_url + '?customer_id=' + customerId + '&payer_id=' + payerId + '&address_id=' + response.address_id + '&device_id=' + deviceId;
-                    } else if (submit_type === 'device') {
-                        redirect_url = base_redirect_url + '?customer_id=' + customerId + '&payer_id=' + payerId + '&address_id=' + addressId + '&device_id=' + response.device_id;
-                    }
-
-                    $(modalId).modal('hide');
-                    alert('Successfully Created!');
-                    window.location.href = redirect_url;
-                } else {
-                    var errorsElement = document.getElementById("errors");
-                    errorsElement.innerHTML = response.errors;
-                    alert('An error occurred while adding.');
-                }
-            }
-        });
-    });
-}
-
-handleSubmitForm('#customerForm', '#addCustomerModal', 'customer');
-handleSubmitForm('#payerForm', '#addPayerModal',  'payer');
-handleSubmitForm('#addressForm', '#addAddressModal',  'address');
-handleSubmitForm('#deviceForm', '#addDeviceModal',  'device');
 
 
 // order service filters
@@ -383,6 +450,7 @@ $(document).ready(function() {
 });
 
 
+// add new attachment forms
 $(document).ready(function() {
     var container = document.querySelector("#attachment_form")
     var addButton = document.querySelector("#add_more")
@@ -406,6 +474,7 @@ $(document).ready(function() {
 });
 
 
+// on delete attachment button
 $(document).ready(function() {
   $(document).on('click', '.delete-button', function(event) {
     event.preventDefault();
@@ -425,6 +494,7 @@ $(document).ready(function() {
 });
 
 
+// check attachment file size
 function checkFileSize(input) {
     const maxSize = 40 * 1024 * 1024;
     if (input.files && input.files[0]) {
@@ -439,6 +509,7 @@ function checkFileSize(input) {
 }
 
 
+// get order report file
 function getReport(orderId){
     var endpointURL = "/orders/api/" + orderId + "/get_report/";
 
@@ -464,6 +535,7 @@ function getReport(orderId){
 }
 
 
+// send order report file
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("reportForm").addEventListener("submit", function (event) {
         event.preventDefault();
@@ -475,10 +547,54 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// send order report file
 function sendReport(orderId, email) {
     var endpointURL = "/orders/api/" + orderId + "/send_report/?email_to=" + encodeURIComponent(email);
     $('#sendReportModal').modal('hide');
     var xhr = new XMLHttpRequest();
     xhr.open('GET', endpointURL, true);
     xhr.send();
+}
+
+
+// auto calculate total counter in the order template
+document.addEventListener('DOMContentLoaded', function() {
+    var monoCounter = document.getElementById('mono_counter');
+    var colorCounter = document.getElementById('color_counter');
+    var totalCounter = document.getElementById('total_counter');
+
+    function updateTotalCounter() {
+        var monoValue = parseInt(monoCounter.value) || 0;
+        var colorValue = parseInt(colorCounter.value) || 0;
+        totalCounter.value = monoValue + colorValue;
+    }
+
+    monoCounter.addEventListener('input', updateTotalCounter);
+    colorCounter.addEventListener('input', updateTotalCounter);
+
+    updateTotalCounter();
+});
+
+// auto calculate total counter in the device modal
+document.addEventListener('DOMContentLoaded', function() {
+    var monoCounter_device = document.getElementById('mono_counter_device');
+    var colorCounter_device = document.getElementById('color_counter_device');
+    var totalCounter_device = document.getElementById('total_counter_device');
+
+    function updateTotalCounter() {
+        var monoValue_device = parseInt(monoCounter_device.value) || 0;
+        var colorValue_device = parseInt(colorCounter_device.value) || 0;
+        totalCounter_device.value = monoValue_device + colorValue_device;
+    }
+
+    monoCounter_device.addEventListener('input', updateTotalCounter);
+    colorCounter_device.addEventListener('input', updateTotalCounter);
+
+    updateTotalCounter();
+});
+
+
+function toggleDetails(orderId) {
+    var detailsRow = document.getElementById('row' + orderId);
+    detailsRow.classList.toggle('show');
 }

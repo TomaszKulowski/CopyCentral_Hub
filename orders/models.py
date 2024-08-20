@@ -2,13 +2,13 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Max
 from django.shortcuts import get_object_or_404
-from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from jsignature.fields import JSignatureField
 from pathlib import Path
 from sorl.thumbnail import ImageField
 from simple_history.models import HistoricalRecords
 
+from .locations import update_order_coordinates
 from customers.models import Customer, AdditionalAddress
 from devices.models import Device
 from employees.models import Employee
@@ -36,6 +36,8 @@ class StatusChoices(models.IntegerChoices):
     AWAITING_DELIVERY = 6, _('Awaiting Delivery')
     AWAITING_PAYMENT = 7, _('Awaiting Payment')
     AWAITING_PICKUP = 8, _('Awaiting Pickup')
+    CALL_TO_CUSTOMER = 9, _('Call to Customer')
+    READY = 10, _('Ready')
 
 
 class OrderTypeChoices(models.IntegerChoices):
@@ -79,9 +81,20 @@ class OrderService(models.Model):
         self.from_session = False
         super().save(*args, **kwargs)
 
+    def get_name(self):
+        service_name = str(self.name).split('[')
+        if len(service_name) > 1:
+            return service_name[0].strip()
+        else:
+            return str(self.name)
+
 
 class Region(models.Model):
     name = models.CharField(_('Name'), max_length=30)
+
+    class Meta:
+        verbose_name = _('region')
+        verbose_name_plural = _('regions')
 
     def __str__(self):
         return self.name
@@ -89,6 +102,10 @@ class Region(models.Model):
 
 class ShortDescription(models.Model):
     name = models.CharField(_('Name'), max_length=30)
+
+    class Meta:
+        verbose_name = _('short description')
+        verbose_name_plural = _('short descriptions')
 
     def __str__(self):
         return self.name
@@ -111,7 +128,7 @@ class Order(models.Model):
     )
     approver = models.ForeignKey(Employee, on_delete=models.PROTECT, blank=True, null=True, verbose_name=_('Approver'))
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT, blank=True, null=True, verbose_name=_('Customer'))
-    phone_number = models.BigIntegerField(_('Phone Number'), blank=True, null=True)
+    phone_number = models.CharField(_('Phone Number'), max_length=20, blank=True, null=True)
     additional_address = models.ForeignKey(
         AdditionalAddress,
         on_delete=models.PROTECT,
@@ -158,11 +175,22 @@ class Order(models.Model):
     signature = JSignatureField(_('Signature'), blank=True, null=True)
     sort_number = models.SmallIntegerField(_('Sort Number'), blank=True, null=True)
     history = HistoricalRecords(m2m_fields=[services])
+    last_notification_executor = models.ForeignKey(
+        Employee,
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True,
+        related_name='executor_notification',
+    )
+    latitude = models.CharField(max_length=20, blank=True, null=True)
+    longitude = models.CharField(max_length=20, blank=True, null=True)
 
     def __str__(self):
         return _('Order ID') + f' {self.id}'
 
     def save(self, *args, **kwargs):
+        update_order_coordinates(self)
+
         if self.description == '':
             self.description = None
         if self.additional_info == '':

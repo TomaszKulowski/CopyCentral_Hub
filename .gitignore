@@ -163,3 +163,4 @@ cython_debug/
 .env.prod.db
 migrations/
 media/
+mediafiles/

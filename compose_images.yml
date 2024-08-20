@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  web:
+    image: tomaszkulowski/copycentral_hub-web:latest
+    command: gunicorn --workers=2 CopyCentral_Hub.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/home/CopyCentral_Hub/web/staticfiles
+      - media_volume:/home/CopyCentral_Hub/web/mediafiles
+    expose:
+      - 8000
+    env_file:
+      - ./.env.prod
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    image: postgres:16.2
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env.prod.db
+    ports:
+      - "5432:5432"
+    restart: always
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    restart: always
+
+  nginx:
+    image: tomaszkulowski/copycentral_hub-nginx:latest
+    volumes:
+      - static_volume:/home/CopyCentral_Hub/web/staticfiles
+      - media_volume:/home/CopyCentral_Hub/web/mediafiles
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+    restart: always
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:

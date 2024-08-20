@@ -1,6 +1,8 @@
 {% extends "order_management/base_order_management.html" %}
 {% load static %}
 {% load i18n %}
+{% load custom_filters %}
+
 
 {% block content %}
   <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
@@ -11,7 +13,7 @@
     <h2 class="h2">{% blocktrans %}Order Management{% endblocktrans %}</h2>
     <div class="container" style="width: 40%;">
       <input type="search" class="form-control form-control-dark sea select-button"
-        placeholder="{% blocktrans %}Search by Customer{% endblocktrans %}" aria-label="Search"></div>
+        placeholder="{% blocktrans %}Search by Customer / Phone Number / Device Name{% endblocktrans %}" aria-label="Search"></div>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
         <button onclick="window.location.href='{% url 'orders:order_create' %}'" class="btn btn-sm btn-outline-secondary select-button">{% blocktrans %}Add New Order{% endblocktrans %}</button>
@@ -26,15 +28,15 @@
           <option hidden="hidden" value="None">{% blocktrans %}No Region Assigned{% endblocktrans %}</option>
         {% else %}
           {% if selected_region == 'Display All' %}
-            <option hidden="hidden" value="{{ selected_region }}">{% blocktrans %}Display All{% endblocktrans %}</option>
+            <option hidden="hidden" value="Display All">{% blocktrans %}Display All{% endblocktrans %}</option>
           {% else %}
-            <option hidden="hidden" value="{{ selected_region }}">{{ selected_region }}</option>
+            <option hidden="hidden" value="{{ selected_region_id }}">{{ selected_region }}</option>
           {% endif %}
         {% endif %}
         <option value="Display All">{% blocktrans %}Display All{% endblocktrans %}</option>
         <option value="None">{% blocktrans %}No Region Assigned{% endblocktrans %}</option>
         {% for region in regions %}
-          <option value="{{ region.name }}">{{ region.name }}</option>
+          <option value="{{ region.id }}">{{ region.name }}</option>
         {% endfor %}
       </select>
     </div>
@@ -51,8 +53,18 @@
       <span class="d-inline me-2">{% blocktrans %}Filter By Employee{% endblocktrans %}:</span>
       <select id="filterByEmployee" class="form-select d-inline">
         <option value="All">{% blocktrans %}Display All{% endblocktrans %}</option>
+        <option value="None">{% blocktrans %}No Employee Assigned{% endblocktrans %}</option>
         {% for employee in employees %}
-          <option value="{{ employee.full_name }}">{{ employee.full_name }}</option>
+          <option value="{{ employee.id }}">{{ employee.full_name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="d-flex align-items-center border border-1 p-2 form-control">
+      <span class="d-inline me-2">{% blocktrans %}Filter By Status{% endblocktrans %}:</span>
+      <select id="filterByStatus" class="form-select d-inline">
+        <option value="All">{% blocktrans %}Display All{% endblocktrans %}</option>
+        {% for status in statuses %}
+          <option value="{{ status.0 }}">{{ status.1 }}</option>
         {% endfor %}
       </select>
     </div>
@@ -76,33 +88,41 @@
       <tbody id="order-table">
         {% for order in orders %}
           <tr class="clickable" data-toggle="collapse" data-target="#row{{ order.id }}">
+            <td hidden="hidden">{{ order.customer__tax }}</td>
+            <td hidden="hidden">{{ order.payer__tax }}</td>
             <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'orders:order_details' order.id %}"><b>#{{ order.id }}</b></a></td>
             {% if order.customer__id %}
               <td><a onclick="handleDropdownClick(event)" class="text-body" style="text-decoration: none;" href="{% url 'customers:customer_details' order.customer__id %}">{{ order.customer_name }}</a></td>
             {% else %}
               <td>{{ order.customer_name }}</td>
             {% endif %}
-            <td>{{ order.address_name }}</td>
             <td>
-              {% if order_details.phone_number %}
-                <a class="text-decoration-none link-dark" href="tel:+{{ order.phone_number }}">{{ order.phone_number }}</a>
+              {% if order.address_name %}
+                {{ order.address_name }}
+              {% else %}
+                ---
+              {% endif %}
+            </td>
+            <td>
+              {% if order.phone_number %}
+                <a class="text-body" style="text-decoration: none;" href="tel:{{ order.phone_number }}">{{ order.phone_number|format_phone_number }}</a>
               {% else %}
                 ---
               {% endif %}
             </td>
             <td>{{ order.short_description_name }}</td>
             <td>{{ order.device_full_name }}</td>
-            <td>{{ order.status }}</td>
+            <td data-status-id="{{ order.status.0 }}">{{ order.status.1 }}</td>
             <td>
               <div class="dropdown" onclick="handleDropdownClick(event)">
                 <select class="region-select form-select" style="width:auto;" data-order-id="{{ order.id }}">
                   <option selected disabled hidden value="">
                     {% if order.region__name %}
-                  <option selected disabled hidden value="{{ order.region__name }}">{{ order.region__name }}</option>
+                      <option selected disabled hidden value="{{ order.region__id }}">{{ order.region__name }}</option>
                     {% else %}
                   <option selected disabled hidden value="None">{% blocktrans %}No Region{% endblocktrans %}</option>
                     {% endif %}
-                  <option value="-1">{% blocktrans %}No Region{% endblocktrans %}</option>
+                      <option value="None">{% blocktrans %}No Region{% endblocktrans %}</option>
                   {% for region in regions %}
                     <option value="{{ region.id }}">{{ region.name }}</option>
                   {% endfor %}
@@ -112,11 +132,9 @@
             <td>
               <div class="dropdown" onclick="handleDropdownClick(event)" >
                 <select class="priority-select form-select" style="width:auto;" data-order-id="{{ order.id }}">
-                  <option selected disabled hidden>
-                    {{ order.priority }}
-                  </option>
-                  {% for id, priority in priorities %}
-                  <option value="{{ id }}">{{ priority }}</option>
+                  <option selected disabled hidden value="{{ order.priority }}">{{ order.priority }}</option>
+                  {% for _, priority in priorities %}
+                    <option value="{{ priority }}">{{ priority }}</option>
                   {% endfor %}
                 </select>
               </div>
@@ -124,14 +142,12 @@
             <td>
               <div class="dropdown" onclick="handleDropdownClick(event)" >
                 <select class="executor-select form-select" style="width:auto;" data-order-id="{{ order.id }}">
-                  <option selected disabled hidden>
-                    {% if order.executor_name != ' ' %}
-                      {{ order.executor_name }}
-                    {% else %}
-                      {% blocktrans %}No Executor{% endblocktrans %}
-                    {% endif %}
-                  </option>
-                  <option value="-1">{% blocktrans %}No Executor{% endblocktrans %}</option>
+                  {% if order.executor_name != ' ' %}
+                    <option selected disabled hidden value="{{ order.executor__id }}">{{ order.executor_name }}</option>
+                  {% else %}
+                    <option selected disabled hidden value="None">{% blocktrans %}No Executor{% endblocktrans %}</option>
+                  {% endif %}
+                  <option value="None">{% blocktrans %}No Executor{% endblocktrans %}</option>
                   {% for employee in employees %}
                     <option value="{{ employee.id }}">{{ employee.full_name }}</option>
                   {% endfor %}
@@ -150,8 +166,8 @@
                 <li><b>{% blocktrans %}Payment Method{% endblocktrans %}:</b> {{ order.payment_method }}</li>
               </ul>
             </td>
-            <td colspan="3"><b>{% blocktrans %}Additional Information{% endblocktrans %}:</b><br>{{ order.additional_info_name }}</td>
-            <td colspan="3"><b>{% blocktrans %}Order Description{% endblocktrans %}:</b><br>{{ order.description_name }}</td>
+            <td colspan="3"><b>{% blocktrans %}Additional Information{% endblocktrans %}:</b><br>{{ order.additional_info_name|linebreaksbr }}</td>
+            <td colspan="3"><b>{% blocktrans %}Order Description{% endblocktrans %}:</b><br>{{ order.description_name|linebreaksbr }}</td>
           </tr>
         {% endfor %}
       </tbody>

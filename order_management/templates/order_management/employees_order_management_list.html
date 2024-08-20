@@ -36,7 +36,7 @@
         </td>
         <td>{{ order_details.short_description_name }}</td>
         <td>{{ order_details.device_full_name }}</td>
-        <td>{{ order_details.status }}</td>
+        <td>{{ order_details.status.1 }}</td>
         <td>
           <div class="dropdown" onclick="handleDropdownClick(event)">
             <select class="region-select form-select" style="width:auto;" data-order-id="{{ order_details.id }}">
@@ -112,8 +112,8 @@
               <li><b>{% blocktrans %}Payment Method{% endblocktrans %}:</b> {{ order_details.payment_method }}</li>
             </ul>
           </td>
-          <td colspan="4"><b>{% blocktrans %}Additional Information{% endblocktrans %}:</b><br>{{ order_details.additional_info_name }}</td>
-          <td colspan="3"><b>{% blocktrans %}Order Description{% endblocktrans %}:</b><br>{{ order_details.description_name }}</td>
+          <td colspan="4"><b>{% blocktrans %}Additional Information{% endblocktrans %}:</b><br>{{ order_details.additional_info_name|linebreaksbr }}</td>
+          <td colspan="3"><b>{% blocktrans %}Order Description{% endblocktrans %}:</b><br>{{ order_details.description_name|linebreaksbr }}</td>
         </tr>
       {% endfor %}
     </tbody>

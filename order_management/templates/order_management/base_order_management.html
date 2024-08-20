@@ -25,6 +25,12 @@
         {% blocktrans %}Orders Settlement{% endblocktrans %}
       </a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center gap-2" href="{% url 'order_management:orders_map' %}">
+        <svg class="bi"><use xlink:href="#glob"/></svg>
+        {% blocktrans %}Orders Map{% endblocktrans %}
+      </a>
+    </li>
   </ul>
 {% endblock %}
 

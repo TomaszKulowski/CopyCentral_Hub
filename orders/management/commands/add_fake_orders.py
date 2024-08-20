@@ -1,4 +1,7 @@
+import random
+
 from sys import stdout
+from unittest.mock import patch
 
 from django.core.management import BaseCommand
 
@@ -19,5 +22,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         n = options.get('number')
-        OrderFactory.create_batch(n)
+        with patch('orders.locations.get_coordinates') as mock_update_coordinates:
+            for _ in range(n):
+                mock_update_coordinates.return_value = (
+                    round(random.uniform(-90.0, 90.0), 6),
+                    round(random.uniform(-180.0, 180.0), 6),
+                )
+                OrderFactory()
         stdout.write(f'Successfully created {n} objects.')

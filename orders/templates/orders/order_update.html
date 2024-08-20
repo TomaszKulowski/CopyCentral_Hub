@@ -43,6 +43,8 @@
     <input type="hidden" id="payerId" name="payer" value="{{ order_instance.payer.id }}" />
     <input type="hidden" id="addressId" name="address" value="{{ order_instance.additional_address.id }}" />
     <input type="hidden" id="deviceId" name="device" value="{{ order_instance.device.id }}" />
+    <input type="hidden" id="latitudeId" name="latitude" value="{{ order_instance.latitude }}" />
+    <input type="hidden" id="longitudeId" name="longitude" value="{{ order_instance.longitude }}" />
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="customer_details" role="tabpanel" aria-labelledby="customer_details-tab">
         <ul class="nav nav-tabs" id="payer-tab" role="tablist">
@@ -80,6 +82,7 @@
               <span>{% blocktrans %}Phone Number{% endblocktrans %}:</span>
               <input class="form-control" id="phone_number" name="phone_number" value="{% if order_instance.phone_number %}{{ order_instance.phone_number }}{% else %}{% if customer_instance.phone_number %}{{ customer_instance.phone_number }}{% endif %}{% endif %}" maxlength="14">
             </div>
+            <div style="color: red;" id="address_error"></div>
             <h5>{% blocktrans %}Service Address{% endblocktrans %}:</h5>
             <div id="id_address" class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
               {{ order_form.additional_address }}
@@ -179,6 +182,7 @@
         {{ order_form.signer_name.label }}:
         {{ order_form.signer_name }}
         {{ order_form.signature.label }}:
+        <div hidden="hidden">{{ order_form.last_notification_executor }}</div>
         <div class="form-control">
           {{ order_form.signature }}
         </div>
@@ -315,7 +319,7 @@
               <h2 class="h2"></h2>
               <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group me-2">
-                  <button class="btn btn-sm btn-outline-secondary" type="submit">{% blocktrans %}Save{% endblocktrans %}</button>
+                  <button class="btn btn-sm btn-outline-secondary" onclick="customerCreate('customer')" type="button">{% blocktrans %}Save{% endblocktrans %}</button>
                 </div>
               </div>
             </div>
@@ -324,7 +328,7 @@
       </div>
     </div>
   </div>
-  <div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true">
+ <div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -335,13 +339,11 @@
           <form id="addressForm" method="post">
             {% csrf_token %}
             {{ address_form.as_p }}
-            <div id="addressFormm">
-            </div>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-top">
               <h2 class="h2"></h2>
               <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group me-2">
-                  <button class="btn btn-sm btn-outline-secondary" type="submit">{% blocktrans %}Save{% endblocktrans %}</button>
+                  <button class="btn btn-sm btn-outline-secondary" onclick="addressCreate()" type="button">{% blocktrans %}Save{% endblocktrans %}</button>
                 </div>
               </div>
             </div>
@@ -365,7 +367,7 @@
               <h2 class="h2"></h2>
               <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group me-2">
-                  <button class="btn btn-sm btn-outline-secondary" type="submit">{% blocktrans %}Save{% endblocktrans %}</button>
+                  <button class="btn btn-sm btn-outline-secondary" onclick="customerCreate('payer')" type="button">{% blocktrans %}Save{% endblocktrans %}</button>
                 </div>
               </div>
             </div>
@@ -389,7 +391,7 @@
               <h2 class="h2"></h2>
               <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group me-2">
-                  <button class="btn btn-sm btn-outline-secondary" type="submit">{% blocktrans %}Save{% endblocktrans %}</button>
+                  <button class="btn btn-sm btn-outline-secondary" onclick="deviceCreate()" type="button">{% blocktrans %}Save{% endblocktrans %}</button>
                 </div>
               </div>
             </div>

@@ -70,13 +70,17 @@
           {% endif %}
           {% if order.additional_address %}
             <td>{{ order.additional_address.get_address|title }}</td>
-          {% else %}
+          {% elif order.customer.get_address %}
             <td>{{ order.customer.get_address|title }}</td>
+          {% else %}
+            <td>---</td>
           {% endif %}
           {% if order.device.brand and order.device.model %}
             <td>{{ order.device.brand|title }} {{ order.device.model|title }}</td>
           {% elif order.device.brand and not order.device.model %}
             <td>{{ order.device.brand|title }}</td>
+          {% elif order.device_name %}
+            <td>{{ order.device_name }}</td>
           {% else %}
             <td> --- </td>
           {% endif %}

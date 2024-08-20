@@ -16,7 +16,6 @@ services:
       - db
       - redis
     restart: always
-    image: tomasz987/biuroserwis_web:latest
 
   db:
     image: postgres:16.2
@@ -44,7 +43,7 @@ services:
     depends_on:
       - web
     restart: always
-    image: tomasz987/biuroserwis_nginx:latest
+
 
 volumes:
   postgres_data:

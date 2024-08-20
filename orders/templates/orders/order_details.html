@@ -21,7 +21,7 @@
       <button class="nav-link" id="order_details-tab" data-bs-toggle="tab" data-bs-target="#order_details" type="button" role="tab" aria-controls="order_details" aria-selected="false">{% blocktrans %}Order Details{% endblocktrans %}</button>
     </li>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" id="service_details-tab" data-bs-toggle="tab" data-bs-target="#service_details" type="button" role="tab" aria-controls="service_details" aria-selected="false">{% blocktrans %}Service Details{% endblocktrans %}</button>
+      <button class="nav-link" id="service_details-tab" data-bs-toggle="tab" data-bs-target="#service_details" type="button" role="tab" aria-controls="service_details" aria-selected="false">{% blocktrans %}Service Details {% endblocktrans %}</button>
     </li>
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="attachments-tab" data-bs-toggle="tab" data-bs-target="#attachments" type="button" role="tab" aria-controls="attachments" aria-selected="false">{% blocktrans %}Attachments{% endblocktrans %}</button>
@@ -199,10 +199,10 @@
     <div class="tab-pane fade" id="service_details" role="tabpanel" aria-labelledby="service_details-tab">
       <ul class="nav nav-tabs" id="service-tab" role="tablist">
         <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="service_details1-tab" data-bs-toggle="tab" data-bs-target="#service_details1" type="button" role="tab" aria-controls="service_details1" aria-selected="true">{% blocktrans %}Service Details{% endblocktrans %}</button>
+          <button class="nav-link active" id="service_details1-tab" data-bs-toggle="tab" data-bs-target="#service_details1" type="button" role="tab" aria-controls="service_details1" aria-selected="true">{% blocktrans %}Device{% endblocktrans %}</button>
         </li>
         <li class="nav-item" role="presentation">
-          <button class="nav-link" id="services_details-tab" data-bs-toggle="tab" data-bs-target="#services_details" type="button" role="tab" aria-controls="services_details" aria-selected="false">{% blocktrans %}Services Details{% endblocktrans %}</button>
+          <button class="nav-link" id="services_details-tab" data-bs-toggle="tab" data-bs-target="#services_details" type="button" role="tab" aria-controls="services_details" aria-selected="false">{% blocktrans %}Services{% endblocktrans %}</button>
         </li>
       </ul>
       <div class="tab-content" id="service-tab-content">
@@ -285,6 +285,11 @@
     <div class="modal fade" id="sendReportModal" tabindex="-1" aria-labelledby="sendReportModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
+        <div class="container mt-4">
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Notice:</strong> The feature is not available on the demo server.
+          </div>
+        </div>
         <div class="modal-header">
           <h5 class="modal-title" id="sendReportModalLabel">{% blocktrans %}Send Report{% endblocktrans %}</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

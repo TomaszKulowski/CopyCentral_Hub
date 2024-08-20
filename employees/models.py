@@ -21,6 +21,11 @@ class Employee(models.Model):
     )
     department = models.SmallIntegerField(_('Department'), choices=DepartmentChoices.choices)
     phone_number = models.PositiveBigIntegerField(_('Phone Number'), blank=True, null=True)
+    color = models.CharField(max_length=10, blank=True, null=True)
+
+    class Meta:
+        verbose_name = _('employee')
+        verbose_name_plural = _('employees')
 
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name}'
