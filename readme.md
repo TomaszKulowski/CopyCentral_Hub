@@ -2,20 +2,19 @@
 
 ## Table of Contents
    1. [Description](#description)
-   2. [Online Demo](#online-demo)
-   3. [Applications](#applications)
-   4. [Setup](#setup)
+   2. [Applications](#applications)
+   3. [Setup](#setup)
       1. [Docker](#docker)
          1. [Using Pre-Built Docker Images from Docker Hub](#using-pre-built-docker-images-from-docker-hub)
          2. [Building Docker Images Manually](#building-docker-images-manually)
       2. [Local Setup](#local-setup)
-   5. [Admin Panel](#admin-panel)
+   4. [Admin Panel](#admin-panel)
       1. [Admin Panel Features](#admin-panel-features)
-   6. [Application Features](#application-features)
+   5. [Application Features](#application-features)
       1. [Main Page](#main-page)
       2. [Features for Office Staff/Order Managers](#features-for-office-stafforder-managers)
       3. [Features for All Employees](#features-for-all-employees)
-   7. [Testing](#testing)
+   6. [Testing](#testing)
       1. [Data Generation Commands](#data-generation-commands)
       2. [Coming Soon](#coming-soon)
 
@@ -28,18 +27,6 @@ The application offers a range of features to streamline order-related processes
 including managing users, customers, devices, employees, history, information, notifications,
 and other relevant aspects.
 
-
-## Online Demo
-
-You can try out a live version of the application for testing purposes at the following link:
-
-- [CopyCentral Hub](http://copycentralhub.com)
-
-**Login credentials for the demo:**
-- **Username:** admin
-- **Password:** admin
-
-Please note that all data on the demo server is reset every hour, so any changes made will not persist.
 
 
 ## Applications
